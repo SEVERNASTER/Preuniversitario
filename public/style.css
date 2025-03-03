@@ -50,7 +50,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: 1s ease-in; 
+    transition: 1s ease-in;
 }
 
 .login-container {
@@ -193,16 +193,16 @@ body {
     background: transparent;
     color: #fff;
     border: none;
-    border-bottom: solid 2px ;
+    border-bottom: solid 2px;
 }
 
 .input-group input:focus {
-    border-bottom: solid 2px ;
+    border-bottom: solid 2px;
     outline: none;
 }
 
-.input-group input:focus ~ label,
-.input-group input:valid ~ label {
+.input-group input:focus~label,
+.input-group input:valid~label {
     top: -10px;
     left: 5px;
     transform: scale(.9);
@@ -223,11 +223,12 @@ body {
 
 input::-webkit-autofill {
     background-color: transparent !important;
-    box-shadow: 0 0 0px 1000px transparent inset !important; 
+    box-shadow: 0 0 0px 1000px transparent inset !important;
 }
 
 input:-moz-placeholder {
-    background-color: transparent; /* Fondo transparente */
+    background-color: transparent;
+    /* Fondo transparente */
 }
 
 input:-webkit-autofill {
@@ -309,7 +310,7 @@ input:-webkit-autofill {
     justify-content: center;
 }
 
-.img-container{
+.img-container {
     height: 100%;
     width: 100%;
     display: flex;
@@ -352,21 +353,26 @@ input:-webkit-autofill {
     height: 50px;
     border-radius: 10px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     gap: 10px;
     font-size: 18px;
     color: #fff;
     background: transparent;
     border: none;
+    padding-left: 15px;
+}
+
+.side-bar-button i {
+    transform: scale(1.2);
 }
 
 .side-bar-button:hover {
     border: solid 3px #fff;
-    
+
 }
 
-.side-bar-button:nth-child(1){
+.side-bar-button:nth-child(1) {
     background: rgba(255, 255, 255, .5);
 }
 
@@ -387,10 +393,181 @@ input:-webkit-autofill {
     grid-template-rows: 30% 10% 60%;
 }
 
-.overview-header {
-    border: solid #000;
+/* para la parte de las cartas de presentacion */
+
+.cards-container {
+    /* border: solid; */
+    display: flex;
+    /* justify-content: space-around; */
+    gap: 30px;
 }
 
+.card {
+    /* border: solid #f00; */
+    position: relative;
+    height: 80%;
+    width: 25%;
+    border-radius: 10px;
+    display: grid;
+    grid-template-rows: 50% 25% 25%;
+    padding: 10px;
+    color: #fff;
+    overflow: hidden;
+}
+
+.card::before,
+.card::after {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 70%;
+    background: rgba(255, 255, 255, .2);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+}
+
+.card::after {
+    top: 0;
+    left: 75%;
+}
+
+
+
+.card h3 {
+    font-size: 25px;
+}
+
+.card p {
+    font-size: 22px;
+}
+
+.card:nth-child(1) {
+    background-color: #8686F8;
+}
+
+.card:nth-child(2) {
+    background-color: #AE68F2;
+}
+
+.card:nth-child(3) {
+    background-color: #E4C53E;
+}
+
+.card-icon-container {
+    /* border: solid #fff; */
+    height: 100%;
+    width: 33%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-icon-container i {
+    /* border: solid; */
+    transform: scale(2.5);
+}
+
+/* para el header del overview */
+
+.overview-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.overview-header h3 {
+    font-size: 23px;
+    background: linear-gradient(45deg, #f00, #00f);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.filter-container {
+    height: 100%;
+    width: 25%;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    /* gap: 20px; */
+
+}
+
+.filter-container h3 {
+    margin: auto;
+    -webkit-background-clip: initial;
+    -webkit-text-fill-color: initial;
+    background: none;
+    color: #702A88;
+}
+
+.overview-options {
+    height: 60%;
+    margin: auto;
+    width: 100%;
+    font-size: 18px;
+    background-color: #BE0C4A;
+    color: #fff;
+    border-radius: 10px;
+}
+
+.overview-options option {
+    background-color: #fff;
+    color: #000;
+    text-align: center;
+}
+
+.overview-options option:hover {
+    background-color: #8F075B !important;
+}
+
+/* para la tabla del overview */
+
+.overview-table {
+    border: solid;
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-rows: 15% 85%;
+}
+
+
+
+.overview-table thead tr, .overview-table tbody tr {
+    display: grid;
+    grid-template-columns: 25% 25% 15% 20% 15%;
+    text-align: center;
+    height: 100%;
+    place-items: center;
+}
+
+.overview tbody {
+    overflow: auto;
+    height: 100%;
+}
+
+.overview thead tr {
+    background-color: #8E075B;
+    color: #fff;
+    font-size: 20px;
+}
+
+.overview thead tr th {
+    height: 50%;
+    width: 100%;
+    border-right: solid #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.overview thead tr th:last-child {
+    border-right: none;
+}
+
+.overview tbody tr  {
+    height: 60px;
+    /* border-bottom: solid #CA0D43; */
+}
 
 
 
