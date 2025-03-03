@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <!-- para la fuenta -->
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- para los iconos -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    <title>Preuniversitario</title>
+</head>
+
+<body>
+    <div class="message" id="message">
+        <i class="message-icon" id="check" data-feather="check-circle"></i>
+        <i class="message-icon" id="alert" data-feather="alert-triangle"></i>
+        <i class="message-icon" id="error" data-feather="x-circle"></i>
+        <h2>Test message</h2>
+    </div>
+    <section class="login-page" id="loginPage">
+        <!-- <button id="logout" class="logout">Logout</button> -->
+        <div class="login-container">
+            <div class="login-img-container">
+                <img src="img/logo6.png" alt="logo">
+            </div>
+
+            <div class="login-form-container">
+                <div class="sign-buttons-container">
+                    <button class="signIn" id="signIn">Entrar</button>
+                    <button class="signUp" id="signUp">Unirse</button>
+                </div>
+
+                <div class="login-switch-container">
+                    <form class="login-form">
+                        <div class="form-title">
+                            <h1>Iniciar Sesion</h1>
+                        </div>
+
+                        <div class="form-fields">
+                            <div class="input-group">
+                                <input placeholder=" " required type="text" id="logEmail">
+                                <label for="logEmail">E-mail</label>
+                            </div>
+                            <!-- <div class="input-group">
+                            <input placeholder=" " required type="text" id="username">
+                            <label for="username">Username</label>
+                        </div> -->
+                            <div class="input-group">
+                                <input placeholder=" " required type="password" id="logPassword">
+                                <label for="logPassword">Password</label>
+                            </div>
+                        </div>
+
+                        <div class="form-button">
+                            <button id="logBtn">Verificar</button>
+                        </div>
+                    </form>
+
+                    <!-- para la pantalla de crear cuenta -->
+
+                    <form class="sign-form">
+                        <div class="form-title">
+                            <h1>Crear cuenta</h1>
+                        </div>
+
+                        <div class="form-fields">
+                            <div class="input-group">
+                                <input placeholder=" " required type="text" id="signEmail">
+                                <label for="signEmail">E-mail</label>
+                            </div>
+                            <div class="input-group">
+                                <input placeholder=" " required type="text" id="signName">
+                                <label for="signName">Nombre</label>
+                            </div>
+                            <div class="input-group">
+                                <input placeholder=" " required type="password" id="signPassword">
+                                <label for="signPassword">Contraseña</label>
+                            </div>
+                        </div>
+
+                        <div class="form-button">
+                            <button id="signInBtn">Crear</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- para el admin panel -->
+
+    <section class="admin-panel-container">
+        <div class="side-bar">
+
+            <div class="logo-container">
+                <div class="img-container">
+                    <img src="img/logoAdminPanel.png" alt="logo">
+                </div>
+                <div class="logo-title">
+                    <h2>Isaac Newton</h2>
+                </div>
+            </div>
+
+            <div class="admin-buttons">
+                <button class="side-bar-button"><i data-feather="eye"></i>Vista General</button>
+                <button class="side-bar-button"><i data-feather="user"></i>Registrar Docente</button>
+                <button class="side-bar-button"><i data-feather="user"></i>Registrar Estudiante</button>
+                <button class="side-bar-button"><i data-feather="book"></i>Registrar Materia</button>
+            </div>
+
+        </div>
+
+        <!-- contenedor para el panel que cambia dinamicamente -->
+        <div class="panel-container">
+            <div class="overview">
+                <div class="cards-container">
+                    <div class="card">
+                        <!-- reemplazar este por el icono -->
+                        <div class="icon"></div>
+                        <h3>Total de Estudiantes</h3>
+                        <p>80</p>
+                    </div>
+
+                    <div class="card">
+                        <!-- reemplazar este por el icono -->
+                        <div class="icon"></div>
+                        <h3>Total de Docentes</h3>
+                        <p>20</p>
+                    </div>
+
+                    <div class="card">
+                        <!-- reemplazar este por el icono -->
+                        <div class="icon"></div>
+                        <h3>Total de Cursos</h3>
+                        <p>17</p>
+                    </div>
+                </div>
+
+
+                <div class="overview-header">
+                    <h3>Personas de la Institucion</h3>
+                    <div class="filter-container">
+                        <h3>Mostrar por:</h3>
+                        <select name="options" id="overviewOptions" class="overview-options">
+                            <option value="general">General</option>
+                            <option value="professor">Docentes</option>
+                            <option value="student">Estudiantes</option>
+                            <option value="subjects">Materias</option>
+                        </select>
+                    </div>
+                </div>
+
+                <table class="overview-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>E-mail</th>
+                            <th>Tipo</th>
+                            <th>Se unio</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Jack Vega Vazquez</td>
+                            <td>jack@gmail.com</td>
+                            <td>Estudiante</td>
+                            <td>15/08/2023</td>
+                            <td>Activo</td>
+                        </tr>
+                        <tr>
+                            <td>Ernesto Vazquez</td>
+                            <td>jsa@gmail.com</td>
+                            <td>Docente</td>
+                            <td>15/12/2022</td>
+                            <td>Activo</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </section>
+
+
+
+    <script type="module" src="app.js"></script>
+    <script>
+        feather.replace();
+    </script>
+</body>
+
+</html>

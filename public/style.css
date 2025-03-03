@@ -1,0 +1,396 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Josefin Sans', sans-serif;
+
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+}
+
+/* para los mensajes de alerta */
+.message {
+    position: absolute;
+    color: #fff;
+    width: 30%;
+    height: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    /* border: solid #fff; */
+    background-color: #10A37F;
+    margin-top: 30px;
+    border-radius: 20px;
+    transform: translateY(-100px);
+    transition: .5s;
+    z-index: 100;
+}
+
+.message-icon {
+    transform: scale(1.2);
+}
+
+.message.show {
+    height: 50px;
+    transform: translateY(0);
+}
+
+.login-page {
+    height: 100%;
+    width: 100%;
+    background-image: url(img/login-bg.jpg);
+    background-size: contain;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 1s ease-in; 
+}
+
+.login-container {
+    height: 70%;
+    width: 60%;
+    border: solid #fff 2px;
+    display: grid;
+    grid-template-columns: 55% 45%;
+    border-radius: 25px;
+    background: rgba(0, 0, 0, .1);
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+}
+
+.login-img-container {
+    /* border: solid #fff; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 20px 30% 30% 20px;
+    z-index: 50;
+}
+
+.login-img-container img {
+    /* border: solid #Fff; */
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+}
+
+/* para el formulario */
+
+.login-form-container {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-rows: 20% 80%;
+}
+
+.sign-buttons-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.sign-buttons-container button {
+    height: 35px;
+    width: 100px;
+    border-radius: 20px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.signIn {
+    background: #3B0F30;
+    border: none;
+    box-shadow: 0 0 10px #fff;
+    transform: scale(1);
+    transition: .5s;
+}
+
+.signIn.active {
+    background: rgba(255, 255, 255, .3);
+    border: none;
+    box-shadow: 0 0 10px #3B0F30;
+    transform: scale(.8);
+}
+
+.signUp {
+    background: rgba(255, 255, 255, .3);
+    border: none;
+    box-shadow: 0 0 10px #3B0F30;
+    transform: scale(.8);
+    transition: .5s;
+}
+
+.signUp.active {
+    background: #3B0F30;
+    border: none;
+    box-shadow: 0 0 10px #fff;
+    transform: scale(1);
+}
+
+.login-switch-container {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    /* border: solid #fff; */
+}
+
+.login-form {
+    /* border: solid #fff; */
+    position: absolute;
+    height: 80%;
+    width: 100%;
+    display: grid;
+    grid-template-rows: 20% 60% 20%;
+    transition: 1s ease-in;
+    z-index: 10;
+    transform: translateX(0);
+}
+
+.login-form.active-transition {
+    transform: translateX(-100%);
+}
+
+.form-title {
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-fields {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}
+
+.input-group {
+    position: relative;
+    width: 70%;
+    height: 40px;
+    /* border: solid #fff;  */
+}
+
+.input-group input {
+    height: 100%;
+    border-radius: 10px;
+    width: 100%;
+    padding-left: 10px;
+    font-size: 18px;
+    background: transparent;
+    color: #fff;
+    border: none;
+    border-bottom: solid 2px ;
+}
+
+.input-group input:focus {
+    border-bottom: solid 2px ;
+    outline: none;
+}
+
+.input-group input:focus ~ label,
+.input-group input:valid ~ label {
+    top: -10px;
+    left: 5px;
+    transform: scale(.9);
+    color: #F8C952;
+    /* background: rgba(0, 0, 0, .5); */
+    /* color: #fff; */
+}
+
+.input-group label {
+    position: absolute;
+    top: 30%;
+    left: 10px;
+    transition: .5s;
+    color: #fff;
+    font-weight: 800;
+    height: 15px;
+}
+
+input::-webkit-autofill {
+    background-color: transparent !important;
+    box-shadow: 0 0 0px 1000px transparent inset !important; 
+}
+
+input:-moz-placeholder {
+    background-color: transparent; /* Fondo transparente */
+}
+
+input:-webkit-autofill {
+    background-color: transparent !important;
+}
+
+.form-button {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+}
+
+.form-button button {
+    width: 50%;
+    height: 40px;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #E2453D;
+    color: #fff;
+    font-size: 18px;
+    border: none;
+    transition: .3s;
+    margin-top: 20px;
+}
+
+.form-button button:hover {
+    border: solid 3px #fff;
+}
+
+.form-button button:active {
+    transform: scale(.8);
+}
+
+/* para el formulario de registro */
+
+.sign-form {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-rows: 20% 60% 20%;
+    transition: 1s ease-in;
+    transform: translateX(100%);
+}
+
+.sign-form.active-transition {
+    transform: translateX(0);
+}
+
+/* para el admin panel */
+.login-page {
+    display: none;
+}
+
+.admin-panel-container {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 20% 80%;
+}
+
+.side-bar {
+    border: solid #000;
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-rows: 20% 80%;
+    background: linear-gradient(#E3103C, #4D0167);
+}
+
+.logo-container {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    align-items: center;
+    justify-content: center;
+}
+
+.img-container{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.img-container img {
+    height: 80%;
+    width: 80%;
+}
+
+.logo-title {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-container h2 {
+    font-size: 30px;
+    text-align: center;
+    color: #fff;
+}
+
+/* para la parte de los botones */
+
+.admin-buttons {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.side-bar-button {
+    width: 80%;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    color: #fff;
+    background: transparent;
+    border: none;
+}
+
+.side-bar-button:hover {
+    border: solid 3px #fff;
+    
+}
+
+.side-bar-button:nth-child(1){
+    background: rgba(255, 255, 255, .5);
+}
+
+/* para el panel del vista general */
+
+.panel-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.overview {
+    height: 95%;
+    width: 95%;
+    display: grid;
+    grid-template-rows: 30% 10% 60%;
+}
+
+.overview-header {
+    border: solid #000;
+}
+
+
+
+
