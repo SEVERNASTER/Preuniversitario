@@ -282,7 +282,10 @@ input:-webkit-autofill {
 
 /* para el admin panel */
 .login-page {
-    display: none;
+    position: absolute;
+    z-index: 50;
+    transform: translateY(-100%);
+    /* display: none; */
 }
 
 .admin-panel-container {
@@ -290,6 +293,7 @@ input:-webkit-autofill {
     width: 100%;
     display: grid;
     grid-template-columns: 20% 80%;
+    z-index: 10;
 }
 
 .side-bar {
@@ -372,8 +376,10 @@ input:-webkit-autofill {
 
 }
 
-.side-bar-button:nth-child(1) {
-    background: rgba(255, 255, 255, .5);
+.side-bar-button.translucent {
+    background: rgba(255, 255, 255, .4);
+    border: solid 2px #fff;
+
 }
 
 /* para el panel del vista general */
@@ -384,6 +390,7 @@ input:-webkit-autofill {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #f5f5f5;
 }
 
 .overview {
@@ -522,8 +529,15 @@ input:-webkit-autofill {
 
 /* para la tabla del overview */
 
+.overview-table-container {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
 .overview-table {
-    border: solid;
+    position: absolute;
+    /* border: solid; */
     height: 100%;
     width: 100%;
     display: grid;
@@ -532,23 +546,28 @@ input:-webkit-autofill {
 
 
 
-.overview-table thead tr, .overview-table tbody tr {
+.overview-table thead tr,
+.overview-table tbody tr {
     display: grid;
     grid-template-columns: 25% 25% 15% 20% 15%;
     text-align: center;
     height: 100%;
     place-items: center;
+    background-color: #fff;
 }
 
 .overview tbody {
     overflow: auto;
     height: 100%;
+    border-radius: 10px;
+    border: solid 2px #000;
 }
 
 .overview thead tr {
     background-color: #8E075B;
     color: #fff;
     font-size: 20px;
+    border-radius: 10px;
 }
 
 .overview thead tr th {
@@ -564,10 +583,460 @@ input:-webkit-autofill {
     border-right: none;
 }
 
-.overview tbody tr  {
+.overview tbody tr {
     height: 60px;
-    /* border-bottom: solid #CA0D43; */
+    border-bottom: solid 2px #a0a0a0;
+    transition: .2s;
 }
+
+.overview tbody tr:hover {
+    background-color: #e3e3e3;
+}
+
+
+.register {
+    height: 100%;
+    width: 100%;
+    font-size: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* para el regsitro de estudiante */
+
+.student-register {
+    /* display: grid !important; */
+    grid-template-rows: 20% 60% 20%;
+    height: 100%;
+    width: 100%;
+    background-color: #f3f3f3;
+    /* background-image: url(img/login-bg.jpg); */
+}
+
+
+.register-title-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+}
+
+.register-title-container h2 {
+    background: linear-gradient(45deg, #f00, #00f);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* para el formulario del estudiante */
+
+.register-body-container {
+    /* border: solid; */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.register-form {
+    /* border: solid; */
+    height: 100%;
+    width: 80%;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    place-items: center;
+}
+
+.register-input-group {
+    position: relative;
+    width: 80%;
+    height: 40px;
+}
+
+.register-input-group input {
+    border: none;
+    border-bottom: solid 2px #D02F73;
+    font-size: 20px;
+    padding-left: 10px;
+    height: 100%;
+    width: 80%;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+.register-input-group label {
+    position: absolute;
+    top: 30%;
+    left: 10px;
+    transition: .5s;
+    color: #762C8E;
+    font-weight: 550;
+}
+
+.register-input-group input:focus~label,
+.register-input-group input:valid~label {
+    top: -15px;
+}
+
+.register-input-group input:focus {
+    /* border-bottom: solid 2px #D02F73; */
+    border-bottom: solid 2px #D02F73;
+    outline: none;
+}
+
+/* .register-form .register-input-group:nth-child(9) label, */
+.register-form .register-input-group:nth-child(7) label {
+    position: static;
+    font-size: 18px;
+}
+
+/* .register-form .register-input-group:nth-child(9), */
+.register-form .register-input-group:nth-child(7) {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* .register-form .register-input-group:nth-child(9) select, */
+.register-form .register-input-group:nth-child(7) select {
+    width: 50%;
+    height: 100%;
+    font-size: 18px;
+    text-align: center;
+}
+
+.register-form .register-input-group:nth-child(9) select {
+    width: 100%;
+}
+
+.register-button-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.register-button {
+    height: 40px;
+    width: 15%;
+    font-size: 20px;
+    border-radius: 10px;
+    background: linear-gradient(45deg, #DF1782, #5E0363);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: .2s transform;
+    transform: scale(1);
+}
+
+.register-button:hover {
+    border: solid 3px #000;
+    transform: scale(1.08);
+}
+
+.register-button:active {
+    transform: scale(.9);
+}
+
+
+
+
+
+
+
+
+
+
+
+/* para el panel de registro de docente */
+
+.overview {
+    display: none;
+}
+
+.professor-register {
+    display: grid !important;
+    grid-template-rows: 20% 60% 20%;
+    height: 100%;
+    width: 100%;
+    background-color: #f3f3f3;
+}
+
+.pr-register-form {
+    /* border: solid; */
+    height: 100%;
+    width: 80%;
+    display: grid;
+    grid-template-rows: 50% 50%;
+    place-items: center;
+}
+
+.pr-register-form1 {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+}
+
+.pr-register-form2 {
+    /* border: solid; */
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    height: 100%;
+    width: 100%;
+}
+
+.pr-register-form1 .pr-register-input-group {
+    width: 90%;
+}
+
+.pr-register-form1 .pr-register-input-group:nth-child(8) label,
+.pr-register-form1 .pr-register-input-group:nth-child(9) label {
+    position: static;
+    font-size: 18px;
+}
+
+.pr-register-form1 .pr-register-input-group:nth-child(8),
+.pr-register-form1 .pr-register-input-group:nth-child(9) {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.pr-register-form1 .pr-register-input-group:nth-child(8) select,
+.pr-register-form1 .pr-register-input-group:nth-child(9) select {
+    width: 50%;
+    height: 100%;
+    font-size: 18px;
+    text-align: center;
+    border-radius: 10px;
+    background-color: #BE0C4A;
+    color: #fff;
+}
+
+.pr-register-form1 .pr-register-input-group:nth-child(9) select {
+    width: 100%;
+}
+
+.pr-register-form1 .pr-register-input-group:nth-child(8) select option,
+.pr-register-form1 .pr-register-input-group:nth-child(9) select option {
+    background-color: #fff;
+    color: #000;
+}
+
+.degree-register-box {
+    border: solid;
+    flex: 1;
+    width: 100%;
+    display: grid;
+    grid-template-rows: 20% 80%;
+    border-radius: 10px;
+    /* background-image: url(img/login-bg.jpg);
+    background-size: cover; */
+}
+
+.degree-register-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    align-items: center;
+    background-color: #880756;
+    color: #fff;
+}
+
+.degree-register-header h3 {
+    font-size: 25px;
+}
+
+.header-degree-button {
+    height: 80%;
+    width: 20%;
+    background-color: #F47725;
+    color: #fff;
+    border-radius: 10px;
+    cursor: pointer;
+    border: none;
+    font-size: 18px;
+}
+
+.header-degree-button:hover {
+    border: solid 2px #fff;
+}
+
+.degree-register-box {
+    height: 100%;
+}
+
+.degree-regsiter-body {
+    height: 100%;
+    overflow: auto;
+}
+
+.degree-item {
+    border: solid 2px;
+    border-radius: 7px;
+    margin: 10px;
+    min-width: 90%;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+}
+
+.degree-content h4 {
+    font-size: 18px;
+    padding-bottom: 5px;
+    font-weight: 600;
+}
+
+.degree-content p {
+    font-weight: lighter;
+}
+
+.degree-action-button {
+    border: solid;
+    width: 10%;
+    background-color: rgb(218, 21, 21);
+    border: solid #fff;
+    color: #fff;
+    border-radius: 7px;
+}
+
+.degree-action-button:hover {
+    border: solid 3px #000;
+}
+
+.professor-register-modal {
+    /* display: none !important; */
+    position: absolute;
+    z-index: 100;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, .3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pr-modal-container.active {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.pr-modal-container {
+    height: 60%;
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    transition: .5s;
+    transform: scale(.5);
+    opacity: .5;
+}
+
+.pr-modal-form {
+    border: solid #fff;
+    height: 100%;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    background-color: #fff;
+    border-radius: 10px;
+    /* align-items: ; */
+}
+
+.pr-modal-form h4 {
+    font-size: 22px;
+    color: #8E0A2F;
+}
+
+.pr-modal-form .register-input-group {
+    width: 70%;
+    display: flex;
+    justify-content: center;
+}
+
+.pr-modal-form .register-input-group input {
+    width: 100%;
+    border: solid #BE0C4A;
+    padding: 0 10px;
+}
+
+.pr-modal-form .register-input-group label{
+    color: #762C8E;
+}
+
+.register-input-group input:focus~label, .register-input-group input:valid~label {
+    top: -20px;
+}
+
+.pr-modal-form .register-input-group:nth-child(5) label{
+    position: static;
+}
+
+.pr-modal-form .register-input-group:nth-child(5){
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pr-modal-form .register-input-group:nth-child(5) select{
+    height: 100%;
+    width: 50%;
+    font-size: 17px;
+    background-color: #BE0C4A;
+    color: #Fff;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.pr-modal-form .register-input-group:nth-child(5) select option{
+    background-color: #fff;
+    color: #000;
+}
+
+.modal-buttons-container {
+    /* border: solid; */
+    height: 10%;
+    min-width: 90%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.modal-buttons-container button {
+    height: 90%;
+    width: 25%;
+    border-radius: 10px;
+    background-color: #10A37F;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    transition: .3s;
+    cursor: pointer;
+}
+
+.modal-buttons-container button:hover {
+    border: solid 3px #000 ;
+    transform: scale(1.1);
+}
+
+.modal-buttons-container button:nth-child(1) {
+    background-color: #DA1515;
+}
+
+
+
+
+
+
 
 
 

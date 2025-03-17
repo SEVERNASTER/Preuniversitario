@@ -14,6 +14,28 @@ const signPassInput = document.getElementById('signPassword');
 const signNameInput = document.getElementById('signName');
 const loginBtn = document.getElementById('logBtn');
 const message = document.getElementById('message');
+const sideOverview = document.getElementById('sideOverview');
+const sideStudent = document.getElementById('sideStudentRegister');
+const sideProfessor = document.getElementById('sideProfessorRegister');
+// const sideRegister = document.getElementById('sideRegister');
+const sideBarButtons = document.querySelectorAll('.side-bar-button');
+const sideSubject = document.getElementById('sideSubject');
+const sideEnroll = document.getElementById('sideEnroll');
+const overviewPanel = document.getElementById('overview');
+const subjectRegisterPanel = document.getElementById('subjectRegister');
+const professorRegisterPanel = document.getElementById('professorRegister');
+const studentRegisterPanel = document.getElementById('studentRegister');
+const srForm = document.getElementById('srForm');
+const srButton = document.getElementById('srButton');
+const overviewTable = document.getElementById('overviewTableBody');
+let currentPanel = overviewPanel; //para saber el panel actual que se esta mostrando
+const addDegreeBtn = document.getElementById('addDegreeBtn');
+const professorModal = document.getElementById('professorRegisterModal');
+const modalCancelBtn = document.getElementById('modalCancelBtn');
+const professorModalForm = document.getElementById('professorModalForm');
+const degreeItemsContainer = document.getElementById('degreeItemsContainer');
+
+
 // const logoutBtn = document.getElementById('logout');
 const checkIcon = {
     name: 'check',
@@ -44,6 +66,20 @@ signUpBtn.addEventListener('click', () => {
     signUpBtn.classList.add('active');
 });
 
+// para el efecto de hacer click en los botones del side bar
+
+sideBarButtons.forEach(currentButton => {
+    currentButton.addEventListener('click', () => {
+        sideBarButtons.forEach(sideButton => {
+            if (currentButton !== sideButton) {
+                sideButton.classList.remove('translucent');
+            } else {
+                sideButton.classList.add('translucent');
+            }
+        })
+    })
+})
+
 // para registrar un nuevo usuario
 
 signUpForm.addEventListener('submit', async (e) => {
@@ -53,7 +89,7 @@ signUpForm.addEventListener('submit', async (e) => {
 
 async function registerUser(email, name, password) {
     console.log(email, name, password);
-    
+
     const response = await fetch('/register', {
         method: 'POST',
         headers: {
@@ -70,14 +106,12 @@ async function registerUser(email, name, password) {
     if (response.ok) {
         alert('usuario registrado');
         console.log(data.user);
-        
+
     } else {
         console.log(data.message);
         alert('algo salio mal');
     }
 }
-
-
 
 // para logarse
 
@@ -87,8 +121,7 @@ loginBtn.addEventListener('click', async (e) => {
 });
 
 async function loginUser(email, password) {
-    console.log(token);
-    
+
     const response = await fetch('/login', {
         method: 'POST',
         headers: {
@@ -99,34 +132,20 @@ async function loginUser(email, password) {
             password,
         }),
     });
-    const data = await response.json();
+    const result = await response.json();
 
     if (response.ok) {
         loginPage.style.transform = 'translateY(-100%)';
-        deployCustomizedAlert(checkIcon, `${data.message}`);
-        console.log(data);
-        
+        deployCustomizedAlert(checkIcon, `${result.message}`);
     } else {
-        console.log(data.message);
+        console.log(result.message);
         alert("algo salio mal")
     }
 }
 
+// para mostrar los mensajes de alerta
 
-
-
-
-
-
-
-
-
-
-// logoutBtn.addEventListener('click', () => {
-//     deployCustomizedAlert(checkIcon, 'Test Message');
-// });
-
-function deployCustomizedAlert(icon, messageText){
+function deployCustomizedAlert(icon, messageText) {
     hideAllIconsExcept(icon.name);
     message.classList.add('show');
     message.style.backgroundColor = icon.color;
@@ -136,39 +155,155 @@ function deployCustomizedAlert(icon, messageText){
     }, 3000);
 }
 
-function hideAllIconsExcept(idIcon){
+function hideAllIconsExcept(idIcon) {
     message.querySelectorAll('.message-icon').forEach(icon => {
-        if(icon.id !== idIcon){
+        if (icon.id !== idIcon) {
             icon.style.display = 'none';
-        }else {
+        } else {
             icon.style.display = 'inline';
         }
     });
 }
 
-async function insertAdmin(){
-    let response = await fetch('/admin', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            name: 'admin1',
-            email: 'someemail@gmail.com'
-        }),
-    });
 
+// para los botones de la barra lateral
 
-    let data = await response.json();
+sideOverview.addEventListener('click', () => {
+    switchPanelViewTo(overviewPanel)
+});
 
-    console.log(data);
-    
+sideStudent.addEventListener('click', () => {
+    switchPanelViewTo(studentRegisterPanel)
+});
 
-    if(response.ok){
-        console.log("admin registrado");
-    }else{
-        console.log(response.message);
-    }
+sideProfessor.addEventListener('click', () => {
+    switchPanelViewTo(professorRegisterPanel)
+});
+
+sideSubject.addEventListener('click', () => {
+    switchPanelViewTo(subjectRegisterPanel)
+});
+
+function switchPanelViewTo(panel) {
+    currentPanel.style.display = 'none';
+    currentPanel = panel;
+    currentPanel.style.display = 'grid';
 }
 
+
+// para el boton de registro de estudiante
+
+srForm.addEventListener('submit', async (e) => {
+    // console.log(hola);
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const studentData = Object.fromEntries(formData.entries());
+
+    try {
+        const response = await fetch("/register-student", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(studentData),
+            credentials: 'include'
+        });
+
+        const result = await response.json();
+        console.log("Respuesta del servidor:", result);
+
+        if (response.ok) {
+            console.log('sucess');
+
+        } else {
+            console.log('failure');
+
+        }
+    } catch (error) {
+        console.error(error);
+    }
+
+});
+
+// para la visualizacion de materias en el overview panel
+
+async function reloadDataTable() {
+    const res = await fetch('/get-all-persons');
+    const data = await res.json();
+
+    overviewTable.innerHTML = '';
+
+    console.log(data);
+    data.forEach(personData => {
+        const newRow = document.createElement('tr');
+        const createdAt = new Date(personData.created_at);
+        newRow.innerHTML = `
+            <td>${personData.name} ${personData.last_name}</td>
+            <td>${personData.email}</td>
+            <td>${translateTypeOfPerson(personData.type)}</td>
+            <td>${createdAt.toLocaleDateString()}</td>
+            <td>${translateState(personData.state)}</td>
+        `;
+        overviewTable.appendChild(newRow);
+    });
+}
+
+function translateTypeOfPerson(typeOfPerson) {
+    return typeOfPerson === 'student' ? 'Estudiante' : 'Docente';
+}
+
+function translateState(state) {
+    return state === 'active' ? 'Activo' : 'Inactivo';
+}
+
+reloadDataTable();
+
+
+// para la ventana modal
+
+addDegreeBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    // para limpiar los campos al abrir el modal form
+    professorModal.querySelectorAll('.professor-modal-input').forEach(input => {
+        input.value = '';
+    });
+
+    professorModal.style.display = 'flex';
+    setTimeout(() => {
+        professorModal.querySelector('.pr-modal-container').classList.add('active')
+        professorModal.classList.add('active');
+    }, 1);
+});
+
+function closeProfessorModalForm() {
+    professorModal.querySelector('.pr-modal-container').classList.remove('active')
+    setTimeout(() => {
+        professorModal.style.display = 'none';
+    }, 200);
+}
+
+modalCancelBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+});
+
+professorModalForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const degreeData = Object.fromEntries(formData.entries());
+
+    console.log(degreeData.degreeName);
+    degreeItemsContainer.innerHTML += `
+        <div class="degree-item">
+            <div class="degree-content">
+                <h4>${degreeData.degreeName}</h4>
+                <p>${degreeData.typeOfDegree} - ${degreeData.institution} (${degreeData.graduationYear})</p>
+            </div>
+            <button class="degree-action-button">Eliminar</button>
+            </div>
+    `;
+    closeProfessorModalForm();
+
+})
 

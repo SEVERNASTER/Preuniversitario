@@ -105,18 +105,23 @@
             </div>
 
             <div class="admin-buttons">
-                <button class="side-bar-button"><i class="fa-regular fa-eye"></i>Vista General</button>
-                <button class="side-bar-button"><i class="fa-solid fa-user-tie"></i>Registrar Docente</button>
-                <button class="side-bar-button"><i class="fa-solid fa-graduation-cap"></i>Registrar Estudiante</button>
-                <button class="side-bar-button"><i class="fa-solid fa-book"></i>Registrar Materia</button>
-                <button class="side-bar-button"><i class="fa-solid fa-pen-to-square"></i>Inscribir</button>
+                <button id="sideOverview" class="side-bar-button translucent"><i class="fa-regular fa-eye"></i>Vista
+                    General</button>
+                <button id="sideStudentRegister" class="side-bar-button"><i
+                        class="fa-solid fa-graduation-cap"></i>Registrar Estudiante</button>
+                <button id="sideProfessorRegister" class="side-bar-button"><i class="fa-solid fa-user-tie"></i>Registrar
+                    Docente</button>
+                <button id="sideSubject" class="side-bar-button"><i class="fa-solid fa-book"></i>Registrar
+                    Materia</button>
+                <button id="sideEnroll" class="side-bar-button"><i
+                        class="fa-solid fa-pen-to-square"></i>Inscribir</button>
             </div>
 
         </div>
 
         <!-- contenedor para el panel que cambia dinamicamente -->
         <div class="panel-container">
-            <div class="overview">
+            <section id="overview" class="overview">
                 <div class="cards-container">
                     <div class="card">
                         <!-- reemplazar este por el icono -->
@@ -158,94 +163,275 @@
                     </div>
                 </div>
 
-                <table class="overview-table">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>E-mail</th>
-                            <th>Tipo</th>
-                            <th>Se unio</th>
-                            <th>Estado</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Jack Vega Vazquez</td>
-                            <td>jack@gmail.com</td>
-                            <td>Estudiante</td>
-                            <td>15/08/2023</td>
-                            <td>Activo</td>
-                        </tr>
-                        <tr>
-                            <td>Ernesto Vazquez</td>
-                            <td>jsa@gmail.com</td>
-                            <td>Docente</td>
-                            <td>15/12/2022</td>
-                            <td>Activo</td>
-                        </tr>
-                        <tr>
-                            <td>Ernesto Vazquez</td>
-                            <td>jsa@gmail.com</td>
-                            <td>Docente</td>
-                            <td>15/12/2022</td>
-                            <td>Activo</td>
-                        </tr>
-                        <tr>
-                            <td>Ernesto Vazquez</td>
-                            <td>jsa@gmail.com</td>
-                            <td>Docente</td>
-                            <td>15/12/2022</td>
-                            <td>Activo</td>
-                        </tr>
-                        <tr>
-                            <td>Ernesto Vazquez</td>
-                            <td>jsa@gmail.com</td>
-                            <td>Docente</td>
-                            <td>15/12/2022</td>
-                            <td>Activo</td>
-                        </tr>
-                        <tr>
-                            <td>Ernesto Vazquez</td>
-                            <td>jsa@gmail.com</td>
-                            <td>Docente</td>
-                            <td>15/12/2022</td>
-                            <td>Activo</td>
-                        </tr>
-                        <tr>
-                            <td>Ernesto Vazquez</td>
-                            <td>jsa@gmail.com</td>
-                            <td>Docente</td>
-                            <td>15/12/2022</td>
-                            <td>Activo</td>
-                        </tr>
+                <div class="overview-table-container">
+                    <table class="overview-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>E-mail</th>
+                                <th>Tipo</th>
+                                <th>Se unio</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="overviewTableBody">
+                            <!-- los datos aqui se agregaran dinamicamente desde el js -->
+                        </tbody>
+                    </table>
+                </div>
 
-                        <tr>
-                            <td>Ernesto Vazquez</td>
-                            <td>jsa@gmail.com</td>
-                            <td>Docente</td>
-                            <td>15/12/2022</td>
-                            <td>Activo</td>
-                        </tr>
-                        <tr>
-                            <td>Ernesto Vazquez</td>
-                            <td>jsa@gmail.com</td>
-                            <td>Docente</td>
-                            <td>15/12/2022</td>
-                            <td>Activo</td>
-                        </tr> 
-                    </tbody>
-                </table>
+            </section>
 
-            </div>
+            <!-- sr por student-register -->
+            <section style="display: none;" id="studentRegister" class="student-register">
+                <div class="register-title-container">
+                    <h2>Registro de Estudiante</h2>
+                </div>
+                <div class="register-body-container">
+                    <!-- <form id="srForm" class="sr-form">
+                        <div class="sr-input-group">
+                            <input type="text" name="srName" id="srName" required>
+                            <label for="srName">Nombre</label>
+                        </div>
+                        <div class="sr-input-group">
+                            <input type="text" name="srLastName" id="srLastName" required>
+                            <label for="srLastName">Apellido</label>
+                        </div>
+                        <div class="sr-input-group">
+                            <input type="text" name="srAge" id="srAge" required>
+                            <label for="srAge">Edad</label>
+                        </div>
+                        <div class="sr-input-group">
+                            <input type="text" name="srCi" id="srCi" required>
+                            <label for="srCi">Nro. de Carnet</label>
+                        </div>
+                        <div class="sr-input-group">
+                            <input type="text" name="srPhone" id="srPhone" required>
+                            <label for="srPhone">Celular</label>
+                        </div>
+                        <div class="sr-input-group">
+                            <input type="text" name="srEmail" id="srEmail" required>
+                            <label for="srEmail">E-mail</label>
+                        </div>
+                        <div class="sr-input-group">
+                            <label for="srGender">Genero:</label>
+                            <select id="srGender" name="srGender">
+                                <option value="male">Masculino</option>
+                                <option value="female">Femenino</option>
+                            </select>
+                        </div>
+                        <div class="sr-input-group">
+                            <input type="text" name="srSchool" id="srSchool" required>
+                            <label for="srSchool">Unidad Educativa</label>
+                        </div>
+                        <div class="sr-input-group">
+                            <input type="text" name="srGuardian" id="srGuardian" required>
+                            <label for="srGuardian">Tutor</label>
+                        </div>
+                        <div class="sr-input-group">
+                            <input type="text" name="srGuardianPhone" id="srGuardianPhone" required>
+                            <label for="srGuardianPhone">Telefono del tutor</label>
+                        </div>
+                        <div class="sr-input-group">
+                            <input type="text" name="srDesireMajor" id="srDesireMajor" required>
+                            <label for="srDesireMajor">Carrera</label>
+                        </div>
+                    </form> -->
+                    <form id="srForm" class="register-form">
+                        <div class="register-input-group">
+                            <input type="text" name="srName" id="srName" value="Juan" required>
+                            <label for="srName">Nombre</label>
+                        </div>
+
+                        <div class="register-input-group">
+                            <input type="text" name="srLastName" id="srLastName" value="Pérez" required>
+                            <label for="srLastName">Apellido</label>
+                        </div>
+
+                        <div class="register-input-group">
+                            <input type="text" name="srAge" id="srAge" value="20" required>
+                            <label for="srAge">Edad</label>
+                        </div>
+
+                        <div class="register-input-group">
+                            <input type="text" name="srCi" id="srCi" value="123" required>
+                            <label for="srCi">Nro. de Carnet</label>
+                        </div>
+
+                        <div class="register-input-group">
+                            <input type="text" name="srPhone" id="srPhone" value="987654321" required>
+                            <label for="srPhone">Celular</label>
+                        </div>
+
+                        <div class="register-input-group">
+                            <input type="text" name="srEmail" id="srEmail" value="juan.perez@example.com" required>
+                            <label for="srEmail">E-mail</label>
+                        </div>
+
+                        <div class="register-input-group">
+                            <label for="srGender">Genero:</label>
+                            <select id="srGender" name="srGender">
+                                <option value="male" selected>Masculino</option>
+                                <option value="female">Femenino</option>
+                            </select>
+                        </div>
+
+                        <div class="register-input-group">
+                            <input type="text" name="srSchool" id="srSchool" value="Unidad Educativa Los Pinos"
+                                required>
+                            <label for="srSchool">Unidad Educativa</label>
+                        </div>
+
+                        <div class="register-input-group">
+                            <input type="text" name="srGuardian" id="srGuardian" value="María Pérez" required>
+                            <label for="srGuardian">Tutor</label>
+                        </div>
+
+                        <div class="register-input-group">
+                            <input type="text" name="srGuardianPhone" id="srGuardianPhone" value="987654322" required>
+                            <label for="srGuardianPhone">Telefono del tutor</label>
+                        </div>
+                        <div class="register-input-group">
+                            <input type="text" name="srDesireMajor" id="srDesireMajor" value="Ingeniería en Sistemas"
+                                required>
+                            <label for="srDesireMajor">Carrera</label>
+                        </div>
+                    </form>
+
+
+                </div>
+                <div class="register-button-container">
+                    <button type="submit" form="srForm" class="register-button" id="srButton">Registrar</button>
+                </div>
+            </section>
+
+            <!-- para el panel de registro de docente -->
+
+            <section style="display: none;" class="professor-register" id="professorRegister">
+                <div class="register-title-container">
+                    <h2>Registro de Docente</h2>
+                </div>
+                <div class="register-body-container">
+                    <form id="srForm" class="pr-register-form">
+                        <div class="pr-register-form1">
+                            <div class="register-input-group pr-register-input-group">
+                                <input type="text" name="srName" id="srName" value="Juan" required>
+                                <label for="srName">Nombre</label>
+                            </div>
+                            <div class="register-input-group pr-register-input-group">
+                                <input type="text" name="srLastName" id="srLastName" value="Pérez" required>
+                                <label for="srLastName">Apellido</label>
+                            </div>
+                            <div class="register-input-group pr-register-input-group">
+                                <input type="text" name="srAge" id="srAge" value="20" required>
+                                <label for="srAge">Edad</label>
+                            </div>
+                            <div class="register-input-group pr-register-input-group">
+                                <input type="text" name="srCi" id="srCi" value="123" required>
+                                <label for="srCi">Nro. de Carnet</label>
+                            </div>
+                            <div class="register-input-group pr-register-input-group">
+                                <input type="text" name="srPhone" id="srPhone" value="987654321" required>
+                                <label for="srPhone">Celular</label>
+                            </div>
+                            <div class="register-input-group pr-register-input-group">
+                                <input type="text" name="srEmail" id="srEmail" value="juan.perez@example.com" required>
+                                <label for="srEmail">E-mail</label>
+                            </div>
+                            <div class="register-input-group pr-register-input-group">
+                                <input type="number" name="srSchool" id="srSchool2" value="Unidad Educativa Los Pinos"
+                                required>
+                                <label for="srSchool2">Años de Experiencia</label>
+                            </div>
+                            <div class="register-input-group pr-register-input-group">
+                                <label for="srGender">Genero:</label>
+                                <select id="srGender" name="srGender">
+                                    <option value="male" selected>Masculino</option>
+                                    <option value="female">Femenino</option>
+                                </select>
+                            </div>
+                            
+                            <div class="register-input-group pr-register-input-group">
+                                <label for="srGender">Tipo de Contrato:</label>
+                                <select id="srGender" name="srGender">
+                                    <option value="male" selected>Tiempo Completo</option>
+                                    <option value="female">Medio Tiempo</option>
+                                    <option value="female">Indefinido</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="pr-register-form2">
+                            
+                            <!-- db por degree box -->
+                            <div class="degree-register-box">
+                                <div class="degree-register-header">
+                                    <h3>Títulos Académicos</h3>
+                                    <button id="addDegreeBtn" class="header-degree-button">Agregar</button>
+                                </div>
+                                <div class="degree-regsiter-body">
+                                    <div id="degreeItemsContainer" class="degree-container">
+                                        <!-- aqui van los titulos del docente agregados dinamicamente -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+
+                </div>
+                <div class="register-button-container">
+                    <button type="submit" form="srForm" class="register-button" id="srButton">Registrar</button>
+                </div>
+            </section>
+            
+
+
+            <section style="display: none;" id="subjectRegister" class="register">
+                <h1>Subject Register Panel</h1>
+            </section>
+
         </div>
     </section>
+
+    <div style="display: none;" class="professor-register-modal" id="professorRegisterModal">
+        <div class="pr-modal-container">
+            <form id="professorModalForm" class="pr-modal-form">
+                <h4>Agregar Nuevo Título</h4>
+                <div class="register-input-group">
+                    <input class="professor-modal-input" type="text" name="degreeName" id="degreeName">
+                    <label for="degreeName">Nombre del Título</label>
+                </div>
+                <div class="register-input-group">
+                    <input class="professor-modal-input" type="number" name="graduationYear" id="graduationYear">
+                    <label for="graduationYear">Año de Recibimiento</label>
+                </div>
+                <div class="register-input-group">
+                    <input class="professor-modal-input" type="text" name="institution" id="institution">
+                    <label for="institution">Institución</label>
+                </div>
+                <div class="register-input-group">
+                    <label for="typeOfDegree">Grado Académico:</label>
+                    <select name="typeOfDegree" id="typeOfDegree">
+                        <option value="Tecnico">Tecnico</option>
+                        <option value="Pregrado">Pregrado</option>
+                        <option value="Especializacion">Especializacion</option>
+                        <option value="Maestria">Maestria</option>
+                        <option value="Doctorado">Doctorado</option>
+                        <option value="Post-Doctorado">Post-Doctorado</option>
+                    </select>
+                </div>
+                <div class="modal-buttons-container">
+                    <button id="modalCancelBtn">Cancelar</button>
+                    <button form="professorModalForm">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
 
 
     <script type="module" src="app.js"></script>
-    <script>
-        feather.replace();
-    </script>
 </body>
 
 </html>
