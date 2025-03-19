@@ -795,6 +795,11 @@ input:-webkit-autofill {
     width: 90%;
 }
 
+.pr-register-form1 .pr-register-input-group input {
+    width: 100%;
+    padding: 0 10px;
+}
+
 .pr-register-form1 .pr-register-input-group:nth-child(8) label,
 .pr-register-form1 .pr-register-input-group:nth-child(9) label {
     position: static;
@@ -875,6 +880,10 @@ input:-webkit-autofill {
 .degree-regsiter-body {
     height: 100%;
     overflow: auto;
+}
+
+.degree-container {
+    height: 100%;
 }
 
 .degree-item {
@@ -1001,6 +1010,11 @@ input:-webkit-autofill {
     color: #000;
 }
 
+#graduationYear:not(:valid) ~ label {
+    color: red;
+    background-color: #fff !important;
+}
+
 .modal-buttons-container {
     /* border: solid; */
     height: 10%;
@@ -1030,6 +1044,15 @@ input:-webkit-autofill {
 
 .modal-buttons-container button:nth-child(1) {
     background-color: #DA1515;
+}
+
+.no-data-degree {
+    height: 100%;
+    font-size: 20px;
+    color: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 

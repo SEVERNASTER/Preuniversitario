@@ -34,6 +34,8 @@ const professorModal = document.getElementById('professorRegisterModal');
 const modalCancelBtn = document.getElementById('modalCancelBtn');
 const professorModalForm = document.getElementById('professorModalForm');
 const degreeItemsContainer = document.getElementById('degreeItemsContainer');
+const noDataDegree = document.getElementById('noDataDegree');
+const prModalGraduationYear = document.getElementById('graduationYear');
 
 
 // const logoutBtn = document.getElementById('logout');
@@ -285,25 +287,43 @@ function closeProfessorModalForm() {
 
 modalCancelBtn.addEventListener('click', (e) => {
     e.preventDefault();
+    closeProfessorModalForm();
 });
 
 professorModalForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
+    noDataDegree.style.display = 'none';
+
     const formData = new FormData(e.target);
     const degreeData = Object.fromEntries(formData.entries());
 
-    console.log(degreeData.degreeName);
-    degreeItemsContainer.innerHTML += `
-        <div class="degree-item">
-            <div class="degree-content">
-                <h4>${degreeData.degreeName}</h4>
-                <p>${degreeData.typeOfDegree} - ${degreeData.institution} (${degreeData.graduationYear})</p>
-            </div>
-            <button class="degree-action-button">Eliminar</button>
-            </div>
+    const uid = generateUniqueId();
+
+    const newDegreeItem = document.createElement('div');
+    newDegreeItem.id = uid;
+    newDegreeItem.classList.add('degree-item');
+
+    newDegreeItem.innerHTML =  `
+        <div class="degree-content">
+            <h4>${degreeData.degreeName}</h4>
+            <p>${degreeData.typeOfDegree} - ${degreeData.institution} (${degreeData.graduationYear})</p>
+        </div>
+        <button type="button" class="degree-action-button">Eliminar</button>
     `;
+
+    newDegreeItem.querySelector('.degree-action-button')
+    .addEventListener('click', () => newDegreeItem.remove());
+
+    degreeItemsContainer.appendChild(newDegreeItem);
+
     closeProfessorModalForm();
 
-})
+});
+
+function generateUniqueId() {
+    return crypto.randomUUID()
+}
+
+prModalGraduationYear.setAttribute('max', new Date().getFullYear())
 
