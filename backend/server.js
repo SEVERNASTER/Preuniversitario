@@ -158,9 +158,6 @@ app.post('/register-student', authMiddleware, async (req, res) => {
             .select('id')
             .single();
 
-        console.log(personData);
-
-
         if (personError) throw personError;
         if (!personData) console.log('Person data is null: ' + personData);
 
@@ -278,10 +275,8 @@ app.post('/register-professor', authMiddleware, async (req, res) => {
         const { data: degreeData, error: degreeError } = await supabase
         .from('degree')
         .insert(degrees);
-        
-        console.log(degreeError);
-        if(degreeError) throw degreeError;
 
+        if(degreeError) throw degreeError;
 
         res.status(201).json({ message: 'Succesfull register' });
 

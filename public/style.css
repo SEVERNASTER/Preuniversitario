@@ -284,7 +284,7 @@ input:-webkit-autofill {
 .login-page {
     position: absolute;
     z-index: 50;
-    /* transform: translateY(-100%); */
+    transform: translateY(-100%);
     /* display: none; */
 }
 
@@ -721,6 +721,7 @@ input:-webkit-autofill {
 }
 
 .register-button {
+    position: relative;
     height: 40px;
     width: 15%;
     font-size: 20px;
@@ -733,9 +734,36 @@ input:-webkit-autofill {
     transform: scale(1);
 }
 
+.register-button::before {
+    display: none;
+    content: '';
+    position: absolute;
+    height: 30px;
+    width: 30px;
+    left: 0;
+    top: 0;
+    margin: auto;
+    bottom: 0;
+    right: 0;
+    border-top: solid 5px #fff;
+    border-radius: 50%;
+    animation: loadingButton 1s ease-out infinite;
+}
+
+.register-button.active-loading::before {
+    display: block;
+}
+
+@keyframes loadingButton {
+    100%{
+        transform: rotate(360deg);
+    }
+}
+
 .register-button:hover {
     border: solid 3px #000;
     transform: scale(1.08);
+
 }
 
 .register-button:active {
@@ -1010,10 +1038,13 @@ input:-webkit-autofill {
     color: #000;
 }
 
-#graduationYear:not(:valid) ~ label {
+#graduationYear:not(:valid) ~ label,
+#prYearsOfExp:not(:valid) ~ label,
+#prAge:not(:valid) ~ label {
     color: red;
     background-color: #fff !important;
 }
+
 
 .modal-buttons-container {
     /* border: solid; */
@@ -1049,7 +1080,7 @@ input:-webkit-autofill {
 .no-data-degree {
     height: 100%;
     font-size: 20px;
-    color: red;
+    color: #E00F3D;
     display: flex;
     justify-content: center;
     align-items: center;

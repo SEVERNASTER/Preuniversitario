@@ -37,6 +37,7 @@ const degreeItemsContainer = document.getElementById('degreeItemsContainer');
 const noDataDegree = document.getElementById('noDataDegree');
 const prModalGraduationYear = document.getElementById('graduationYear');
 const prForm = document.getElementById('prForm');
+const prRegiserBtn = document.getElementById('prRegisterButton');
 let degreeItemsArray = [];
 
 
@@ -230,7 +231,7 @@ srForm.addEventListener('submit', async (e) => {
 
 });
 
-// para la visualizacion de materias en el overview panel
+// para la visualizacion de personas en el overview panel
 
 async function reloadDataTable() {
     const res = await fetch('/get-all-persons');
@@ -345,6 +346,8 @@ prModalGraduationYear.setAttribute('max', new Date().getFullYear())
 
 prForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    prRegiserBtn.disabled = true;
+    changeToLoadingButton(prRegiserBtn);
     const formData = new FormData(e.target);
     const professorData = Object.fromEntries(formData.entries());
     
@@ -368,13 +371,36 @@ prForm.addEventListener('submit', async (e) => {
 
         const result = await response.json();
         console.log('Registro exitoso:', result);
-        
+
+
+        deployCustomizedAlert(checkIcon, 'Docente registrado');
+        clearPrForm();
 
     } catch (error) {
         console.log(error);
     }
     
+    changeToRegisterButton(prRegiserBtn);
+    prRegiserBtn.disabled = false;
 })
+
+function clearPrForm(){
+    [...prForm.querySelectorAll('.pr-input')].forEach(input => input.value = '');
+    noDataDegree.style.display = 'flex';
+    degreeItemsContainer.innerHTML = '';
+    degreeItemsContainer.appendChild(noDataDegree);
+    degreeItemsArray = [];
+}
+
+function changeToLoadingButton(button){
+    button.textContent = '';
+    button.classList.add('active-loading');
+}
+
+function changeToRegisterButton(button){
+    button.textContent = 'Registrar';
+    button.classList.remove('active-loading');
+}
 
 // function getDegreeItems(){
 //     const degreeItems = [...document.querySelectorAll('.degree-item')].map(item => ({

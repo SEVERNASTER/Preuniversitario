@@ -9,7 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;700&display=swap" rel="stylesheet">
     <!-- font awesome -->
     <script src="https://kit.fontawesome.com/79295292b4.js" crossorigin="anonymous"></script>
-
+    <!-- Iconos de data feather para las ventanas de alerta -->
+    <script src="https://unpkg.com/feather-icons"></script> 
     <title>Preuniversitario</title>
 </head>
 
@@ -315,32 +316,35 @@
                     <form id="prForm" class="pr-register-form">
                         <div class="pr-register-form1">
                             <div class="register-input-group pr-register-input-group">
-                                <input type="text" name="prName" id="prName" value="Juan" required>
+                                <input class="pr-input" type="text" name="prName" id="prName" value="Juan" required>
                                 <label for="prName">Nombre</label>
                             </div>
                             <div class="register-input-group pr-register-input-group">
-                                <input type="text" name="prLastName" id="prLastName" value="Pérez" required>
+                                <input class="pr-input" type="text" name="prLastName" id="prLastName" value="Pérez"
+                                    required>
                                 <label for="prLastName">Apellido</label>
                             </div>
                             <div class="register-input-group pr-register-input-group">
-                                <input type="text" name="prAge" id="prAge" value="20" required>
+                                <input class="pr-input" type="number" min="20" max="80" name="prAge" id="prAge" value="20" required>
                                 <label for="prAge">Edad</label>
                             </div>
                             <div class="register-input-group pr-register-input-group">
-                                <input type="text" name="prCi" id="prCi" value="123" required>
+                                <input class="pr-input" type="text" name="prCi" id="prCi" value="123" required>
                                 <label for="prCi">Nro. de Carnet</label>
                             </div>
                             <div class="register-input-group pr-register-input-group">
-                                <input type="text" name="prPhone" id="prPhone" value="987654321" required>
+                                <input class="pr-input" type="text" name="prPhone" id="prPhone" value="987654321"
+                                    required>
                                 <label for="prPhone">Celular</label>
                             </div>
                             <div class="register-input-group pr-register-input-group">
-                                <input type="text" name="prEmail" id="prEmail" value="juan.perez@example.com" required>
+                                <input class="pr-input" type="text" name="prEmail" id="prEmail"
+                                    value="juan.perez@example.com" required>
                                 <label for="prEmail">E-mail</label>
                             </div>
                             <div class="register-input-group pr-register-input-group">
-                                <input type="number" name="prYearsOfExp" id="prYearsOfExp" value="3"
-                                required>
+                                <input class="pr-input" type="number" min="0" max="50" name="prYearsOfExp" id="prYearsOfExp" value="3"
+                                    required>
                                 <label for="prYearsOfExp">Años de Experiencia</label>
                             </div>
                             <div class="register-input-group pr-register-input-group">
@@ -350,7 +354,7 @@
                                     <option value="female">Femenino</option>
                                 </select>
                             </div>
-                            
+
                             <div class="register-input-group pr-register-input-group">
                                 <label for="prContractType">Tipo de Contrato:</label>
                                 <select id="prContractType" name="prContractType">
@@ -362,7 +366,7 @@
                         </div>
 
                         <div class="pr-register-form2">
-                            
+
                             <!-- db por degree box -->
                             <div class="degree-register-box">
                                 <div class="degree-register-header">
@@ -381,12 +385,12 @@
                         </div>
                     </form>
                 </div>
-                
+
                 <div class="register-button-container">
-                    <button type="submit" form="prForm" class="register-button" id="prButton">Registrar</button>
+                    <button type="submit" form="prForm" class="register-button" id="prRegisterButton">Registrar</button>
                 </div>
             </section>
-            
+
 
 
             <!-- para el registro de materia -->
@@ -406,7 +410,8 @@
                     <label for="degreeName">Nombre del Título</label>
                 </div>
                 <div class="register-input-group">
-                    <input required class="professor-modal-input" type="number" min="1900" max="2025" name="graduationYear" id="graduationYear">
+                    <input required class="professor-modal-input" type="number" min="1900" max="2025"
+                        name="graduationYear" id="graduationYear">
                     <label for="graduationYear">Año de Recibimiento</label>
                 </div>
                 <div class="register-input-group">
@@ -434,7 +439,11 @@
 
 
 
+    <script>
+        feather.replace();
+    </script>
     <script type="module" src="app.js"></script>
+
 </body>
 
 </html>
