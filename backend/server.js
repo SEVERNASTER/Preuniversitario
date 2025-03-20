@@ -134,6 +134,7 @@ app.post('/admin', async (req, res) => {
     }
 });
 
+// para registrar un nuevo estudiante
 app.post('/register-student', authMiddleware, async (req, res) => {
     try {
 
@@ -158,10 +159,10 @@ app.post('/register-student', authMiddleware, async (req, res) => {
             .single();
 
         console.log(personData);
-        
+
 
         if (personError) throw personError;
-        if(!personData) console.log('Person data is null: ' + personData);
+        if (!personData) console.log('Person data is null: ' + personData);
 
         const { data: studentData, error: studentError } = await supabase
             .from('student')
@@ -177,7 +178,7 @@ app.post('/register-student', authMiddleware, async (req, res) => {
 
         res.status(201).json({ message: "Estudiante registrado con éxito!" });
         console.log(personData, studentData);
-        
+
     } catch (error) {
         res.status(500).json({ message: "Error al registrar estudiante", error: error.message });
     }
@@ -191,15 +192,107 @@ app.get('/get-all-persons', async (req, res) => {
         const { data, error } = await supabase
             .from('person')
             .select(`*`)
-            // .limit(15);
-    
-        if(!data) console.log('Data is null: ' + data);
-        if(error) console.log(error);
+        // .limit(15);
+
+        if (!data) console.log('Data is null: ' + data);
+        if (error) console.log(error);
 
         res.status(200).json(data);
     } catch (error) {
         res.status(500).json(error);
     }
-    
+
 })
+
+// para registrar un docente
+/** Para insertar en tablas que tengan relaciones o llaves foraneas de otras tablas es importante 
+ * habilitar 2 policies, INSERT para usuarios autendicados obviamente porque van a hacer una 
+ * insercion en la tabla y la otra SELECT (enable READ acces for all users) porque se hace un 
+ * select del id al momento de hacer la insercion del nuevo registro para luego usarlo como llave
+ * foranea en otra tabla
+*/
+app.post('/register-professor', authMiddleware, async (req, res) => {
+    try {
+        const { professorData: professorDataSet, degreeItemsArray } = req.body;
+
+        const {
+            prAge,
+            prCi,
+            prContractType,
+            prEmail,
+            prGender,
+            prLastName,
+            prName,
+            prPhone,
+            prYearsOfExp
+        } = professorDataSet;
+
+
+        // para insertar en persona
+
+        const { data: personData, error: personError } = await supabase
+            .from('person')
+            .insert([{
+                name: prName,
+                last_name: prLastName,
+                age: prAge,
+                ci: prCi,
+                phone: prPhone,
+                email: prEmail,
+                type: 'professor',
+                state: 'active',
+                gender: prGender
+            }])
+            .select('id')
+            .single();
+
+
+        if (personError) throw new Error(personError.message);
+        if (!personData) throw new Error('person data is null' + personData);
+
+        const { data: professorData, error: professorError } = await supabase
+            .from('professor')
+            .insert([{
+                experience_years: prYearsOfExp,
+                contract_type: prContractType,
+                id_person: personData.id
+            }])
+            .select('id')
+            .single();
+
+        console.log(professorData, professorError);
+
+        if (professorError) throw professorError;
+        if (!professorData) console.log('professor data is null' + professorData);
+
+        // para los titulos
+
+        const degrees = degreeItemsArray.map(item => ({
+            name: item.name,
+            type_of_degree: item.typeOfDegree,
+            institution: item.institution,
+            graduation_year: item.graduationYear,
+            id_professor: professorData.id
+        }));
+
+        const { data: degreeData, error: degreeError } = await supabase
+        .from('degree')
+        .insert(degrees);
+        
+        console.log(degreeError);
+        if(degreeError) throw degreeError;
+
+
+        res.status(201).json({ message: 'Succesfull register' });
+
+
+    } catch (error) {
+
+        console.log(error);
+        res.status(500).json({ message: 'Error al registrar el docente', error: error.message });
+
+    }
+})
+
+// borrar todos los campos cuando registre un nuevo docente y estudiante
 

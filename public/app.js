@@ -36,6 +36,8 @@ const professorModalForm = document.getElementById('professorModalForm');
 const degreeItemsContainer = document.getElementById('degreeItemsContainer');
 const noDataDegree = document.getElementById('noDataDegree');
 const prModalGraduationYear = document.getElementById('graduationYear');
+const prForm = document.getElementById('prForm');
+let degreeItemsArray = [];
 
 
 // const logoutBtn = document.getElementById('logout');
@@ -235,8 +237,6 @@ async function reloadDataTable() {
     const data = await res.json();
 
     overviewTable.innerHTML = '';
-
-    console.log(data);
     data.forEach(personData => {
         const newRow = document.createElement('tr');
         const createdAt = new Date(personData.created_at);
@@ -258,8 +258,6 @@ function translateTypeOfPerson(typeOfPerson) {
 function translateState(state) {
     return state === 'active' ? 'Activo' : 'Inactivo';
 }
-
-reloadDataTable();
 
 
 // para la ventana modal
@@ -304,6 +302,16 @@ professorModalForm.addEventListener('submit', (e) => {
     newDegreeItem.id = uid;
     newDegreeItem.classList.add('degree-item');
 
+    // agregamos al arreglo
+    degreeItemsArray.push({
+        id: uid,
+        name: degreeData.degreeName,
+        typeOfDegree: degreeData.typeOfDegree,
+        institution: degreeData.institution,
+        graduationYear: degreeData.graduationYear
+    });
+
+    // creamos el nuevo elemento
     newDegreeItem.innerHTML =  `
         <div class="degree-content">
             <h4>${degreeData.degreeName}</h4>
@@ -313,17 +321,65 @@ professorModalForm.addEventListener('submit', (e) => {
     `;
 
     newDegreeItem.querySelector('.degree-action-button')
-    .addEventListener('click', () => newDegreeItem.remove());
+    .addEventListener('click', () => removeDegreeItem(uid, newDegreeItem));
 
     degreeItemsContainer.appendChild(newDegreeItem);
 
     closeProfessorModalForm();
-
 });
+
+function removeDegreeItem(uid, newDegreeItem){
+    const index = degreeItemsArray.findIndex(item => item.id === uid);
+    degreeItemsArray.splice(index, 1);
+    newDegreeItem.remove();
+    
+}
 
 function generateUniqueId() {
     return crypto.randomUUID()
 }
 
 prModalGraduationYear.setAttribute('max', new Date().getFullYear())
+
+// para recuperar los datos del professor register y enviarlos al backend
+
+prForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const professorData = Object.fromEntries(formData.entries());
+    
+    try {
+        const response = await fetch('/register-professor', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },  
+            body: JSON.stringify({
+                professorData,
+                degreeItemsArray
+            }),
+            credentials: 'include'
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Error en la petición');
+        }
+
+        const result = await response.json();
+        console.log('Registro exitoso:', result);
+        
+
+    } catch (error) {
+        console.log(error);
+    }
+    
+})
+
+// function getDegreeItems(){
+//     const degreeItems = [...document.querySelectorAll('.degree-item')].map(item => ({
+//         name: 
+//     }));
+// }
+
 
