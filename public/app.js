@@ -39,6 +39,7 @@ const prModalGraduationYear = document.getElementById('graduationYear');
 const prForm = document.getElementById('prForm');
 const prRegiserBtn = document.getElementById('prRegisterButton');
 const srRegisterBtn = document.getElementById('srRegisterButton');
+const overviewOrdering = document.getElementById('overviewOrdering');
 let degreeItemsArray = [];
 
 
@@ -119,7 +120,7 @@ async function registerUser(email, name, password) {
     }
 }
 
-// para logarse
+// para el login
 
 loginBtn.addEventListener('click', async (e) => {
     e.preventDefault();
@@ -143,9 +144,9 @@ async function loginUser(email, password) {
     if (response.ok) {
         loginPage.style.transform = 'translateY(-100%)';
         deployCustomizedAlert(checkIcon, `${result.message}`);
+        reloadDataTable('desc');
     } else {
         console.log(result.message);
-        alert("algo salio mal")
     }
 }
 
@@ -234,24 +235,31 @@ srForm.addEventListener('submit', async (e) => {
 
 // para la visualizacion de personas en el overview panel
 
-async function reloadDataTable() {
-    const res = await fetch('/get-all-persons');
+// ver en que orden por defecto le ponemos los datos de la tabla
+async function reloadDataTable(orderBy) {
+    overviewTable.classList.add('active-loading');
+    const res = await fetch(`/get-all-persons?orderBy=${orderBy}`);
     const data = await res.json();
 
     overviewTable.innerHTML = '';
     data.forEach(personData => {
         const newRow = document.createElement('tr');
         const createdAt = new Date(personData.created_at);
+        const formattedDate = createdAt.toLocaleDateString("es-ES");
+
         newRow.innerHTML = `
             <td>${personData.name} ${personData.last_name}</td>
             <td>${personData.email}</td>
             <td>${translateTypeOfPerson(personData.type)}</td>
-            <td>${createdAt.toLocaleDateString()}</td>
+            <td>${formattedDate}</td>
             <td>${translateState(personData.state)}</td>
         `;
         overviewTable.appendChild(newRow);
     });
+    overviewTable.classList.remove('active-loading');
+
 }
+
 
 function translateTypeOfPerson(typeOfPerson) {
     return typeOfPerson === 'student' ? 'Estudiante' : 'Docente';
@@ -260,6 +268,9 @@ function translateTypeOfPerson(typeOfPerson) {
 function translateState(state) {
     return state === 'active' ? 'Activo' : 'Inactivo';
 }
+
+// para el select de ordenamineto del overview
+overviewOrdering.addEventListener('change', () => reloadDataTable(overviewOrdering.value));
 
 
 // para la ventana modal

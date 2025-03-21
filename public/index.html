@@ -154,8 +154,15 @@
                 <div class="overview-header">
                     <h3>Personas de la Institución</h3>
                     <div class="filter-container">
+                        <h3>Ordenar por:</h3>
+                        <select name="options" id="overviewOrdering" class="overview-options">
+                            <option value="desc">Más reciente</option>
+                            <option value="asc">Más antiguo</option>
+                        </select>
+                    </div>
+                    <div class="filter-container">
                         <h3>Mostrar por:</h3>
-                        <select name="options" id="overviewOptions" class="overview-options">
+                        <select name="options" id="overviewFiltering" class="overview-options">
                             <option value="general">General</option>
                             <option value="professor">Docentes</option>
                             <option value="student">Estudiantes</option>
@@ -175,7 +182,7 @@
                                 <th>Estado</th>
                             </tr>
                         </thead>
-                        <tbody id="overviewTableBody">
+                        <tbody id="overviewTableBody" class="overview-table-body">
                             <!-- los datos aqui se agregaran dinamicamente desde el js -->
                         </tbody>
                     </table>

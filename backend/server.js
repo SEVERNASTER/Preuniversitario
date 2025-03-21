@@ -184,12 +184,15 @@ app.post('/register-student', authMiddleware, async (req, res) => {
 // para devolver todas las personas de la institucion
 
 app.get('/get-all-persons', async (req, res) => {
+    const { orderBy } = req.query;
+    const isAscending = orderBy === 'asc' ? true : false;
 
     try {
+
         const { data, error } = await supabase
             .from('person')
             .select(`*`)
-        // .limit(15);
+            .order('created_at', { ascending: isAscending });
 
         if (!data) console.log('Data is null: ' + data);
         if (error) console.log(error);

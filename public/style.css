@@ -492,7 +492,7 @@ input:-webkit-autofill {
 
 .filter-container {
     height: 100%;
-    width: 25%;
+    width: 30%;
     display: grid;
     grid-template-columns: 50% 50%;
     /* gap: 20px; */
@@ -557,10 +557,41 @@ input:-webkit-autofill {
 }
 
 .overview tbody {
+    position: relative;
     overflow: auto;
     height: 100%;
     border-radius: 10px;
     border: solid 2px #000;
+}
+
+.overview-table-body::before {
+    display: none;
+    content: '';
+    position: absolute;
+    background-color: rgb(142, 7, 91, .5);
+    height: 100%;
+    width: 100%;
+}
+
+.overview-table-body::after {
+    display: none;
+    content: '';
+    position: absolute;
+    height: 60px;
+    width: 60px;
+    border-top: solid 7px #fff;
+    border-radius: 50%;
+    margin: auto;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    top: 0;
+    animation: loadingButton 1s ease-out infinite;
+}
+
+.overview-table-body.active-loading::before,
+.overview-table-body.active-loading::after {
+    display: block;
 }
 
 .overview thead tr {
@@ -605,12 +636,8 @@ input:-webkit-autofill {
 
 /* para el regsitro de estudiante */
 
-.overview {
-    display: none;
-}
-
 .student-register {
-    display: grid !important;
+    /* display: grid !important; */
     grid-template-rows: 20% 60% 20%;
     height: 100%;
     width: 100%;
