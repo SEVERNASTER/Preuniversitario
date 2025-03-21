@@ -284,7 +284,7 @@ input:-webkit-autofill {
 .login-page {
     position: absolute;
     z-index: 50;
-    transform: translateY(-100%);
+    /* transform: translateY(-100%); */
     /* display: none; */
 }
 
@@ -605,8 +605,12 @@ input:-webkit-autofill {
 
 /* para el regsitro de estudiante */
 
+.overview {
+    display: none;
+}
+
 .student-register {
-    /* display: grid !important; */
+    display: grid !important;
     grid-template-rows: 20% 60% 20%;
     height: 100%;
     width: 100%;
@@ -706,6 +710,14 @@ input:-webkit-autofill {
     height: 100%;
     font-size: 18px;
     text-align: center;
+    background-color: #AF0B4B;
+    color: #fff;
+    border-radius: 10px;
+}
+
+.register-form .register-input-group:nth-child(7) select option {
+    background-color: #fff;
+    color: #000;
 }
 
 .register-form .register-input-group:nth-child(9) select {
@@ -783,11 +795,11 @@ input:-webkit-autofill {
 /* para el panel de registro de docente */
 
 .overview {
-    display: none;
+    /* display: none; */
 }
 
 .professor-register {
-    display: grid !important;
+    /* display: grid !important; */
     grid-template-rows: 20% 60% 20%;
     height: 100%;
     width: 100%;

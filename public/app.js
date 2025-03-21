@@ -38,6 +38,7 @@ const noDataDegree = document.getElementById('noDataDegree');
 const prModalGraduationYear = document.getElementById('graduationYear');
 const prForm = document.getElementById('prForm');
 const prRegiserBtn = document.getElementById('prRegisterButton');
+const srRegisterBtn = document.getElementById('srRegisterButton');
 let degreeItemsArray = [];
 
 
@@ -196,11 +197,12 @@ function switchPanelViewTo(panel) {
 }
 
 
-// para el boton de registro de estudiante
+// para registrar un nuevo estudiante
 
 srForm.addEventListener('submit', async (e) => {
-    // console.log(hola);
     e.preventDefault();
+
+    changeToLoadingButton(srRegisterBtn);
 
     const formData = new FormData(e.target);
     const studentData = Object.fromEntries(formData.entries());
@@ -215,20 +217,19 @@ srForm.addEventListener('submit', async (e) => {
             credentials: 'include'
         });
 
-        const result = await response.json();
-        console.log("Respuesta del servidor:", result);
-
-        if (response.ok) {
-            console.log('sucess');
-
-        } else {
-            console.log('failure');
-
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Error en la petición');
         }
+
+        deployCustomizedAlert(checkIcon, 'Estudiante regsitrado');
+        [...document.querySelectorAll('.sr-input')].forEach(input => input.value = '');
+
     } catch (error) {
         console.error(error);
     }
 
+    changeToRegisterButton(srRegisterBtn);
 });
 
 // para la visualizacion de personas en el overview panel

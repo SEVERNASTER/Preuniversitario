@@ -240,32 +240,32 @@
                     </form> -->
                     <form id="srForm" class="register-form">
                         <div class="register-input-group">
-                            <input type="text" name="srName" id="srName" value="Juan" required>
+                            <input class="sr-input" type="text" name="srName" id="srName" value="Juan" required>
                             <label for="srName">Nombre</label>
                         </div>
 
                         <div class="register-input-group">
-                            <input type="text" name="srLastName" id="srLastName" value="Pérez" required>
+                            <input class="sr-input" type="text" name="srLastName" id="srLastName" value="Pérez" required>
                             <label for="srLastName">Apellido</label>
                         </div>
 
                         <div class="register-input-group">
-                            <input type="text" name="srAge" id="srAge" value="20" required>
+                            <input class="sr-input" type="text" name="srAge" id="srAge" value="20" required>
                             <label for="srAge">Edad</label>
                         </div>
 
                         <div class="register-input-group">
-                            <input type="text" name="srCi" id="srCi" value="123" required>
+                            <input class="sr-input" type="text" name="srCi" id="srCi" value="123" required>
                             <label for="srCi">Nro. de Carnet</label>
                         </div>
 
                         <div class="register-input-group">
-                            <input type="text" name="srPhone" id="srPhone" value="987654321" required>
+                            <input class="sr-input" type="text" name="srPhone" id="srPhone" value="987654321" required>
                             <label for="srPhone">Celular</label>
                         </div>
 
                         <div class="register-input-group">
-                            <input type="text" name="srEmail" id="srEmail" value="juan.perez@example.com" required>
+                            <input class="sr-input" type="text" name="srEmail" id="srEmail" value="juan.perez@example.com" required>
                             <label for="srEmail">E-mail</label>
                         </div>
 
@@ -278,31 +278,33 @@
                         </div>
 
                         <div class="register-input-group">
-                            <input type="text" name="srSchool" id="srSchool" value="Unidad Educativa Los Pinos"
+                            <input class="sr-input" type="text" name="srDesireMajor" id="srDesireMajor" value="Ingeniería en Sistemas"
+                                required>
+                            <label for="srDesireMajor">Carrera</label>
+                        </div>
+
+                        <div class="register-input-group">
+                            <input class="sr-input" type="text" name="srSchool" id="srSchool" value="Unidad Educativa Los Pinos"
                                 required>
                             <label for="srSchool">Unidad Educativa</label>
                         </div>
 
                         <div class="register-input-group">
-                            <input type="text" name="srGuardian" id="srGuardian" value="María Pérez" required>
+                            <input class="sr-input" type="text" name="srGuardian" id="srGuardian" value="María Pérez" required>
                             <label for="srGuardian">Tutor</label>
                         </div>
 
                         <div class="register-input-group">
-                            <input type="text" name="srGuardianPhone" id="srGuardianPhone" value="987654322" required>
+                            <input class="sr-input" type="text" name="srGuardianPhone" id="srGuardianPhone" value="987654322" required>
                             <label for="srGuardianPhone">Telefono del tutor</label>
                         </div>
-                        <div class="register-input-group">
-                            <input type="text" name="srDesireMajor" id="srDesireMajor" value="Ingeniería en Sistemas"
-                                required>
-                            <label for="srDesireMajor">Carrera</label>
-                        </div>
+                        
                     </form>
 
 
                 </div>
                 <div class="register-button-container">
-                    <button type="submit" form="srForm" class="register-button" id="srButton">Registrar</button>
+                    <button type="submit" form="srForm" class="register-button" id="srRegisterButton">Registrar</button>
                 </div>
             </section>
 
@@ -316,34 +318,34 @@
                     <form id="prForm" class="pr-register-form">
                         <div class="pr-register-form1">
                             <div class="register-input-group pr-register-input-group">
-                                <input class="pr-input" type="text" name="prName" id="prName" value="Juan" required>
+                                <input class="pr-input" type="text" name="prName" id="prName" required>
                                 <label for="prName">Nombre</label>
                             </div>
                             <div class="register-input-group pr-register-input-group">
-                                <input class="pr-input" type="text" name="prLastName" id="prLastName" value="Pérez"
+                                <input class="pr-input" type="text" name="prLastName" id="prLastName" 
                                     required>
                                 <label for="prLastName">Apellido</label>
                             </div>
                             <div class="register-input-group pr-register-input-group">
-                                <input class="pr-input" type="number" min="20" max="80" name="prAge" id="prAge" value="20" required>
+                                <input class="pr-input" type="number" min="20" max="80" name="prAge" id="prAge"  required>
                                 <label for="prAge">Edad</label>
                             </div>
                             <div class="register-input-group pr-register-input-group">
-                                <input class="pr-input" type="text" name="prCi" id="prCi" value="123" required>
+                                <input class="pr-input" type="text" name="prCi" id="prCi" required>
                                 <label for="prCi">Nro. de Carnet</label>
                             </div>
                             <div class="register-input-group pr-register-input-group">
-                                <input class="pr-input" type="text" name="prPhone" id="prPhone" value="987654321"
+                                <input class="pr-input" type="text" name="prPhone" id="prPhone"
                                     required>
                                 <label for="prPhone">Celular</label>
                             </div>
                             <div class="register-input-group pr-register-input-group">
                                 <input class="pr-input" type="text" name="prEmail" id="prEmail"
-                                    value="juan.perez@example.com" required>
+                                    required>
                                 <label for="prEmail">E-mail</label>
                             </div>
                             <div class="register-input-group pr-register-input-group">
-                                <input class="pr-input" type="number" min="0" max="50" name="prYearsOfExp" id="prYearsOfExp" value="3"
+                                <input class="pr-input" type="number" min="0" max="50" name="prYearsOfExp" id="prYearsOfExp" 
                                     required>
                                 <label for="prYearsOfExp">Años de Experiencia</label>
                             </div>
