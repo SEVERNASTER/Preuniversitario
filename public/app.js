@@ -42,6 +42,9 @@ const srRegisterBtn = document.getElementById('srRegisterButton');
 const overviewOrdering = document.getElementById('overviewOrdering');
 const subjectTableBody = document.getElementById('subjectTableBody');
 const selectedProfessorName = document.getElementById('selectedProfessorName');
+const subjectSearchBar = document.getElementById('subjectSearchBar');
+const searchFiltering = document.getElementById('searchFiltering');
+
 let degreeItemsArray = [];
 
 
@@ -470,6 +473,25 @@ function deselectAllRowsExcept(selectedRow) {
         if (row !== selectedRow) row.classList.remove('selected-row');
     });
 }
+
+// para el buscador en tiempo real del panel de registro materia
+
+subjectSearchBar.addEventListener('input', async (e) => {
+    const content = e.target.value;
+    const column = searchFiltering.value;
+
+    console.log(column, content);
+    
+    
+    const response = await fetch(`/get-professor?column=${column}&&value=${content}`);
+    const result = await response.json()
+
+    if(!response.ok) throw new Error(result.error);
+
+    console.log(result);
+    
+    
+})
 
 
 

@@ -316,3 +316,23 @@ app.get('/get-all-professors', authMiddleware, async (req, res) => {
 
 })
 
+// para obtener docentes que cumplan cierta condicion
+
+app.get('/get-professor', async (req, res) => {
+    try {
+        const { column , value } = req.query;
+        const { data, error } = await supabase
+        .from('person')
+        .select('*')
+        .eq('type', 'professor')
+        .or(`${column}.ilike.%${value}%`)
+
+        if(data.length === 0) return res.status(404).json( { message: 'No se encontró ningún docente' })
+        if(error) throw error;
+
+        res.status(200).json(data);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+})
+
