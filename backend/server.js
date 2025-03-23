@@ -183,7 +183,7 @@ app.post('/register-student', authMiddleware, async (req, res) => {
 
 // para devolver todas las personas de la institucion
 
-app.get('/get-all-persons', async (req, res) => {
+app.get('/get-all-people', async (req, res) => {
     const { orderBy } = req.query;
     const isAscending = orderBy === 'asc' ? true : false;
 
@@ -276,10 +276,10 @@ app.post('/register-professor', authMiddleware, async (req, res) => {
         }));
 
         const { data: degreeData, error: degreeError } = await supabase
-        .from('degree')
-        .insert(degrees);
+            .from('degree')
+            .insert(degrees);
 
-        if(degreeError) throw degreeError;
+        if (degreeError) throw degreeError;
 
         res.status(201).json({ message: 'Succesfull register' });
 
@@ -292,5 +292,27 @@ app.post('/register-professor', authMiddleware, async (req, res) => {
     }
 })
 
-// borrar todos los campos cuando registre un nuevo docente y estudiante
+// para obtener docentes solamente
+
+/** para hacer cualquier operacion sobre la base de datos, siempre y cuando la tabla tenga policies.
+ * se debe estar autenticado primero
+*/
+
+app.get('/get-all-professors', authMiddleware, async (req, res) => {
+    try {
+        const { data, error } = await supabase
+            .from('person')
+            .select('*')
+            .eq('type', 'professor');
+
+        if (!data) return res.status(404).json({ message: 'No se encontraron docentes' });
+        if (error) throw error;//si esta asi falla pero si le ponemos console log da nomrmal
+
+        res.status(200).json(data);
+
+    } catch (error) {
+        res.status(500).json({ message: 'Error al obtener los docentes', error: error.message });
+    }
+
+})
 

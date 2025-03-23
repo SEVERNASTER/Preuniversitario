@@ -462,9 +462,9 @@
                             <div class="search-bar-icon">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </div>
-    
-                            <input type="text" name="professorName" id="subjectSearchBar" class="subject-name-input">
-    
+
+                            <input placeholder="Buscar docente" type="text" name="professorName" id="subjectSearchBar" class="subject-name-input">
+
                             <div class="subject-filtering">
                                 <label for="searchFiltering">Buscar por:</label>
                                 <select name="searchFilter" id="searchFiltering">
@@ -481,7 +481,7 @@
 
 
                 <div class="subject-table-container">
-                    <table class="subject-table">
+                    <table class="subject-table" id="subjectTable">
                         <thead>
                             <tr>
                                 <th>Nombres/s</th>
@@ -491,99 +491,17 @@
                                 <th>Celular</th>
                             </tr>
                         </thead>
-                        <tbody class="subject-table-body">
-                            <tr>
-                                <td>Ernesto</td>
-                                <td>De la Cruz</td>
-                                <td>ernesto@gmail.com</td>
-                                <td>25154956</td>
-                                <td>62184758</td>
-                            </tr>
-                            <tr>
-                                <td>Ernesto</td>
-                                <td>De la Cruz</td>
-                                <td>ernesto@gmail.com</td>
-                                <td>25154956</td>
-                                <td>62184758</td>
-                            </tr>
-                            <tr>
-                                <td>Ernesto</td>
-                                <td>De la Cruz</td>
-                                <td>ernesto@gmail.com</td>
-                                <td>25154956</td>
-                                <td>62184758</td>
-                            </tr>
-                            <tr>
-                                <td>Ernesto</td>
-                                <td>De la Cruz</td>
-                                <td>ernesto@gmail.com</td>
-                                <td>25154956</td>
-                                <td>62184758</td>
-                            </tr>
-                            <tr>
-                                <td>Ernesto</td>
-                                <td>De la Cruz</td>
-                                <td>ernesto@gmail.com</td>
-                                <td>25154956</td>
-                                <td>62184758</td>
-                            </tr><tr>
-                                <td>Ernesto</td>
-                                <td>De la Cruz</td>
-                                <td>ernesto@gmail.com</td>
-                                <td>25154956</td>
-                                <td>62184758</td>
-                            </tr><tr>
-                                <td>Ernesto</td>
-                                <td>De la Cruz</td>
-                                <td>ernesto@gmail.com</td>
-                                <td>25154956</td>
-                                <td>62184758</td>
-                            </tr><tr>
-                                <td>Ernesto</td>
-                                <td>De la Cruz</td>
-                                <td>ernesto@gmail.com</td>
-                                <td>25154956</td>
-                                <td>62184758</td>
-                            </tr><tr>
-                                <td>Ernesto</td>
-                                <td>De la Cruz</td>
-                                <td>ernesto@gmail.com</td>
-                                <td>25154956</td>
-                                <td>62184758</td>
-                            </tr><tr>
-                                <td>Ernesto</td>
-                                <td>De la Cruz</td>
-                                <td>ernesto@gmail.com</td>
-                                <td>25154956</td>
-                                <td>62184758</td>
-                            </tr><tr>
-                                <td>Ernesto</td>
-                                <td>De la Cruz</td>
-                                <td>ernesto@gmail.com</td>
-                                <td>25154956</td>
-                                <td>62184758</td>
-                            </tr><tr>
-                                <td>Ernesto</td>
-                                <td>De la Cruz</td>
-                                <td>ernesto@gmail.com</td>
-                                <td>25154956</td>
-                                <td>62184758</td>
-                            </tr><tr>
-                                <td>Ernesto</td>
-                                <td>De la Cruz</td>
-                                <td>ernesto@gmail.com</td>
-                                <td>25154956</td>
-                                <td>62184758</td>
-                            </tr><tr>
-                                <td>Ernesto</td>
-                                <td>De la Cruz</td>
-                                <td>ernesto@gmail.com</td>
-                                <td>25154956</td>
-                                <td>62184758</td>
-                            </tr>
+                        <tbody class="subject-table-body" id="subjectTableBody">
+                            <!-- aqui van los datos de los docentes agregados dinamicamente desde
+                                el javascript-->
                         </tbody>
                     </table>
-                        <button class="subject-button register-button" id="subjectButton">Registrar</button>
+
+                    <button class="subject-button register-button" id="subjectButton">Registrar</button>
+
+                    <div class="selected-professor">
+                        <h4>Docente seleccionado: <span class="selected-professor-name" id="selectedProfessorName"></span></h4>
+                    </div>
                 </div>
 
             </section>

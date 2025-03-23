@@ -40,6 +40,8 @@ const prForm = document.getElementById('prForm');
 const prRegiserBtn = document.getElementById('prRegisterButton');
 const srRegisterBtn = document.getElementById('srRegisterButton');
 const overviewOrdering = document.getElementById('overviewOrdering');
+const subjectTableBody = document.getElementById('subjectTableBody');
+const selectedProfessorName = document.getElementById('selectedProfessorName');
 let degreeItemsArray = [];
 
 
@@ -145,6 +147,8 @@ async function loginUser(email, password) {
         loginPage.style.transform = 'translateY(-100%)';
         deployCustomizedAlert(checkIcon, `${result.message}`);
         reloadDataTable('desc');
+
+        reloadProfessorsSubjectTable();
     } else {
         console.log(result.message);
     }
@@ -189,6 +193,8 @@ sideProfessor.addEventListener('click', () => {
 
 sideSubject.addEventListener('click', () => {
     switchPanelViewTo(subjectRegisterPanel)
+    reloadProfessorsSubjectTable();
+    selectedProfessorName.textContent = '';
 });
 
 function switchPanelViewTo(panel) {
@@ -238,7 +244,7 @@ srForm.addEventListener('submit', async (e) => {
 // ver en que orden por defecto le ponemos los datos de la tabla
 async function reloadDataTable(orderBy) {
     overviewTable.classList.add('active-loading');
-    const res = await fetch(`/get-all-persons?orderBy=${orderBy}`);
+    const res = await fetch(`/get-all-people?orderBy=${orderBy}`);
     const data = await res.json();
 
     overviewTable.innerHTML = '';
@@ -257,7 +263,6 @@ async function reloadDataTable(orderBy) {
         overviewTable.appendChild(newRow);
     });
     overviewTable.classList.remove('active-loading');
-
 }
 
 
@@ -325,7 +330,7 @@ professorModalForm.addEventListener('submit', (e) => {
     });
 
     // creamos el nuevo elemento
-    newDegreeItem.innerHTML =  `
+    newDegreeItem.innerHTML = `
         <div class="degree-content">
             <h4>${degreeData.degreeName}</h4>
             <p>${degreeData.typeOfDegree} - ${degreeData.institution} (${degreeData.graduationYear})</p>
@@ -334,18 +339,18 @@ professorModalForm.addEventListener('submit', (e) => {
     `;
 
     newDegreeItem.querySelector('.degree-action-button')
-    .addEventListener('click', () => removeDegreeItem(uid, newDegreeItem));
+        .addEventListener('click', () => removeDegreeItem(uid, newDegreeItem));
 
     degreeItemsContainer.appendChild(newDegreeItem);
 
     closeProfessorModalForm();
 });
 
-function removeDegreeItem(uid, newDegreeItem){
+function removeDegreeItem(uid, newDegreeItem) {
     const index = degreeItemsArray.findIndex(item => item.id === uid);
     degreeItemsArray.splice(index, 1);
     newDegreeItem.remove();
-    
+
 }
 
 function generateUniqueId() {
@@ -362,13 +367,13 @@ prForm.addEventListener('submit', async (e) => {
     changeToLoadingButton(prRegiserBtn);
     const formData = new FormData(e.target);
     const professorData = Object.fromEntries(formData.entries());
-    
+
     try {
         const response = await fetch('/register-professor', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
-            },  
+            },
             body: JSON.stringify({
                 professorData,
                 degreeItemsArray
@@ -391,12 +396,12 @@ prForm.addEventListener('submit', async (e) => {
     } catch (error) {
         console.log(error);
     }
-    
+
     changeToRegisterButton(prRegiserBtn);
     prRegiserBtn.disabled = false;
 })
 
-function clearPrForm(){
+function clearPrForm() {
     [...prForm.querySelectorAll('.pr-input')].forEach(input => input.value = '');
     noDataDegree.style.display = 'flex';
     degreeItemsContainer.innerHTML = '';
@@ -404,20 +409,67 @@ function clearPrForm(){
     degreeItemsArray = [];
 }
 
-function changeToLoadingButton(button){
+function changeToLoadingButton(button) {
     button.textContent = '';
     button.classList.add('active-loading');
 }
 
-function changeToRegisterButton(button){
+function changeToRegisterButton(button) {
     button.textContent = 'Registrar';
     button.classList.remove('active-loading');
 }
 
-// function getDegreeItems(){
-//     const degreeItems = [...document.querySelectorAll('.degree-item')].map(item => ({
-//         name: 
-//     }));
-// }
+// para obtener los docentes en la tabla de registro materia
+
+async function reloadProfessorsSubjectTable() {
+    document.getElementById('subjectTable').classList.add('active-loading');
+    try {
+        const response = await fetch('/get-all-professors');
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.error)
+        }
+
+        addProfessorsToSubjectTable(result);
+
+    } catch (error) {
+        console.log(error);
+    }
+    document.getElementById('subjectTable').classList.remove('active-loading');
+    
+}
+
+function addProfessorsToSubjectTable(data) {
+    subjectTableBody.innerHTML = '';
+    data.forEach(professor => {
+        const newRow = document.createElement('tr');
+        newRow.classList.add('subject-table-row')
+        const name = professor.name;
+        const lastName = professor.last_name;
+        newRow.innerHTML = `
+            <td class='name'>${name}</td>
+            <td class='lastName'>${lastName}</td>
+            <td>${professor.email}</td>
+            <td>${professor.ci}</td>
+            <td>${professor.phone}</td>
+        `;
+
+        newRow.addEventListener('click', () => {
+            selectedProfessorName.textContent = `${name} ${lastName}`;
+            newRow.classList.add('selected-row');
+            deselectAllRowsExcept(newRow);
+        });
+
+        subjectTableBody.appendChild(newRow);
+    })
+}
+
+function deselectAllRowsExcept(selectedRow) {
+    subjectTableBody.querySelectorAll('.selected-row').forEach(row => {
+        if (row !== selectedRow) row.classList.remove('selected-row');
+    });
+}
+
 
 

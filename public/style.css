@@ -302,7 +302,7 @@ input:-webkit-autofill {
 .login-page {
     position: absolute;
     z-index: 50;
-    transform: translateY(-100%);
+    /* transform: translateY(-100%); */
     /* display: none; */
 }
 
@@ -1329,6 +1329,37 @@ input:-webkit-autofill {
 .subject-table-body {
     overflow: auto;
     scrollbar-gutter: stable;
+    position: relative;
+}
+
+.subject-table::before {
+    display: none;
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: rgb(142, 7, 91, .5);
+}
+
+.subject-table::after {
+    display: none;
+    content: '';
+    position: absolute;
+    height: 60px;
+    width: 60px;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    border-top: solid 7px #fff;
+    border-radius: 50%;
+    animation: loadingButton 1s ease-out infinite;
+}
+
+.subject-table.active-loading::after,
+.subject-table.active-loading::before {
+    display: block;
 }
 
 .subject-table-body tr {
@@ -1336,10 +1367,25 @@ input:-webkit-autofill {
     grid-template-columns: 23% 23% 24% 15% 15%;
     text-align: center;
     height: 50px;
+    transition: .15s;
+}
+
+.subject-table-row.selected-row {
+    background-color: rgb(0, 132, 132) !important;
+    color: #fff;
 }
 
 .subject-table-body tr:nth-child(even) {
-    background: rgba(116, 43, 145, .1);
+    background-color: rgba(116, 43, 145, .1);
+}
+
+.subject-table-body tr:hover {
+    background-color: rgb(0, 181, 181);
+    color: #fff;
+}
+
+.subject-table-body tr:active {
+    background-color: rgb(0, 123, 123);
 }
 
 .subject-button {
@@ -1349,6 +1395,20 @@ input:-webkit-autofill {
     margin: 15px;
     cursor: pointer;
 }
+
+.selected-professor {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    font-size: 25px;
+    color: #580264;
+}
+
+.selected-professor-name {
+    color: #CD0E42;
+    border-bottom: dashed 4px#CD0E42 ;
+}
+
 
 
 
