@@ -206,19 +206,23 @@ sideProfessor.addEventListener('click', () => {
 });
 
 sideSubject.addEventListener('click', () => {
-    switchPanelViewTo(subjectRegisterPanel)
-    reloadProfessorsSubjectTable();
-    clearSubjectPanel();
-    updateTotalCard('professors', 'total-professors');
-    updateTotalCard('faculties', 'total-faculties');
-    updateTotalCard('subjects', 'total-subjects');
+    if(currentPanel != subjectRegisterPanel){
+        switchPanelViewTo(subjectRegisterPanel)
+        reloadProfessorsSubjectTable();
+        clearSubjectPanel();
+        updateTotalCard('professors', 'total-professors', 'sbTotalProfessors');
+        updateTotalCard('faculties', 'total-faculties', 'sbTotalFaculties');
+        updateTotalCard('subjects', 'total-subjects', 'sbTotalSubjects');
+    }
 
 });
 
 function switchPanelViewTo(panel) {
-    currentPanel.style.display = 'none';
-    currentPanel = panel;
-    currentPanel.style.display = 'grid';
+    if(currentPanel != panel){
+        currentPanel.style.display = 'none';
+        currentPanel = panel;
+        currentPanel.style.display = 'grid';
+    }
 }
 
 
@@ -504,6 +508,8 @@ function deselectAllRowsExcept(selectedRow) {
 // para el buscador en tiempo real del panel de registro materia
 
 subjectSearchBar.addEventListener('input', async (e) => {
+    document.getElementById('subjectTable').classList.add('active-loading');
+
     selectedProfessorName.textContent = '';
     selectedProfessorData = {};
     const content = e.target.value;
@@ -522,7 +528,7 @@ subjectSearchBar.addEventListener('input', async (e) => {
     } catch (error) {
         console.log(error);
     }
-
+    document.getElementById('subjectTable').classList.remove('active-loading');
 });
 
 
@@ -592,8 +598,12 @@ function clearSubjectPanel() {
 }
 
 
-async function updateTotalCard(route, className) {
-    try {
+async function updateTotalCard(route, className, idElement) {
+    document.querySelectorAll(`.${className}`).forEach(p => {
+        p.textContent = '';
+    });
+    document.getElementById(idElement).classList.add('active-loading');
+    try {   
         const response = await fetch(`/get-all-${route}`);
         const result = await response.json();
 
@@ -608,6 +618,8 @@ async function updateTotalCard(route, className) {
     } catch (error) {
         console.log(error);
     }
+    document.getElementById(idElement).classList.remove('active-loading');
+
 }
 
 

@@ -424,7 +424,7 @@ input:-webkit-autofill {
 .cards-container {
     /* border: solid; */
     display: flex;
-    /* justify-content: space-around; */
+    justify-content: space-around;
     gap: 30px;
 }
 
@@ -432,7 +432,7 @@ input:-webkit-autofill {
     /* border: solid #f00; */
     position: relative;
     height: 80%;
-    width: 25%;
+    width: 30%;
     border-radius: 10px;
     display: grid;
     grid-template-rows: 50% 25% 25%;
@@ -1431,6 +1431,27 @@ input:-webkit-autofill {
 
 .no-data-subject.show {
     display: flex !important;
+}
+
+.total-card-value {
+    position: relative;
+}
+
+.total-card-value::before{
+    display: none;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 30px;
+    width: 30px;
+    border-top: solid 5px #fff;
+    border-radius: 50%;
+    animation: loadingButton 1s ease-out infinite;
+}
+
+.total-card-value.active-loading::before {
+    display: block;
 }
 
 
