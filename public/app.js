@@ -44,6 +44,12 @@ const subjectTableBody = document.getElementById('subjectTableBody');
 const selectedProfessorName = document.getElementById('selectedProfessorName');
 const subjectSearchBar = document.getElementById('subjectSearchBar');
 const searchFiltering = document.getElementById('searchFiltering');
+const subjectNoDataFound = document.getElementById('subjectNoDataFound');
+const subjectButton = document.getElementById('subjectButton');
+const noDataSubject = document.getElementById('subjectNoData');
+const subjectForm = document.getElementById('subjectForm');
+let selectedProfessorData = {};
+
 
 let degreeItemsArray = [];
 
@@ -55,7 +61,7 @@ const checkIcon = {
 }
 const alertIcon = {
     name: 'alert',
-    color: '#fe8d59'
+    color: '#F27B28'
 }
 const errorIcon = {
     name: 'error',
@@ -151,7 +157,12 @@ async function loginUser(email, password) {
         deployCustomizedAlert(checkIcon, `${result.message}`);
         reloadDataTable('desc');
 
-        reloadProfessorsSubjectTable();
+        // updateTotalCard('professors', 'total-professors');
+        // updateTotalCard('faculties', 'total-faculties');
+        // updateTotalCard('subjects', 'total-subjects');
+
+
+
     } else {
         console.log(result.message);
     }
@@ -197,7 +208,11 @@ sideProfessor.addEventListener('click', () => {
 sideSubject.addEventListener('click', () => {
     switchPanelViewTo(subjectRegisterPanel)
     reloadProfessorsSubjectTable();
-    selectedProfessorName.textContent = '';
+    clearSubjectPanel();
+    // updateTotalCard('professors', 'total-professors');
+    // updateTotalCard('faculties', 'total-faculties');
+    // updateTotalCard('subjects', 'total-subjects');
+
 });
 
 function switchPanelViewTo(panel) {
@@ -434,34 +449,45 @@ async function reloadProfessorsSubjectTable() {
             throw new Error(result.error)
         }
 
+        if (result.lenght === 0) return noDataSubject.classList.add('show');
+
+        noDataSubject.classList.remove('show');
         addProfessorsToSubjectTable(result);
 
     } catch (error) {
         console.log(error);
     }
     document.getElementById('subjectTable').classList.remove('active-loading');
-    
+
 }
 
 function addProfessorsToSubjectTable(data) {
     subjectTableBody.innerHTML = '';
     data.forEach(professor => {
         const newRow = document.createElement('tr');
-        newRow.classList.add('subject-table-row')
-        const name = professor.name;
-        const lastName = professor.last_name;
+        newRow.classList.add('subject-table-row');
+        const { name, last_name: lastName, email, ci, phone } = professor;
         newRow.innerHTML = `
             <td class='name'>${name}</td>
             <td class='lastName'>${lastName}</td>
-            <td>${professor.email}</td>
-            <td>${professor.ci}</td>
-            <td>${professor.phone}</td>
+            <td>${email}</td>
+            <td>${ci}</td>
+            <td>${phone}</td>
         `;
 
         newRow.addEventListener('click', () => {
             selectedProfessorName.textContent = `${name} ${lastName}`;
             newRow.classList.add('selected-row');
             deselectAllRowsExcept(newRow);
+            selectedProfessorData = {
+                name,
+                lastName,
+                email,
+                ci,
+                phone
+            }
+            console.log(selectedProfessorData);
+
         });
 
         subjectTableBody.appendChild(newRow);
@@ -477,21 +503,113 @@ function deselectAllRowsExcept(selectedRow) {
 // para el buscador en tiempo real del panel de registro materia
 
 subjectSearchBar.addEventListener('input', async (e) => {
+    selectedProfessorName.textContent = '';
+    selectedProfessorData = {};
     const content = e.target.value;
     const column = searchFiltering.value;
 
     console.log(column, content);
-    
-    
-    const response = await fetch(`/get-professor?column=${column}&&value=${content}`);
-    const result = await response.json()
 
-    if(!response.ok) throw new Error(result.error);
+    try {
+        const response = await fetch(`/get-professor?column=${column}&value=${content}`);
 
-    console.log(result);
-    
-    
+        if (response.status === 404) return deploySubjectNoDataFound(column, content);
+
+        const result = await response.json();
+        subjectNoDataFound.classList.remove('show');
+        addProfessorsToSubjectTable(result);
+    } catch (error) {
+        console.log(error);
+    }
+
+});
+
+
+function deploySubjectNoDataFound(column, value) {
+    addProfessorsToSubjectTable([]);
+    subjectNoDataFound.classList.add('show');
+    subjectNoDataFound.querySelector('h4').textContent = `No se encontró ningún docente con el ${translateColumn(column)} ${value}`;
+}
+
+function translateColumn(column) {
+    switch (column) {
+        case 'name':
+            return 'nombre';
+        case 'last_name':
+            return 'apellido';
+        case 'ci':
+            return 'C.I.';
+        case 'email':
+            return 'E-mail';
+            break
+        case 'phone':
+            return 'celular';
+        default:
+            return '';
+    }
+}
+
+subjectForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (Object.keys(selectedProfessorData).length === 0) return deployCustomizedAlert(alertIcon, 'Se debe seleccionar un docente');
+
+    changeToLoadingButton(subjectButton);
+
+    const formData = new FormData(e.target);
+    const subjectData = Object.fromEntries(formData.entries());
+
+    console.log(subjectData);
+
+    const response = await fetch('/register-subject', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            subjectData,
+            selectedProfessorData
+        }),
+        credentials: 'include'
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) throw new Error(result.error);
+
+    changeToRegisterButton(subjectButton);
+    deployCustomizedAlert(checkIcon, result.message);
+    clearSubjectPanel();
+
 })
+
+function clearSubjectPanel() {
+    reloadProfessorsSubjectTable();
+    document.getElementById('subjectName').value = '';
+    subjectSearchBar.value = '';
+    selectedProfessorData = {};
+    selectedProfessorName.textContent = '';
+}
+
+
+// async function updateTotalCard(route, className) {
+//     try {
+//         const response = await fetch(`/get-all-${route}`);
+//         const result = await response.json();
+
+//         if (!response.ok) throw new Error(response.error)
+
+//         // console.log(result);
+
+//         document.querySelectorAll(`.${className}`).forEach(p => {
+//             p.textContent = `${result.length}`;
+//         });
+
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
+
+
 
 
 

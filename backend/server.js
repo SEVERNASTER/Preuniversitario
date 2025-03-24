@@ -336,3 +336,97 @@ app.get('/get-professor', async (req, res) => {
     }
 })
 
+// para registrar una nueva materia
+
+app.post('/register-subject', async (req, res) => {
+    try {
+        const { subjectData, selectedProfessorData: professor} = req.body
+        
+        const { sbName, sbShift, sbFaculty } = subjectData;
+
+        // esto me devuelve un arreglo con todas las filas, si es que solo hay una sera un arreglo
+        // con un solo elemento, por eso o hacemos .single() o hacemos .data[0] 
+        const { data: facultyData, error: facultyError} = await supabase
+        .from('faculty')
+        .select('id')
+        .eq('name', sbFaculty)
+        .single();
+
+        if(facultyError) throw facultyError;
+
+        const { name, lastName, email, ci, phone} = professor;
+
+        const { data: personData, error: personError } = await supabase
+        .from('person')
+        .select('id')
+        .eq('type', 'professor')
+        .eq('name', name)
+        .eq('last_name', lastName)
+        .eq('ci', ci)
+        .eq('email', email)
+        .eq('phone', phone)
+        .single();
+
+        if(personError) throw personError;
+
+        const {data: professorData, error: professorError} = await supabase
+        .from('professor')
+        .select('id')
+        .eq('id_person', personData.id)
+        .single();
+
+        if(professorError) throw professorError;
+
+        const { data: sbData, error: sbError } = await supabase
+        .from('subject')
+        .insert([{
+            name: sbName,
+            shift: sbShift,
+            id_professor: professorData.id,
+            id_faculty: facultyData.id
+        }]);
+
+        if(sbError) throw sbError;
+        
+        
+        res.status(201).json({ message: 'Se registró la materia'});
+
+
+    } catch (error) {
+        res.status(500).json({error: error.message});
+    }
+})
+
+// para obtener todas las facultades
+
+app.get('/get-all-faculties', async (req, res) => {
+    try {
+        const { data, error } = await supabase
+        .from('faculty')
+        .select('*')
+
+        if(error) throw error;
+
+        res.status(200).json(data);
+
+    } catch (error) {
+        res.status(500).json({error: error.message});
+    }
+})
+
+// para obtener todas las materias
+
+app.get('/get-all-subjects', async (req, res) => {
+    try {
+        const { data, error } = await supabase
+        .from('subject')
+        .select('*')
+
+        if(error) throw error;
+
+        res.status(200).json(data);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+})
+

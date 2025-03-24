@@ -49,6 +49,7 @@ body {
     transform: translateY(-100px);
     transition: .5s;
     z-index: 100;
+    border: solid 3px #000;
 }
 
 .message-icon {
@@ -1392,7 +1393,6 @@ input:-webkit-autofill {
     position: absolute;
     bottom: 0;
     right: 0;
-    margin: 15px;
     cursor: pointer;
 }
 
@@ -1407,6 +1407,30 @@ input:-webkit-autofill {
 .selected-professor-name {
     color: #CD0E42;
     border-bottom: dashed 4px#CD0E42 ;
+}
+
+.no-data-subject, 
+.no-data-found {
+    display: none !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #E00F3D;
+    font-size: 25px;
+}
+
+.no-data-found.show {
+    display: flex !important;
+}
+
+.no-data-subject.show {
+    display: flex !important;
 }
 
 

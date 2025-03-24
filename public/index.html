@@ -130,7 +130,7 @@
                             <i class="fa-solid fa-user-tie"></i>
                         </div>
                         <h3>Total de Docentes</h3>
-                        <p>80</p>
+                        <p class="total-professors"></p>
                     </div>
 
                     <div class="card">
@@ -138,7 +138,7 @@
                             <i class="fa-solid fa-graduation-cap"></i>
                         </div>
                         <h3>Total de Estudiantes</h3>
-                        <p>20</p>
+                        <p></p>
                     </div>
 
                     <div class="card">
@@ -146,7 +146,7 @@
                             <i class="fa-solid fa-book"></i>
                         </div>
                         <h3>Total de Cursos</h3>
-                        <p>17</p>
+                        <p class="total-subjects"></p>
                     </div>
                 </div>
 
@@ -407,23 +407,23 @@
                             <i class="fa-solid fa-user-tie"></i>
                         </div>
                         <h3>Total de Docentes</h3>
-                        <p>80</p>
+                        <p class="total-professors"></p>
                     </div>
 
                     <div class="card subject-card">
                         <div class="card-icon-container ">
-                            <i class="fa-solid fa-graduation-cap"></i>
+                            <i class="fa-solid fa-building-columns"></i>
                         </div>
-                        <h3>Total de Estudiantes</h3>
-                        <p>20</p>
+                        <h3>Total de Facultades</h3>
+                        <p class="total-faculties"></p>
                     </div>
 
                     <div class="card subject-card">
                         <div class="card-icon-container ">
                             <i class="fa-solid fa-book"></i>
                         </div>
-                        <h3>Total de Cursos</h3>
-                        <p>17</p>
+                        <h3>Total de Materias</h3>
+                        <p class="total-subjects"></p>
                     </div>
                 </div>
 
@@ -432,14 +432,14 @@
                         <h3>Registro de Materia</h3>
                     </div>
 
-                    <form class="subject-form">
+                    <form id="subjectForm" class="subject-form">
                         <div class="register-input-group pr-register-input-group">
-                            <input class="pr-input" type="text" name="subjectName" id="subjectName" required>
+                            <input class="pr-input" type="text" name="sbName" id="subjectName" required>
                             <label for="subjectName">Nombre de la Materia</label>
                         </div>
                         <div class="register-input-group pr-register-input-group sb-select">
                             <label for="prFaculty">Facultad:</label>
-                            <select id="prFaculty" name="prFaculty">
+                            <select id="prFaculty" name="sbFaculty">
                                 <option value="tech" selected>Tecnología</option>
                                 <option value="economy">Economía</option>
                                 <option value="law">Derecho</option>
@@ -450,7 +450,7 @@
                         </div>
                         <div class="register-input-group pr-register-input-group sb-select">
                             <label for="subjectShift">Turno:</label>
-                            <select id="subjectShift" name="prGender">
+                            <select id="subjectShift" name="sbShift">
                                 <option value="morning" selected>Mañana</option>
                                 <option value="afternoon">Tarde</option>
                             </select>
@@ -494,10 +494,16 @@
                         <tbody class="subject-table-body" id="subjectTableBody">
                             <!-- aqui van los datos de los docentes agregados dinamicamente desde
                                 el javascript-->
+                                <div class="no-data-subject " id="subjectNoData">
+                                    <h4>No hay docentes registrados</h4>
+                                </div>
+                                <div class="no-data-found" id="subjectNoDataFound">
+                                    <h4>hola mundo</h4>
+                                </div>
                         </tbody>
                     </table>
 
-                    <button class="subject-button register-button" id="subjectButton">Registrar</button>
+                    <button form="subjectForm" class="subject-button register-button" id="subjectButton">Registrar</button>
 
                     <div class="selected-professor">
                         <h4>Docente seleccionado: <span class="selected-professor-name" id="selectedProfessorName"></span></h4>
