@@ -452,6 +452,7 @@ async function reloadProfessorsSubjectTable() {
         if (result.lenght === 0) return noDataSubject.classList.add('show');
 
         noDataSubject.classList.remove('show');
+        subjectNoDataFound.classList.remove('show');
         addProfessorsToSubjectTable(result);
 
     } catch (error) {
@@ -528,7 +529,7 @@ subjectSearchBar.addEventListener('input', async (e) => {
 function deploySubjectNoDataFound(column, value) {
     addProfessorsToSubjectTable([]);
     subjectNoDataFound.classList.add('show');
-    subjectNoDataFound.querySelector('h4').textContent = `No se encontró ningún docente con el ${translateColumn(column)} ${value}`;
+    subjectNoDataFound.querySelector('h4').textContent = `No se encontró ningún docente con el ${translateColumn(column)} '${value}'`;
 }
 
 function translateColumn(column) {
