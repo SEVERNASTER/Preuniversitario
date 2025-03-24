@@ -209,9 +209,9 @@ sideSubject.addEventListener('click', () => {
     switchPanelViewTo(subjectRegisterPanel)
     reloadProfessorsSubjectTable();
     clearSubjectPanel();
-    // updateTotalCard('professors', 'total-professors');
-    // updateTotalCard('faculties', 'total-faculties');
-    // updateTotalCard('subjects', 'total-subjects');
+    updateTotalCard('professors', 'total-professors');
+    updateTotalCard('faculties', 'total-faculties');
+    updateTotalCard('subjects', 'total-subjects');
 
 });
 
@@ -591,23 +591,23 @@ function clearSubjectPanel() {
 }
 
 
-// async function updateTotalCard(route, className) {
-//     try {
-//         const response = await fetch(`/get-all-${route}`);
-//         const result = await response.json();
+async function updateTotalCard(route, className) {
+    try {
+        const response = await fetch(`/get-all-${route}`);
+        const result = await response.json();
 
-//         if (!response.ok) throw new Error(response.error)
+        if (!response.ok) throw new Error(response.error)
 
-//         // console.log(result);
+        // console.log(result);
 
-//         document.querySelectorAll(`.${className}`).forEach(p => {
-//             p.textContent = `${result.length}`;
-//         });
+        document.querySelectorAll(`.${className}`).forEach(p => {
+            p.textContent = `${result.length}`;
+        });
 
-//     } catch (error) {
-//         console.log(error);
-//     }
-// }
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 
 
