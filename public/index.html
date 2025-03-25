@@ -135,7 +135,7 @@
 
                     <div class="card">
                         <div class="card-icon-container">
-                            <i class="fa-solid fa-graduation-cap" ></i>
+                            <i class="fa-solid fa-graduation-cap"></i>
                         </div>
                         <h3>Total de Estudiantes</h3>
                         <p class="total-card-value" id="overviewTotalStudents"></p>
@@ -463,7 +463,8 @@
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </div>
 
-                            <input placeholder="Buscar docente" type="text" name="professorName" id="subjectSearchBar" class="subject-name-input">
+                            <input placeholder="Buscar docente" type="text" name="professorName" id="subjectSearchBar"
+                                class="subject-name-input">
 
                             <div class="subject-filtering">
                                 <label for="searchFiltering">Buscar por:</label>
@@ -494,26 +495,151 @@
                         <tbody class="subject-table-body" id="subjectTableBody">
                             <!-- aqui van los datos de los docentes agregados dinamicamente desde
                                 el javascript-->
+                            <div class="no-data-subject " id="subjectNoData">
+                                <h4>No hay docentes registrados</h4>
+                            </div>
+                            <div class="no-data-found" id="subjectNoDataFound">
+                                <h4>hola mundo</h4>
+                            </div>
+                        </tbody>
+                    </table>
+
+                    <button form="subjectForm" class="subject-button register-button"
+                        id="subjectButton">Registrar</button>
+
+                    <div class="selected-professor">
+                        <h4>Docente seleccionado: <span class="selected-professor-name"
+                                id="selectedProfessorName"></span></h4>
+                    </div>
+                </div>
+
+            </section>
+
+
+
+
+
+
+
+
+
+
+            <!-- para la inscripcion -->
+            <section style="display: none;" id="enrollment" class="enrollment">
+                <div class="enroll-student">
+                    <div class="student-title">
+                        <h2>Estudiantes</h2>
+                    </div>
+    
+                    <div class="subject-search-bar-container">
+                        <div class="subject-search-bar">
+                            <div class="search-bar-icon">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </div>
+    
+                            <input placeholder="Buscar estudiante" type="text" name="professorName" id="subjectSearchBar"
+                                class="subject-name-input">
+    
+                            <div class="subject-filtering">
+                                <label for="searchFiltering">Buscar por:</label>
+                                <select name="searchFilter" id="searchFiltering">
+                                    <option value="name" selected>Nombre</option>
+                                    <option value="last_name">Apellido</option>
+                                    <option value="email">E-mail</option>
+                                    <option value="ci">C.I</option>
+                                    <option value="phone">Celular</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="subject-table-container enroll-subject-table-container">
+                        <table class="subject-table" id="subjectTable">
+                            <thead>
+                                <tr>
+                                    <th>Nombres/s</th>
+                                    <th>Apellido/s</th>
+                                    <th>E-mail</th>
+                                    <th>C.I</th>
+                                    <th>Celular</th>
+                                </tr>
+                            </thead>
+                            <tbody class="subject-table-body" id="subjectTableBody">
+                                <!-- aqui van los datos de los docentes agregados dinamicamente desde
+                                    el javascript-->
                                 <div class="no-data-subject " id="subjectNoData">
                                     <h4>No hay docentes registrados</h4>
                                 </div>
                                 <div class="no-data-found" id="subjectNoDataFound">
                                     <h4>hola mundo</h4>
                                 </div>
-                        </tbody>
-                    </table>
-
-                    <button form="subjectForm" class="subject-button register-button" id="subjectButton">Registrar</button>
-
-                    <div class="selected-professor">
-                        <h4>Docente seleccionado: <span class="selected-professor-name" id="selectedProfessorName"></span></h4>
-                    </div>
+                            </tbody>
+                        </table>
+                    </div>  
                 </div>
 
-            </section>
 
+                
+
+                <div class="enroll-subject">
+                    <div class="subject-title">
+                        <h2>Materias</h2>
+                    </div>
+    
+                    <div class="subject-search-bar-container">
+                        <div class="subject-search-bar">
+                            <div class="search-bar-icon">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </div>
+    
+                            <input placeholder="Buscar materia" type="text" name="professorName" id="subjectSearchBar"
+                                class="subject-name-input">
+    
+                            <div class="subject-filtering">
+                                <label for="searchFiltering">Buscar por:</label>
+                                <select name="searchFilter" id="searchFiltering">
+                                    <option value="name" selected>Nombre</option>
+                                    <option value="last_name">Apellido</option>
+                                    <option value="email">E-mail</option>
+                                    <option value="ci">C.I</option>
+                                    <option value="phone">Celular</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="subject-table-container enroll-subject-table-container">
+                        <table class="subject-table enroll-subject-table" id="subjectTable">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Turno</th>
+                                    <th>Docente</th>
+                                    <th>Facultad</th>
+                                    <th>Inscritos</th>
+                                </tr>
+                            </thead>
+                            <tbody class="subject-table-body enroll-subject-table" id="subjectTableBody">
+                                <!-- aqui van los datos de los docentes agregados dinamicamente desde
+                                    el javascript-->
+                                <div class="no-data-subject " id="subjectNoData">
+                                    <h4>No hay docentes registrados</h4>
+                                </div>
+                                <div class="no-data-found" id="subjectNoDataFound">
+                                    <h4>hola mundo</h4>
+                                </div>
+                            </tbody>
+                        </table>
+                    </div> 
+                </div>
+
+                <div class="enroll-button-container">
+                    <button class="register-button">Inscribir</button>
+                </div>
+            </section>
         </div>
     </section>
+
 
     <div style="display: none;" class="professor-register-modal" id="professorRegisterModal">
         <div class="pr-modal-container">

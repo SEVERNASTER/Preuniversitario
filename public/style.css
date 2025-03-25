@@ -303,7 +303,7 @@ input:-webkit-autofill {
 .login-page {
     position: absolute;
     z-index: 50;
-    /* transform: translateY(-100%); */
+    transform: translateY(-100%);
     /* display: none; */
 }
 
@@ -1136,15 +1136,11 @@ input:-webkit-autofill {
 
 /* para registrar las materias */
 
-.overview {
-    display: none;
-}
-
 .subject-register {
     height: 95%;
     width: 95%;
     font-size: 40px;
-    display: grid !important;
+    /* display: grid !important;     */
     grid-template-rows: 25% 25% 50%;
     margin: auto;
 }
@@ -1452,6 +1448,60 @@ input:-webkit-autofill {
 
 .total-card-value.active-loading::before {
     display: block;
+}
+
+/* para la inscripcion */
+
+.overview {
+    display: none;
+}
+
+.enrollment {
+    display: grid !important;
+    grid-template-rows: 45% 45% 10%;
+    height: 95%;
+    width: 95%;
+    margin: auto;
+}
+
+.enroll-student,
+.enroll-subject {
+    /* border: solid; */
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-rows: 15% 20% 65%;
+}
+
+.enroll-subject-table-container .subject-table {
+    height: 100%;
+}
+
+.subject-search-bar-container {
+    /* border: solid; */
+}
+
+.student-title h2 {
+    width: 20%;
+}
+
+.student-title h2 , .subject-title h2 {
+    background: linear-gradient(45deg, #f00, #00f);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: auto 0;
+    font-size: 40px;
+}
+
+.enroll-button-container {
+    /* border: solid; */
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+.enroll-subject-table thead tr {
+    grid-template-columns: 20% 20% 30% 15% 15%;
 }
 
 

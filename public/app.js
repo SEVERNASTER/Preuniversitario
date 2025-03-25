@@ -48,6 +48,7 @@ const subjectNoDataFound = document.getElementById('subjectNoDataFound');
 const subjectButton = document.getElementById('subjectButton');
 const noDataSubject = document.getElementById('subjectNoData');
 const subjectForm = document.getElementById('subjectForm');
+const enrollmentPanel = document.getElementById('enrollment');
 let selectedProfessorData = {};
 
 
@@ -214,7 +215,10 @@ sideSubject.addEventListener('click', () => {
         updateTotalCard('faculties', 'total-faculties', 'sbTotalFaculties');
         updateTotalCard('subjects', 'total-subjects', 'sbTotalSubjects');
     }
+});
 
+sideEnroll.addEventListener('click', () => {
+    switchPanelViewTo(enrollmentPanel)
 });
 
 function switchPanelViewTo(panel) {
@@ -599,9 +603,7 @@ function clearSubjectPanel() {
 
 
 async function updateTotalCard(route, className, idElement) {
-    document.querySelectorAll(`.${className}`).forEach(p => {
-        p.textContent = '';
-    });
+    document.getElementById(idElement).textContent = '';
     document.getElementById(idElement).classList.add('active-loading');
     try {   
         const response = await fetch(`/get-all-${route}`);

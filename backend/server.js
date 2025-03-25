@@ -16,22 +16,62 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // para verificar el token y la sesion del usuario
+// async function authMiddleware(req, res, next) {
+//     const token = req.cookies.supabase_token;
+
+//     if (!token) {
+//         return res.status(401).json({ message: "No autenticado" });
+//     }
+
+//     const { data, error } = await supabase.auth.getUser(token);
+
+//     if (error || !data?.user) {
+//         return res.status(401).json({ message: "Token inválido o expirado" });
+//     }
+
+//     req.user = data.user;
+//     next();
+// }
+
 async function authMiddleware(req, res, next) {
-    const token = req.cookies.supabase_token;
+    try {
+        const token = req.cookies.supabase_token;
+        const refreshToken = req.cookies.supabase_refresh_token;
 
-    if (!token) {
-        return res.status(401).json({ message: "No autenticado" });
+        if (!token) {
+            return res.status(401).json({ message: "No autenticado" });
+        }
+
+        let { data, error } = await supabase.auth.getUser(token);
+        
+        if (error || !data?.user) {
+            if (!refreshToken) return res.status(401).json({ message: "Sesión expirada, inicie sesión nuevamente." });
+
+            // Intentar refrescar la sesión
+            const { data: session, error: refreshError } = await supabase.auth.refreshSession({
+                refresh_token: refreshToken,
+            });
+
+            if (refreshError || !session?.user) {
+                return res.status(401).json({ message: "No autenticado, sesión inválida." });
+            }
+
+            // Guardar nuevo token en cookies
+            res.cookie("supabase_token", session.session.access_token, { httpOnly: true, secure: true, sameSite: "None" });
+            res.cookie("supabase_refresh_token", session.session.refresh_token, { httpOnly: true, secure: true, sameSite: "None" });
+
+            req.user = session.user;
+            return next();
+        }
+
+        req.user = data.user;
+        next();
+    } catch (err) {
+        console.error("Error en authMiddleware:", err);
+        return res.status(500).json({ message: "Error interno del servidor" });
     }
-
-    const { data, error } = await supabase.auth.getUser(token);
-
-    if (error || !data?.user) {
-        return res.status(401).json({ message: "Token inválido o expirado" });
-    }
-
-    req.user = data.user;
-    next();
 }
+
 
 
 
@@ -74,12 +114,20 @@ app.post('/login', async (req, res) => {
         if (error) throw error;
 
         const token = data.session.access_token;
+        const refresh_token = data.session.refresh_token;
 
         res.cookie('supabase_token', token, {
             httpOnly: true,
-            // secure: true,
-            sameSite: "Strict",
+            secure: true,
+            sameSite: "None",
             maxAge: 60 * 60 * 24,
+        });
+
+        res.cookie("supabase_refresh_token", refresh_token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "None",
+            maxAge: 60 * 60 * 24 * 30,
         });
 
         res.status(200).json({
@@ -318,7 +366,7 @@ app.get('/get-all-professors', authMiddleware, async (req, res) => {
 
 // para obtener docentes que cumplan cierta condicion
 
-app.get('/get-professor', async (req, res) => {
+app.get('/get-professor', authMiddleware, async (req, res) => {
     try {
         const { column , value } = req.query;
         const { data, error } = await supabase
@@ -338,7 +386,7 @@ app.get('/get-professor', async (req, res) => {
 
 // para registrar una nueva materia
 
-app.post('/register-subject', async (req, res) => {
+app.post('/register-subject', authMiddleware, async (req, res) => {
     try {
         const { subjectData, selectedProfessorData: professor} = req.body
         
@@ -399,7 +447,7 @@ app.post('/register-subject', async (req, res) => {
 
 // para obtener todas las facultades
 
-app.get('/get-all-faculties', async (req, res) => {
+app.get('/get-all-faculties', authMiddleware, async (req, res) => {
     try {
         const { data, error } = await supabase
         .from('faculty')
@@ -416,7 +464,7 @@ app.get('/get-all-faculties', async (req, res) => {
 
 // para obtener todas las materias
 
-app.get('/get-all-subjects', async (req, res) => {
+app.get('/get-all-subjects', authMiddleware, async (req, res) => {
     try {
         const { data, error } = await supabase
         .from('subject')
