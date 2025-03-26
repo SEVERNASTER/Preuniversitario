@@ -51,6 +51,9 @@ const subjectForm = document.getElementById('subjectForm');
 const enrollmentPanel = document.getElementById('enrollment');
 const enrollStudentTableBody = document.getElementById('enrollStudentTableBody');
 const enrollSubjectTableBody = document.getElementById('enrollSubjectTableBody');
+const enrollSelectedStudent = document.getElementById('selectedStudent');
+const enrollSelectedSubject = document.getElementById('selectedSubject');
+let enrollSelectedStudentData = {};
 let selectedProfessorData = {};
 
 
@@ -647,8 +650,8 @@ function addStudentsToEnrollTable(data) {
     data.map(studentData => {
         const newRow = document.createElement('tr');
         newRow.classList.add('subject-table-row');
-        const { name, last_name: lastName, email, ci, phone } = studentData.person;
-        const { id: studentId, id_person: idPerson} = studentData 
+        const { id: perdonId, name, last_name: lastName, email, ci, phone, age, type, state, gender, created_at: createdAt } = studentData.person;
+        const { id: studentId, desired_major: desiredMajor, school_name: schollName, guardian_name: guardianName, guardian_contact: guardianContact} = studentData 
         newRow.innerHTML = `
             <td class='name'>${name}</td>
             <td class='lastName'>${lastName}</td>
@@ -658,21 +661,24 @@ function addStudentsToEnrollTable(data) {
         `;
 
         newRow.addEventListener('click', () => {
-            // selectedProfessorName.textContent = `${name} ${lastName}`;
-            // newRow.classList.add('selected-row');
-            // deselectAllRowsExcept(newRow);
-            // selectedProfessorData = {
-            //     name,
-            //     lastName,
-            //     email,
-            //     ci,
-            //     phone
-            // }
+            enrollSelectedStudent.textContent = `${name} ${lastName}`;
+            newRow.classList.add('selected-row');
+            unSelectAllRowsExcept(newRow, 'enrollStudentTableBody');
+            enrollSelectedStudentData = {
+                studentId, createdAt, desiredMajor, schollName, guardianName, guardianContact, 
+                ci, perdonId, age, name, type, email, phone, state, gender, lastName
+            }
 
         });
 
         enrollStudentTableBody.appendChild(newRow);
     })
+}
+
+function unSelectAllRowsExcept(selectedRow, bodyContainerId) {
+    document.getElementById(bodyContainerId).querySelectorAll('.selected-row').forEach(row => {
+        if (row !== selectedRow) row.classList.remove('selected-row');
+    });
 }
 
 
