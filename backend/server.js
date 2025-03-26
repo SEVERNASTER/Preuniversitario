@@ -478,3 +478,25 @@ app.get('/get-all-subjects', authMiddleware, async (req, res) => {
     }
 })
 
+// para obtener todos los estudiantes
+app.get('/get-all-students', authMiddleware, async (req, res) => {
+    try {
+        
+        const { data: studentData, error: studentError } = await  supabase
+        .from('student')
+        .select(`
+                *,
+                person: id_person (*)
+            `)
+        console.log(studentData);
+        
+        if(studentError) throw studentError;
+
+        res.status(200).json(studentData);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+})
+
+
+

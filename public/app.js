@@ -49,6 +49,8 @@ const subjectButton = document.getElementById('subjectButton');
 const noDataSubject = document.getElementById('subjectNoData');
 const subjectForm = document.getElementById('subjectForm');
 const enrollmentPanel = document.getElementById('enrollment');
+const enrollStudentTableBody = document.getElementById('enrollStudentTableBody');
+const enrollSubjectTableBody = document.getElementById('enrollSubjectTableBody');
 let selectedProfessorData = {};
 
 
@@ -158,10 +160,7 @@ async function loginUser(email, password) {
         deployCustomizedAlert(checkIcon, `${result.message}`);
         reloadDataTable('desc');
 
-        // updateTotalCard('professors', 'total-professors');
-        // updateTotalCard('faculties', 'total-faculties');
-        // updateTotalCard('subjects', 'total-subjects');
-
+        reloadEnrollStudentDataTable()
 
 
     } else {
@@ -622,6 +621,116 @@ async function updateTotalCard(route, className, idElement) {
     }
     document.getElementById(idElement).classList.remove('active-loading');
 
+}
+
+// para el panel de inscripcion
+
+
+async function reloadEnrollStudentDataTable() {
+    try {
+        const response = await fetch('/get-all-students');
+        
+        if(!response.ok) throw new Error(response.error);
+
+        const result = await response.json();
+
+        addStudentsToEnrollTable(result)
+
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+function addStudentsToEnrollTable(data) {
+    enrollStudentTableBody.innerHTML = '';
+    data.map(studentData => {
+        const newRow = document.createElement('tr');
+        newRow.classList.add('subject-table-row');
+        const { name, last_name: lastName, email, ci, phone } = studentData.person;
+        const { id: studentId, id_person: idPerson} = studentData 
+        newRow.innerHTML = `
+            <td class='name'>${name}</td>
+            <td class='lastName'>${lastName}</td>
+            <td>${email}</td>
+            <td>${ci}</td>
+            <td>${phone}</td>
+        `;
+
+        newRow.addEventListener('click', () => {
+            // selectedProfessorName.textContent = `${name} ${lastName}`;
+            // newRow.classList.add('selected-row');
+            // deselectAllRowsExcept(newRow);
+            // selectedProfessorData = {
+            //     name,
+            //     lastName,
+            //     email,
+            //     ci,
+            //     phone
+            // }
+
+        });
+
+        enrollStudentTableBody.appendChild(newRow);
+    })
+}
+
+
+
+
+
+
+
+
+async function reloadEnrollSubjectDataTable() {
+    try {
+        const response = await fetch('/get-all-subjects');
+        
+        if(!response.ok) throw new Error(response.error);
+
+        const result = await response.json();
+
+        addSubjectsToEnrollTable(result)
+
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+
+function addSubjectsToEnrollTable(data) {
+    enrollSubjectTableBody.innerHTML = '';
+    data.forEach(subject => {
+        const newRow = document.createElement('tr');
+        newRow.classList.add('subject-table-row');
+        newRow.classList.add('enroll-subject-table-row');
+        const { name, shift: lastName, email, ci, phone } = subject;
+        newRow.innerHTML = `
+            <td class='name'>${name}</td>
+            <td class='lastName'>${lastName}</td>
+            <td>${email}</td>
+            <td>${ci}</td>
+            <td>${phone}</td>
+        `;
+
+        // newRow.addEventListener('click', () => {
+        //     selectedProfessorName.textContent = `${name} ${lastName}`;
+        //     newRow.classList.add('selected-row');
+        //     deselectAllRowsExcept(newRow);
+        //     selectedProfessorData = {
+        //         name,
+        //         lastName,
+        //         email,
+        //         ci,
+        //         phone
+        //     }
+        //     console.log(selectedProfessorData);
+
+        // });
+
+        enrollSubjectTableBody.appendChild(newRow);
+    })
 }
 
 

@@ -530,19 +530,19 @@
                     <div class="student-title">
                         <h2>Estudiantes</h2>
                     </div>
-    
+
                     <div class="subject-search-bar-container">
                         <div class="subject-search-bar">
                             <div class="search-bar-icon">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </div>
-    
-                            <input placeholder="Buscar estudiante" type="text" name="professorName" id="subjectSearchBar"
-                                class="subject-name-input">
-    
+
+                            <input placeholder="Buscar estudiante" type="text" name="professorName"
+                                id="enrollStudent   SearchBar" class="subject-name-input">
+
                             <div class="subject-filtering">
-                                <label for="searchFiltering">Buscar por:</label>
-                                <select name="searchFilter" id="searchFiltering">
+                                <label for="enrollStudentsearchFiltering">Buscar por:</label>
+                                <select name="searchFilter" id="enrollStudentsearchFiltering">
                                     <option value="name" selected>Nombre</option>
                                     <option value="last_name">Apellido</option>
                                     <option value="email">E-mail</option>
@@ -552,9 +552,9 @@
                             </div>
                         </div>
                     </div>
-    
+
                     <div class="subject-table-container enroll-subject-table-container">
-                        <table class="subject-table" id="subjectTable">
+                        <table class="subject-table" id="enrollStudentTable">
                             <thead>
                                 <tr>
                                     <th>Nombres/s</th>
@@ -564,40 +564,40 @@
                                     <th>Celular</th>
                                 </tr>
                             </thead>
-                            <tbody class="subject-table-body" id="subjectTableBody">
+                            <tbody class="subject-table-body" id="enrollStudentTableBody">
                                 <!-- aqui van los datos de los docentes agregados dinamicamente desde
                                     el javascript-->
-                                <div class="no-data-subject " id="subjectNoData">
+                                <div class="no-data-subject " id="enrollStudentNoData">
                                     <h4>No hay docentes registrados</h4>
                                 </div>
-                                <div class="no-data-found" id="subjectNoDataFound">
+                                <div class="no-data-found" id="enrollStudentNoDataFound">
                                     <h4>hola mundo</h4>
                                 </div>
                             </tbody>
                         </table>
-                    </div>  
+                    </div>
                 </div>
 
 
-                
+
 
                 <div class="enroll-subject">
                     <div class="subject-title">
                         <h2>Materias</h2>
                     </div>
-    
+
                     <div class="subject-search-bar-container">
                         <div class="subject-search-bar">
                             <div class="search-bar-icon">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </div>
-    
-                            <input placeholder="Buscar materia" type="text" name="professorName" id="subjectSearchBar"
-                                class="subject-name-input">
-    
+
+                            <input placeholder="Buscar materia" type="text" name="professorName"
+                                id="enrollSubjectSearchBar" class="subject-name-input">
+
                             <div class="subject-filtering">
-                                <label for="searchFiltering">Buscar por:</label>
-                                <select name="searchFilter" id="searchFiltering">
+                                <label for="enrollSubjectSearchFiltering">Buscar por:</label>
+                                <select name="searchFilter" id="enrollSubjectSearchFiltering">
                                     <option value="name" selected>Nombre</option>
                                     <option value="last_name">Apellido</option>
                                     <option value="email">E-mail</option>
@@ -607,9 +607,9 @@
                             </div>
                         </div>
                     </div>
-    
+
                     <div class="subject-table-container enroll-subject-table-container">
-                        <table class="subject-table enroll-subject-table" id="subjectTable">
+                        <table class="subject-table enroll-subject-table" id="enrollSubjectTable">
                             <thead>
                                 <tr>
                                     <th>Nombre</th>
@@ -619,21 +619,33 @@
                                     <th>Inscritos</th>
                                 </tr>
                             </thead>
-                            <tbody class="subject-table-body enroll-subject-table" id="subjectTableBody">
+                            <tbody class="subject-table-body enroll-subject-table" id="enrollSubjectTableBody">
                                 <!-- aqui van los datos de los docentes agregados dinamicamente desde
                                     el javascript-->
-                                <div class="no-data-subject " id="subjectNoData">
+                                <div class="no-data-subject " id="enrollSubjectNoData">
                                     <h4>No hay docentes registrados</h4>
                                 </div>
-                                <div class="no-data-found" id="subjectNoDataFound">
+                                <div class="no-data-found" id="enrollSubjectNoDataFound">
                                     <h4>hola mundo</h4>
                                 </div>
+
+                                <tr class="subject-table-row enroll-subject-table-row">
+                                    <td class='name'>${name}</td>
+                                    <td class='lastName'>${lastName}</td>
+                                    <td>${email}</td>
+                                    <td>${ci}</td>
+                                    <td>${phone}</td>
+                                </tr>
                             </tbody>
                         </table>
-                    </div> 
+                    </div>
                 </div>
 
                 <div class="enroll-button-container">
+                    <div class="selected-enroll-data">
+                        <p>Inscribir al estudiante: <span id="selectedStudent">Juan Perez</span> </p>
+                        <p>A la materia de: <span id="selectedSubject">Calculo Numerico</span></p>
+                    </div>
                     <button class="register-button">Inscribir</button>
                 </div>
             </section>
