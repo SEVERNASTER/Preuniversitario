@@ -210,7 +210,7 @@ sideProfessor.addEventListener('click', () => {
 });
 
 sideSubject.addEventListener('click', () => {
-    if(currentPanel != subjectRegisterPanel){
+    if (currentPanel != subjectRegisterPanel) {
         switchPanelViewTo(subjectRegisterPanel)
         reloadProfessorsSubjectTable();
         clearSubjectPanel();
@@ -225,7 +225,7 @@ sideEnroll.addEventListener('click', () => {
 });
 
 function switchPanelViewTo(panel) {
-    if(currentPanel != panel){
+    if (currentPanel != panel) {
         currentPanel.style.display = 'none';
         currentPanel = panel;
         currentPanel.style.display = 'grid';
@@ -608,7 +608,7 @@ function clearSubjectPanel() {
 async function updateTotalCard(route, className, idElement) {
     document.getElementById(idElement).textContent = '';
     document.getElementById(idElement).classList.add('active-loading');
-    try {   
+    try {
         const response = await fetch(`/get-all-${route}`);
         const result = await response.json();
 
@@ -633,8 +633,8 @@ async function updateTotalCard(route, className, idElement) {
 async function reloadEnrollStudentDataTable() {
     try {
         const response = await fetch('/get-all-students');
-        
-        if(!response.ok) throw new Error(response.error);
+
+        if (!response.ok) throw new Error(response.error);
 
         const result = await response.json();
 
@@ -642,17 +642,24 @@ async function reloadEnrollStudentDataTable() {
 
     } catch (error) {
         console.log(error);
-        
+
     }
 }
 
 function addStudentsToEnrollTable(data) {
     enrollStudentTableBody.innerHTML = '';
-    data.map(studentData => {
+    data.map(personData => {
         const newRow = document.createElement('tr');
         newRow.classList.add('subject-table-row');
-        const { id: perdonId, name, last_name: lastName, email, ci, phone, age, type, state, gender, created_at: createdAt } = studentData.person;
-        const { id: studentId, desired_major: desiredMajor, school_name: schollName, guardian_name: guardianName, guardian_contact: guardianContact} = studentData 
+
+        const { id: personId, name, last_name: lastName, email, ci, phone, age, type,
+            state, gender, created_at: createdAt
+        } = personData;
+
+        const { id: studentId, desired_major: desiredMajor, school_name: schollName,
+            guardian_name: guardianName, guardian_contact: guardianContact
+        } = personData.student[0];
+
         newRow.innerHTML = `
             <td class='name'>${name}</td>
             <td class='lastName'>${lastName}</td>
@@ -665,11 +672,11 @@ function addStudentsToEnrollTable(data) {
             enrollSelectedStudent.textContent = `${name} ${lastName}`;
             newRow.classList.add('selected-row');
             unSelectAllRowsExcept(newRow, 'enrollStudentTableBody');
+            
             enrollSelectedStudentData = {
-                studentId, createdAt, desiredMajor, schollName, guardianName, guardianContact, 
-                ci, perdonId, age, name, type, email, phone, state, gender, lastName
+                studentId, createdAt, desiredMajor, schollName, guardianName, guardianContact,
+                ci, personId, age, name, type, email, phone, state, gender, lastName
             }
-
         });
 
         enrollStudentTableBody.appendChild(newRow);
@@ -686,16 +693,16 @@ document.getElementById('enrollStudentSearchBar').addEventListener('input', asyn
     const value = e.target.value;
     const column = document.getElementById('enrollStudentsearchFiltering').value
     console.log(value);
-    
+
     try {
         const response = await fetch(`/get-student?column=${column}&value=${value}`)
-        if(!response.ok) throw new Error(response.error);
+        if (!response.ok) throw new Error(response.error);
         const result = await response.json()
         addStudentsToEnrollTable(result)
     } catch (error) {
         console.log(error);
-        
-        
+
+
     }
 })
 
@@ -709,19 +716,19 @@ document.getElementById('enrollStudentSearchBar').addEventListener('input', asyn
 async function reloadEnrollSubjectDataTable() {
     try {
         const response = await fetch('/get-all-subjects');
-        
-        if(!response.ok) throw new Error(response.error);
+
+        if (!response.ok) throw new Error(response.error);
 
         const result = await response.json();
 
         console.log(result);
-        
+
 
         addSubjectsToEnrollTable(result)
 
     } catch (error) {
         console.log(error);
-        
+
     }
 }
 
@@ -735,7 +742,7 @@ function addSubjectsToEnrollTable(data) {
         const { id: subjectId, name: subjectName, shift, totalEnrolled } = subject;
         const { name: professorName, last_name: professorLastName } = subject.professor.person;
         const { name: facultyName } = subject.faculty;
-        
+
         newRow.innerHTML = `
             <td class='name'>${subjectName}</td>
             <td class='lastName'>${shift === 'morning' ? 'Mañana' : 'Tarde'}</td>

@@ -491,11 +491,12 @@ app.get('/get-all-students', authMiddleware, async (req, res) => {
     try {
         
         const { data: studentData, error: studentError } = await  supabase
-        .from('student')
+        .from('person')
         .select(`
                 *,
-                person: id_person (*)
+                student (*)
             `)
+        .eq('type', 'student')
         
         if(studentError) throw studentError;
 
