@@ -468,8 +468,16 @@ app.get('/get-all-subjects', authMiddleware, async (req, res) => {
     try {
         const { data, error } = await supabase
         .from('subject')
-        .select('*')
-
+        .select(`
+                *,
+                faculty: id_faculty (*),
+                professor: id_professor(
+                    *,
+                    person: id_person (*)
+                ),
+                totalEnrolled: enrollment(count);
+            `)
+        
         if(error) throw error;
 
         res.status(200).json(data);
@@ -488,12 +496,35 @@ app.get('/get-all-students', authMiddleware, async (req, res) => {
                 *,
                 person: id_person (*)
             `)
-        console.log(studentData);
         
         if(studentError) throw studentError;
 
         res.status(200).json(studentData);
     } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+})
+
+app.get('/get-student', authMiddleware, async (req, res) => {
+    try {
+        const { column, value } = req.query;
+        const { data, error } = await supabase
+        .from('student')
+        .select(`
+                *, 
+                person: id_person (*)
+            `)
+        .eq(`person.type`, value)
+        .or(`person.${column}.ilike.%${value}%`)
+        // .filter('person.type', 'eq', 'student')
+
+        if(error) throw error;
+
+
+        res.status(200).json(data);
+
+    } catch (error) {
+        console.log(error);
         res.status(500).json({ error: error.message });
     }
 })

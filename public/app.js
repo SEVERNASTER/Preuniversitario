@@ -54,6 +54,7 @@ const enrollSubjectTableBody = document.getElementById('enrollSubjectTableBody')
 const enrollSelectedStudent = document.getElementById('selectedStudent');
 const enrollSelectedSubject = document.getElementById('selectedSubject');
 let enrollSelectedStudentData = {};
+let enrollSelectedSubjectData = {};
 let selectedProfessorData = {};
 
 
@@ -164,7 +165,7 @@ async function loginUser(email, password) {
         reloadDataTable('desc');
 
         reloadEnrollStudentDataTable()
-
+        reloadEnrollSubjectDataTable()
 
     } else {
         console.log(result.message);
@@ -681,6 +682,23 @@ function unSelectAllRowsExcept(selectedRow, bodyContainerId) {
     });
 }
 
+document.getElementById('enrollStudentSearchBar').addEventListener('input', async (e) => {
+    const value = e.target.value;
+    const column = document.getElementById('enrollStudentsearchFiltering').value
+    console.log(value);
+    
+    try {
+        const response = await fetch(`/get-student?column=${column}&value=${value}`)
+        if(!response.ok) throw new Error(response.error);
+        const result = await response.json()
+        addStudentsToEnrollTable(result)
+    } catch (error) {
+        console.log(error);
+        
+        
+    }
+})
+
 
 
 
@@ -695,6 +713,9 @@ async function reloadEnrollSubjectDataTable() {
         if(!response.ok) throw new Error(response.error);
 
         const result = await response.json();
+
+        console.log(result);
+        
 
         addSubjectsToEnrollTable(result)
 
@@ -711,33 +732,50 @@ function addSubjectsToEnrollTable(data) {
         const newRow = document.createElement('tr');
         newRow.classList.add('subject-table-row');
         newRow.classList.add('enroll-subject-table-row');
-        const { name, shift: lastName, email, ci, phone } = subject;
+        const { id: subjectId, name: subjectName, shift, totalEnrolled } = subject;
+        const { name: professorName, last_name: professorLastName } = subject.professor.person;
+        const { name: facultyName } = subject.faculty;
+        
         newRow.innerHTML = `
-            <td class='name'>${name}</td>
-            <td class='lastName'>${lastName}</td>
-            <td>${email}</td>
-            <td>${ci}</td>
-            <td>${phone}</td>
+            <td class='name'>${subjectName}</td>
+            <td class='lastName'>${shift === 'morning' ? 'Mañana' : 'Tarde'}</td>
+            <td>${professorName} ${professorLastName}</td>
+            <td>${translateFaculty(facultyName)}</td>
+            <td>${totalEnrolled[0].count}</td>
         `;
 
-        // newRow.addEventListener('click', () => {
-        //     selectedProfessorName.textContent = `${name} ${lastName}`;
-        //     newRow.classList.add('selected-row');
-        //     deselectAllRowsExcept(newRow);
-        //     selectedProfessorData = {
-        //         name,
-        //         lastName,
-        //         email,
-        //         ci,
-        //         phone
-        //     }
-        //     console.log(selectedProfessorData);
-
-        // });
+        newRow.addEventListener('click', () => {
+            enrollSelectedSubject.textContent = `${subjectName}`;
+            newRow.classList.add('selected-row');
+            unSelectAllRowsExcept(newRow, 'enrollSubjectTableBody')
+            enrollSelectedSubjectData = {
+                id: subjectId
+            }
+        });
 
         enrollSubjectTableBody.appendChild(newRow);
     })
 }
+
+function translateFaculty(faculty) {
+    switch (faculty) {
+        case 'tech':
+            return 'Tecnología';
+        case 'economy':
+            return 'Economía';
+        case 'law':
+            return 'Derecho';
+        case 'humanities':
+            return 'Humanidades';
+        case 'medicine':
+            return 'Medicina';
+        case 'architecture':
+            return 'Arquitectura';
+        default:
+            return `Couldn't be tranlated`; // Para casos no previstos
+    }
+}
+
 
 
 
