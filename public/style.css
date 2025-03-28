@@ -1533,11 +1533,16 @@ input:-webkit-autofill {
     display: flex !important;
 }
 
+.enroll-subject-no-data-found.show {
+    display: flex !important;
+}
+
 /* .enroll-no-data-found {
     display: flex !important;
 } */
 
-#enrollStudentTableBody::before {
+#enrollStudentTable::before,
+#enrollSubjectTable::before {
     display: none;
     content: '';
     position: absolute;
@@ -1546,7 +1551,8 @@ input:-webkit-autofill {
     width: 100%;
 }
 
-#enrollStudentTableBody::after {
+#enrollStudentTable::after,
+#enrollSubjectTable::after {
     display: none;
     content: '';
     position: absolute;
@@ -1562,11 +1568,19 @@ input:-webkit-autofill {
     animation: loadingButton 1s ease-out infinite;
 }
 
-#enrollStudentTableBody.active-loading::before,
-#enrollStudentTableBody.active-loading::after {
+#enrollStudentTable.active-loading::before,
+#enrollStudentTable.active-loading::after {
     display: block;
 }
 
+#enrollSubjectTable.active-loading::before,
+#enrollSubjectTable.active-loading::after {
+    display: block;
+}
+
+.enroll-subject-search-bar {
+    grid-template-columns: 5% 95%;
+}
 
 
 

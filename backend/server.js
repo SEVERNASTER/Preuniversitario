@@ -116,6 +116,7 @@ app.post('/login', async (req, res) => {
         const token = data.session.access_token;
         const refresh_token = data.session.refresh_token;
 
+        // siempre (* 1000) en el maxAge porque es en milisegundos
         res.cookie('supabase_token', token, {
             httpOnly: true,
             secure: true,
@@ -475,7 +476,7 @@ app.get('/get-all-subjects', authMiddleware, async (req, res) => {
                     *,
                     person: id_person (*)
                 ),
-                totalEnrolled: enrollment(count);
+                totalEnrolled: enrollment(count)
             `)
         
         if(error) throw error;
@@ -485,6 +486,36 @@ app.get('/get-all-subjects', authMiddleware, async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 })
+
+// para obtener materias que tengan coincidencia con el valor de una columna
+
+app.get('/get-subject', authMiddleware, async (req, res) => {
+    try {
+        const { column, value } = req.query;
+
+        const { data, error } = await supabase
+        .from('subject')
+        .select(`
+                *,
+                faculty: id_faculty(*),
+                professor: id_professor(
+                    *,
+                    person: id_person(*)
+                ),
+                totalEnrolled: enrollment(count)
+            `)
+        .or(`${column}.ilike.%${value}%`)
+
+        if(data.length === 0) return res.status(404).json({ message: `No se encontró ninguna materia con el ${column} '${value}'`});
+        if(error) throw error;
+
+        res.status(200).json(data);
+
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+})
+
 
 // para obtener todos los estudiantes
 app.get('/get-all-students', authMiddleware, async (req, res) => {
@@ -506,6 +537,7 @@ app.get('/get-all-students', authMiddleware, async (req, res) => {
     }
 })
 
+// para obtener un estudiante que tenga coincidencia con el valor de una columna
 app.get('/get-student', authMiddleware, async (req, res) => {
     try {
         const { column, value } = req.query;
