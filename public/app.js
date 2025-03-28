@@ -683,7 +683,7 @@ function addStudentsToEnrollTable(data) {
             unSelectAllRowsExcept(newRow, 'enrollStudentTableBody');
 
             enrollSelectedStudentData = {
-                studentId, createdAt, desiredMajor, schollName, guardianName, guardianContact,
+                id: studentId, createdAt, desiredMajor, schollName, guardianName, guardianContact,
                 ci, personId, age, name, type, email, phone, state, gender, lastName
             }
         });
@@ -851,6 +851,48 @@ function deployEnrollSubjectNoDataFound(message) {
     enrollSubjectTableBody.innerHTML = '';
     document.getElementById('enrollSubjectNoDataFound').classList.add('show');
     document.getElementById('enrollSubjectNoDataFound').querySelector('h4').textContent = message;
+}
+
+document.getElementById('enrollRegisterBtn').addEventListener('click', async (e) => {
+    if(isSelectionMissing()) return deployCustomizedAlert(alertIcon, 'Seleccione estudiante y materia');
+    try {
+        changeToLoadingButton(e.target)
+        const { id: studentId, name, lastName } = enrollSelectedStudentData;
+        const { id: subjectId} = enrollSelectedSubjectData;
+
+        const response = await fetch('/insert-enrollment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                studentId,
+                subjectId
+            })
+        });
+        const result = await response.json();
+
+        if(!response.ok) throw new Error(result.message);
+
+        deployCustomizedAlert(checkIcon, 'Inscripcion exitosa');
+
+        clearEnrollmentPanel();
+        reloadEnrollStudentDataTable();
+        reloadEnrollSubjectDataTable();
+
+    } catch (error) {
+        console.log(error);
+        
+    }
+    changeToRegisterButton(e.target)
+    
+})
+
+function isSelectionMissing(){
+    return enrollSelectedStudent.textContent.trim() === ''
+            || enrollSelectedSubject.textContent.trim() === ''
+            || Object.keys(enrollSelectedStudentData).length === 0
+            || Object.keys(enrollSelectedSubjectData).length === 0
 }
 
 

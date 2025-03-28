@@ -623,19 +623,11 @@
                                 <!-- aqui van los datos de los docentes agregados dinamicamente desde
                                     el javascript-->
                                 <div class="no-data-subject " id="enrollSubjectNoData">
-                                    <h4>No hay docentes registrados</h4>
+                                    <h4>No hay materias registradas</h4>
                                 </div>
                                 <div class="no-data-found enroll-subject-no-data-found" id="enrollSubjectNoDataFound">
-                                    <h4>hola mundo</h4>
+                                    <h4>No se encontro</h4>
                                 </div>
-
-                                <tr class="subject-table-row enroll-subject-table-row">
-                                    <td class='name'>${name}</td>
-                                    <td class='lastName'>${lastName}</td>
-                                    <td>${email}</td>
-                                    <td>${ci}</td>
-                                    <td>${phone}</td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -646,7 +638,7 @@
                         <p>Inscribir al estudiante: <span id="selectedStudent"></span> </p>
                         <p>A la materia de: <span id="selectedSubject"></span></p>
                     </div>
-                    <button class="register-button">Inscribir</button>
+                    <button class="register-button" id="enrollRegisterBtn">Inscribir</button>
                 </div>
             </section>
         </div>

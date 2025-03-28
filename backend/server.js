@@ -579,5 +579,26 @@ function translateColumn(column) {
     }
 }
 
+// para inscribir / insertar en la tabla enrollment / inscrpcion
+
+app.post('/insert-enrollment', authMiddleware, async (req, res) => {
+    try {
+        const { studentId, subjectId } = req.body;
+        const { data, error } = await supabase
+        .from('enrollment')
+        .insert([{
+            id_student: studentId,
+            id_subject: subjectId
+        }])
+
+        if(error) throw error;
+
+        res.status(201).json({ message: 'Se ha inscrito al estudiante'})
+    } catch (error) {
+        console.log(error);
+        res.status(error.status || 500).json({ error: error.message});
+    }
+})
+
 
 

@@ -1482,7 +1482,7 @@ input:-webkit-autofill {
 }
 
 .student-title h2 {
-    width: 20%;
+    width: calc(max(300px, 20%));
 }
 
 .student-title h2 , .subject-title h2 {
