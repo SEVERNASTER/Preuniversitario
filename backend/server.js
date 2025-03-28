@@ -57,8 +57,8 @@ async function authMiddleware(req, res, next) {
             }
 
             // Guardar nuevo token en cookies
-            res.cookie("supabase_token", session.session.access_token, { httpOnly: true, secure: true, sameSite: "None" });
-            res.cookie("supabase_refresh_token", session.session.refresh_token, { httpOnly: true, secure: true, sameSite: "None" });
+            res.cookie("supabase_token", session.session.access_token, { httpOnly: true, secure: true, sameSite: "None", maxAge: 60 * 60 * 1000 });
+            res.cookie("supabase_refresh_token", session.session.refresh_token, { httpOnly: true, secure: true, sameSite: "None", maxAge: 60 * 60 * 24 * 7 * 1000 });
 
             req.user = session.user;
             return next();
@@ -120,14 +120,14 @@ app.post('/login', async (req, res) => {
             httpOnly: true,
             secure: true,
             sameSite: "None",
-            maxAge: 60 * 60 * 24,
+            maxAge: 60 * 60 * 1000,// 1 hora
         });
 
         res.cookie("supabase_refresh_token", refresh_token, {
             httpOnly: true,
             secure: true,
             sameSite: "None",
-            maxAge: 60 * 60 * 24 * 30,
+            maxAge: 60 * 60 * 24 * 7 * 1000,// 1 semana
         });
 
         res.status(200).json({
@@ -510,17 +510,16 @@ app.get('/get-student', authMiddleware, async (req, res) => {
     try {
         const { column, value } = req.query;
         const { data, error } = await supabase
-        .from('student')
+        .from('person')
         .select(`
                 *, 
-                person: id_person (*)
+                student (*)
             `)
-        .eq(`person.type`, value)
-        .or(`person.${column}.ilike.%${value}%`)
-        // .filter('person.type', 'eq', 'student')
+        .eq(`type`, 'student')
+        .or(`${column}.ilike.%${value}%`)
 
         if(error) throw error;
-
+        if(data.length === 0) return res.status(404).json({ message: `No se encontró ningún estudiante con el ${translateColumn(column)} '${value}'` })
 
         res.status(200).json(data);
 
@@ -529,6 +528,24 @@ app.get('/get-student', authMiddleware, async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 })
+
+function translateColumn(column) {
+    switch (column) {
+        case 'name':
+            return 'nombre';
+        case 'last_name':
+            return 'apellido';
+        case 'ci':
+            return 'C.I.';
+        case 'email':
+            return 'E-mail';
+            break
+        case 'phone':
+            return 'celular';
+        default:
+            return '';
+    }
+}
 
 
 

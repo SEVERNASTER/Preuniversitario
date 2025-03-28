@@ -1529,6 +1529,44 @@ input:-webkit-autofill {
     font-weight: 500;
 }
 
+.enroll-no-data-found.show {
+    display: flex !important;
+}
+
+/* .enroll-no-data-found {
+    display: flex !important;
+} */
+
+#enrollStudentTableBody::before {
+    display: none;
+    content: '';
+    position: absolute;
+    background-color: rgb(142, 7, 91, .5);
+    height: 100%;
+    width: 100%;
+}
+
+#enrollStudentTableBody::after {
+    display: none;
+    content: '';
+    position: absolute;
+    height: 60px;
+    width: 60px;
+    border-top: solid 7px #fff;
+    border-radius: 50%;
+    margin: auto;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    top: 0;
+    animation: loadingButton 1s ease-out infinite;
+}
+
+#enrollStudentTableBody.active-loading::before,
+#enrollStudentTableBody.active-loading::after {
+    display: block;
+}
+
 
 
 

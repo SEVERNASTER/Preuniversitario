@@ -222,6 +222,7 @@ sideSubject.addEventListener('click', () => {
 
 sideEnroll.addEventListener('click', () => {
     switchPanelViewTo(enrollmentPanel)
+    reloadEnrollStudentDataTable()
 });
 
 function switchPanelViewTo(panel) {
@@ -631,6 +632,8 @@ async function updateTotalCard(route, className, idElement) {
 
 
 async function reloadEnrollStudentDataTable() {
+    document.getElementById('enrollStudentTableBody').classList.add('active-loading');
+
     try {
         const response = await fetch('/get-all-students');
 
@@ -644,9 +647,11 @@ async function reloadEnrollStudentDataTable() {
         console.log(error);
 
     }
+    document.getElementById('enrollStudentTableBody').classList.remove('active-loading');
 }
 
 function addStudentsToEnrollTable(data) {
+    if(data.lenght === 0) return;
     enrollStudentTableBody.innerHTML = '';
     data.map(personData => {
         const newRow = document.createElement('tr');
@@ -672,7 +677,7 @@ function addStudentsToEnrollTable(data) {
             enrollSelectedStudent.textContent = `${name} ${lastName}`;
             newRow.classList.add('selected-row');
             unSelectAllRowsExcept(newRow, 'enrollStudentTableBody');
-            
+
             enrollSelectedStudentData = {
                 studentId, createdAt, desiredMajor, schollName, guardianName, guardianContact,
                 ci, personId, age, name, type, email, phone, state, gender, lastName
@@ -690,21 +695,42 @@ function unSelectAllRowsExcept(selectedRow, bodyContainerId) {
 }
 
 document.getElementById('enrollStudentSearchBar').addEventListener('input', async (e) => {
+    document.getElementById('enrollStudentTableBody').classList.add('active-loading');
+
     const value = e.target.value;
     const column = document.getElementById('enrollStudentsearchFiltering').value
+    document.getElementById('enrollStudentNoDataFound').classList.remove('show')
     console.log(value);
 
     try {
         const response = await fetch(`/get-student?column=${column}&value=${value}`)
-        if (!response.ok) throw new Error(response.error);
+        
         const result = await response.json()
-        addStudentsToEnrollTable(result)
+
+        if(response.status === 404) {
+            deployEnrollNoDataFound('enrollStudentNoDataFound', result.message);
+            document.getElementById('enrollStudentTableBody').classList.remove('active-loading');
+        }else{
+            if (!response.ok) throw new Error(response.error);
+            addStudentsToEnrollTable(result)
+        }
+        
+
     } catch (error) {
         console.log(error);
-
-
     }
+    document.getElementById('enrollStudentTableBody').classList.remove('active-loading');
 })
+
+function deployEnrollNoDataFound(noDataId, message) {
+    addStudentsToEnrollTable([]);
+    enrollStudentTableBody.innerHTML = '';
+    document.getElementById(noDataId).classList.add('show');
+    document.getElementById(noDataId).querySelector('h4').textContent = message;
+}
+
+
+
 
 
 
@@ -721,9 +747,6 @@ async function reloadEnrollSubjectDataTable() {
 
         const result = await response.json();
 
-        console.log(result);
-
-
         addSubjectsToEnrollTable(result)
 
     } catch (error) {
@@ -731,7 +754,6 @@ async function reloadEnrollSubjectDataTable() {
 
     }
 }
-
 
 function addSubjectsToEnrollTable(data) {
     enrollSubjectTableBody.innerHTML = '';
