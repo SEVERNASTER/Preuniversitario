@@ -1833,18 +1833,6 @@ input:-webkit-autofill {
     border: solid #000;
 }
 
-.modal-degree-item:nth-child(1){
-    background: linear-gradient(90deg, #36F23E, #13D5CF);
-}
-
-.modal-degree-item:nth-child(2){
-    background: linear-gradient(90deg, #FF2CD9, #FDDC2A);
-}
-
-.modal-degree-item:nth-child(3){
-    background: linear-gradient(90deg, #F108DA, #2908DE);
-}
-
 .professional-info {
     display: none;
     height: 100%;

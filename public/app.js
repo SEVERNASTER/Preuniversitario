@@ -61,6 +61,16 @@ let enrollSelectedSubjectData = {};
 let selectedProfessorData = {};
 let overviewSelectedPerson = {};
 
+const logoColorPallete = ['#13F4CF, #D716FF', '#F3FB5E, #FE235F', '#15EED6, #9F16FF',
+    '#0CE6B6, #DADB14', '#DE0BF9, #2433FF', '#EE2B92, #17534B', '#F30E90, #950CB4',
+    '#13F0CC, #0D6052', '#F46534, #581398', '#36F0F5, #0F56BD', '#E2E585, #3641FD',
+    '#167938, #C0F475', '#F0BF61, #F21E50', '#2F9FEC, #F23E85', '#7E32F4, #34107D',
+    '#5FFABB, #3C38D6', '#D32167, #330879'];
+
+const degreesColorPalete = ['#36F23D, #17D6CA', '#F51CEA, #FEE227', '#FED910, #3DEF34',
+    '#16E2F5, #F409FD', '#F22067, #FCDB09', '#FB0818, #D70A9F', '#F009DA, #1908E7',
+    '#0B4BFE, #13E4FD', '#126FE2, #16E334'];
+
 
 let degreeItemsArray = [];
 
@@ -384,6 +394,7 @@ function insertDegreeRowsIntoModal(data) {
         const newDegreeRow = document.createElement('div');
         newDegreeRow.classList.add('degree-item');
         newDegreeRow.classList.add('modal-degree-item');
+        newDegreeRow.style.background = `linear-gradient(90deg, ${getRandomDegreeColor()})`;
 
         newDegreeRow.innerHTML = `
             <div class="degree-content">
@@ -396,12 +407,6 @@ function insertDegreeRowsIntoModal(data) {
     })
 }
 
-const logoColorPallete = ['#13F4CF, #D716FF', '#F3FB5E, #FE235F', '#15EED6, #9F16FF',
-    '#0CE6B6, #DADB14', '#DE0BF9, #2433FF', '#EE2B92, #17534B', '#F30E90, #950CB4',
-    '#13F0CC, #0D6052', '#F46534, #581398', '#36F0F5, #0F56BD', '#E2E585, #3641FD',
-    '#167938, #C0F475', '#F0BF61, #F21E50', '#2F9FEC, #F23E85', '#7E32F4, #34107D',
-    '#5FFABB, #3C38D6', '#D32167, #330879'];
-
 function adjustModalInterface(adjust) {
     viewModalContainer.classList.toggle('adjust', adjust);
     document.getElementById('modalAcademicInfo').classList.toggle('adjust', adjust);
@@ -410,12 +415,17 @@ function adjustModalInterface(adjust) {
     document.getElementById('modalProfessionalInfo').classList.toggle('adjust', adjust);
     document.getElementById('vmTitleContainer').classList.toggle('adjust', adjust);
     // para cambiar el color del logo dinamicamente
-    document.getElementById('piLogo').style.background = `linear-gradient(45deg, ${getRandomGradientColor()})`;
+    document.getElementById('piLogo').style.background = `linear-gradient(45deg, ${getRandomLogoColor()})`;
 }
 
-function getRandomGradientColor() {
+function getRandomLogoColor() {
     const randomIndex = Math.floor(Math.random() * logoColorPallete.length);
     return logoColorPallete[randomIndex];
+}
+
+function getRandomDegreeColor() {
+    const randomIndex = Math.floor(Math.random() * degreesColorPalete.length);
+    return degreesColorPalete[randomIndex];
 }
 
 // completar esto para la obtencion de datos si docente o estuidante y hacer la ventana modal donde
