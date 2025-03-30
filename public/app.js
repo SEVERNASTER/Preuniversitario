@@ -339,7 +339,6 @@ async function reloadDataTable(orderBy) {
                 shortName: (name.charAt(0) + lastName.charAt(0)).toUpperCase(),
                 state: translateState(state)
             }
-            console.log(overviewSelectedPerson);
 
             adjustModalInterface(type === 'professor');
             addInfoToModalView(overviewSelectedPerson);
