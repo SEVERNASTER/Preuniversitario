@@ -686,9 +686,9 @@
     </div>
 
     <div closedBy="any" class="data-person-view-modal" id="modalView">
-        <div class="view-modal-container">
+        <div class="view-modal-container" id="viewModalContainer">
             <div class="vm-title-container">
-                <h2>Información de <span id="typeOfPerson">Estudiante</span></h2>
+                <h2>Información del <span id="type">Estudiante</span></h2>
                 <!-- <div class="vm-icon-container">
                     <i class="fa-solid fa-xmark"></i>
                 </div> -->
@@ -697,12 +697,12 @@
             <div class="personal-info">
                 <div class="pi-header">
                     <div class="pi-logo">
-                        <p>LG</p>
+                        <p id="shortName">LG</p>
                     </div>
                     <div class="pi-name-container">
-                        <h3>Leandro Gado</h3>
+                        <h3 id="fullName">Leandro Gado</h3>
                         <div class="pi-state">
-                            <h4>Activo</h4>
+                            <h4 id="state">Activo</h4>
                         </div>
                     </div>
                 </div>
@@ -712,23 +712,23 @@
                     <div class="pi-body-container">
                         <div class="info-item">
                             <h4>CI:</h4>
-                            <p>26154858</p>
+                            <p id="ci">26154858</p>
                         </div>
                         <div class="info-item">
                             <h4>Edad:</h4>
-                            <p>18</p>
+                            <p id="age">18</p>
                         </div>
                         <div class="info-item">
                             <h4>Género:</h4>
-                            <p>Masculino</p>
+                            <p id="gender">Masculino</p>
                         </div>
                         <div class="info-item">
                             <h4>Teléfono:</h4>
-                            <p>62154859</p>
+                            <p id="phone">62154859</p>
                         </div>
                         <div class="info-item">
                             <h4>Correo:</h4>
-                            <p>leoAI@example.com</p>
+                            <p id="email">leoAI@example.com</p>
                         </div>
                     </div>
                 </div>
@@ -739,11 +739,11 @@
                 <div class="academic-info-container">
                     <div class="info-item">
                         <h4>Colegio:</h4>
-                        <p>Rosa San Salvador</p>
+                        <p id="school">Rosa San Salvador</p>
                     </div>
                     <div class="info-item">
                         <h4>Carrera Deseada:</h4>
-                        <p>Ingenieria Industrial</p>
+                        <p id="desiredMajor">Ingenieria Industrial</p>
                     </div>
                 </div>
             </div>
@@ -753,11 +753,11 @@
                 <div class="guardian-info-container">
                     <div class="info-item">
                         <h4>Nombre del Tutor:</h4>
-                        <p>Juana de Arco</p>
+                        <p id="guardianName">Juana de Arco</p>
                     </div>
                     <div class="info-item">
                         <h4>Contacto del Tutor:</h4>
-                        <p>75481926</p>
+                        <p id="guardianContact">75481926</p>
                     </div>
                 </div>
             </div>

@@ -53,6 +53,8 @@ const enrollStudentTableBody = document.getElementById('enrollStudentTableBody')
 const enrollSubjectTableBody = document.getElementById('enrollSubjectTableBody');
 const enrollSelectedStudent = document.getElementById('selectedStudent');
 const enrollSelectedSubject = document.getElementById('selectedSubject');
+const modalView = document.getElementById('modalView');
+const viewModalContainer = document.getElementById('viewModalContainer');
 let enrollSelectedStudentData = {};
 let enrollSelectedSubjectData = {};
 let selectedProfessorData = {};
@@ -61,6 +63,14 @@ let overviewSelectedPerson = {};
 
 let degreeItemsArray = [];
 
+document.addEventListener('click', (e) => {
+    if(e.target === modalView) {
+        viewModalContainer.classList.remove('show')
+        setTimeout(() => {
+            modalView.classList.remove('show');
+        }, 200);
+    }
+})
 
 // const logoutBtn = document.getElementById('logout');
 const checkIcon = {
@@ -310,17 +320,29 @@ async function reloadDataTable(orderBy) {
 
         newRow.addEventListener('click', () => {
             overviewSelectedPerson = {
-                name, lastName, age, ci, email, gender, id, phone, state, type, 
-                [type]: extraData
+                age, ci, email, gender, phone, type, 
+                // [type]: extraData,
+                fullName: name + ' ' + lastName,
+                shortName: (name.charAt(0) + lastName.charAt(0)).toUpperCase(),
+                state: translateState(state)
             }
+            addInfoToModalView();
             console.log(overviewSelectedPerson);
-            
+            modalView.classList.add('show')
+            setTimeout(() => {
+                viewModalContainer.classList.add('show');
+            }, 1);
         })
-
 
         overviewTable.appendChild(newRow);
     });
     overviewTable.classList.remove('active-loading');
+}
+
+function addInfoToModalView(){
+    Object.entries(overviewSelectedPerson).forEach(([key, value]) => {
+        document.getElementById(key).textContent = value;
+    })
 }
 
 // completar esto para la obtencion de datos si docente o estuidante y hacer la ventana modal donde
@@ -940,9 +962,6 @@ function isSelectionMissing() {
         || Object.keys(enrollSelectedSubjectData).length === 0
 }
 
-document.getElementById('modalButton').addEventListener('click', () => {
-    document.getElementById('modalView').showModal();
-})
 
 
 

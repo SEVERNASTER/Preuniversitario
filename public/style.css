@@ -303,7 +303,7 @@ input:-webkit-autofill {
 .login-page {
     position: absolute;
     z-index: 50;
-    transform: translateY(-100%);
+    /* transform: translateY(-100%); */
     /* display: none; */
 }
 
@@ -1589,7 +1589,7 @@ input:-webkit-autofill {
 /* para la ventana modal de la vista de datos de las personas */
 
 .data-person-view-modal {
-    /* display: none !important; */
+    display: none !important;
     height: 100%;
     width: 100%;
     position: absolute;
@@ -1598,6 +1598,10 @@ input:-webkit-autofill {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.data-person-view-modal.show {
+    display: flex !important;
 }
 
 
@@ -1610,6 +1614,14 @@ input:-webkit-autofill {
     grid-template-rows: 10% 50% 20% 20%;
     border-radius: 10px;
     overflow: hidden;
+    transform: scale(.5);
+    opacity: .5;
+    transition: .3s;
+}
+
+.view-modal-container.show {
+    transform: scale(1);
+    opacity: 1;
 }
 
 .view-modal-container.adjust {
@@ -1622,9 +1634,10 @@ input:-webkit-autofill {
     justify-content: center;
     align-items: center;
     color: #CC0E43;
-    background-color: #CC0E43;
+    /* background-color: #CC0E43; */
+    background: linear-gradient(90deg, #12F5D5, #cc17fe);
     color: #fff;
-    border-bottom: dashed #650360 2px;
+    /* border-bottom: dashed #650360 2px; */
 }
 
 .vm-icon-container {
@@ -1673,7 +1686,8 @@ input:-webkit-autofill {
     border-radius: 50%;
     font-size: 30px;
     font-weight: 600;
-    background-color: #4A6CF7;
+    /* background-color: #4A6CF7; */
+    background: linear-gradient(45deg, #F7058D, #9802AF);
     color: #Fff;
     transform: scale(.8);
 }
