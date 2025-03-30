@@ -687,7 +687,7 @@
 
     <div closedBy="any" class="data-person-view-modal" id="modalView">
         <div class="view-modal-container" id="viewModalContainer">
-            <div class="vm-title-container">
+            <div class="vm-title-container" id="vmTitleContainer">
                 <h2>Información del <span id="type">Estudiante</span></h2>
                 <!-- <div class="vm-icon-container">
                     <i class="fa-solid fa-xmark"></i>
@@ -696,13 +696,13 @@
 
             <div class="personal-info">
                 <div class="pi-header">
-                    <div class="pi-logo">
-                        <p id="shortName">LG</p>
+                    <div class="pi-logo" id="piLogo">
+                        <p id="shortName"></p>
                     </div>
                     <div class="pi-name-container">
-                        <h3 id="fullName">Leandro Gado</h3>
+                        <h3 id="fullName"></h3>
                         <div class="pi-state">
-                            <h4 id="state">Activo</h4>
+                            <h4 id="state"></h4>
                         </div>
                     </div>
                 </div>
@@ -712,53 +712,74 @@
                     <div class="pi-body-container">
                         <div class="info-item">
                             <h4>CI:</h4>
-                            <p id="ci">26154858</p>
+                            <p id="ci"></p>
                         </div>
                         <div class="info-item">
                             <h4>Edad:</h4>
-                            <p id="age">18</p>
+                            <p id="age"></p>
                         </div>
                         <div class="info-item">
                             <h4>Género:</h4>
-                            <p id="gender">Masculino</p>
+                            <p id="gender"></p>
                         </div>
                         <div class="info-item">
                             <h4>Teléfono:</h4>
-                            <p id="phone">62154859</p>
+                            <p id="phone"></p>
                         </div>
                         <div class="info-item">
                             <h4>Correo:</h4>
-                            <p id="email">leoAI@example.com</p>
+                            <p id="email"></p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="academic-info">
+            <div class="academic-info" id="modalAcademicInfo">
                 <h3>Información Académica</h3>
                 <div class="academic-info-container">
                     <div class="info-item">
-                        <h4>Colegio:</h4>
-                        <p id="school">Rosa San Salvador</p>
+                        <h4>Unidad Educativa:</h4>
+                        <p class="student-info" id="schoolName"></p>
                     </div>
                     <div class="info-item">
                         <h4>Carrera Deseada:</h4>
-                        <p id="desiredMajor">Ingenieria Industrial</p>
+                        <p class="student-info" id="desiredMajor"></p>
                     </div>
                 </div>
             </div>
 
-            <div class="guardian-info">
+            <div class="academic-info professional-info" id="modalProfessionalInfo">
+                <h3>Información Profesional</h3>
+                <div class="academic-info-container">
+                    <div class="info-item">
+                        <h4>Tipo de Contrato:</h4>
+                        <p id="contractType"></p>
+                    </div>
+                    <div class="info-item">
+                        <h4>Años de Expericencia:</h4>
+                        <p id="experienceYears"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="guardian-info" id="modalGuardianInfo">
                 <h3>Información del Tutor</h3>
                 <div class="guardian-info-container">
                     <div class="info-item">
                         <h4>Nombre del Tutor:</h4>
-                        <p id="guardianName">Juana de Arco</p>
+                        <p class="student-info" id="guardianName"></p>
                     </div>
                     <div class="info-item">
                         <h4>Contacto del Tutor:</h4>
-                        <p id="guardianContact">75481926</p>
+                        <p class="student-info" id="guardianContact"></p>
                     </div>
+                </div>
+            </div>
+
+            <div class="degree-info" id="modalDegreeInfo">
+                <h3>Formación Académica</h3>
+                <div class="degree-info-container" id="degreeInfoContainer">
+                    
                 </div>
             </div>
         </div>

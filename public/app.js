@@ -55,6 +55,7 @@ const enrollSelectedStudent = document.getElementById('selectedStudent');
 const enrollSelectedSubject = document.getElementById('selectedSubject');
 const modalView = document.getElementById('modalView');
 const viewModalContainer = document.getElementById('viewModalContainer');
+const modalDegreeContainer = document.getElementById('degreeInfoContainer');
 let enrollSelectedStudentData = {};
 let enrollSelectedSubjectData = {};
 let selectedProfessorData = {};
@@ -64,7 +65,7 @@ let overviewSelectedPerson = {};
 let degreeItemsArray = [];
 
 document.addEventListener('click', (e) => {
-    if(e.target === modalView) {
+    if (e.target === modalView) {
         viewModalContainer.classList.remove('show')
         setTimeout(() => {
             modalView.classList.remove('show');
@@ -209,7 +210,7 @@ function hideAllIconsExcept(idIcon) {
 // para los botones de la barra lateral
 
 sideOverview.addEventListener('click', () => {
-    if(currentPanel != overviewPanel){
+    if (currentPanel != overviewPanel) {
         reloadDataTable('desc');
         switchPanelViewTo(overviewPanel)
         updateTotalCard('professors', 'total-professors', 'overviewTotalProfessors');
@@ -299,7 +300,7 @@ async function reloadDataTable(orderBy) {
     const res = await fetch(`/get-all-people?orderBy=${orderBy}`);
     const data = await res.json();
     console.log(data);
-    
+
 
     overviewTable.innerHTML = '';
     data.forEach(personData => {
@@ -307,7 +308,7 @@ async function reloadDataTable(orderBy) {
         const createdAt = new Date(personData.created_at);
         const formattedDate = createdAt.toLocaleDateString("es-ES");
 
-        const { name, last_name: lastName, age, ci, email, gender, id, phone, state, type} = personData;
+        const { name, last_name: lastName, age, ci, email, gender, id, phone, state, type } = personData;
         const extraData = getAllDataFrom(type === 'student' ? personData.student[0] : personData.professor[0], type);
 
         newRow.innerHTML = `
@@ -320,18 +321,20 @@ async function reloadDataTable(orderBy) {
 
         newRow.addEventListener('click', () => {
             overviewSelectedPerson = {
-                age, ci, email, gender, phone, type, 
-                // [type]: extraData,
+                age, ci, email, phone,
+                'gender': gender === 'male' ? 'Masculino' : 'Femenino',
+                'type': translateTypeOfPerson(type),
+                [type]: extraData,
                 fullName: name + ' ' + lastName,
                 shortName: (name.charAt(0) + lastName.charAt(0)).toUpperCase(),
                 state: translateState(state)
             }
-            addInfoToModalView();
             console.log(overviewSelectedPerson);
+
+            adjustModalInterface(type === 'professor');
+            addInfoToModalView(overviewSelectedPerson);
             modalView.classList.add('show')
-            setTimeout(() => {
-                viewModalContainer.classList.add('show');
-            }, 1);
+            requestAnimationFrame(() => viewModalContainer.classList.add('show'));
         })
 
         overviewTable.appendChild(newRow);
@@ -339,16 +342,86 @@ async function reloadDataTable(orderBy) {
     overviewTable.classList.remove('active-loading');
 }
 
-function addInfoToModalView(){
+function addInfoToModalView(overviewSelectedPerson) {
     Object.entries(overviewSelectedPerson).forEach(([key, value]) => {
-        document.getElementById(key).textContent = value;
+
+        if (key === 'student') {
+            const { id, ...student } = value;
+            console.log(student);
+            document.querySelectorAll('.student-info').forEach(item => {
+                document.getElementById(item.id).textContent = student[item.id];
+            })
+            return;
+        } else if (key === 'professor') {
+
+            document.getElementById('contractType').textContent = translateContractType(value.contractType);
+            document.getElementById('experienceYears').textContent = value.experienceYears + ' años';
+
+            insertDegreeRowsIntoModal(value.degrees);
+            return;
+        }
+
+        const element = document.getElementById(key);
+        if (element) element.textContent = value;
+
     })
+}
+
+function translateContractType(value) {
+    const translations = {
+        "full-time": "Tiempo Completo",
+        "part-time": "Medio Tiempo",
+        "permanent": "Indefinido"
+    };
+
+    return translations[value] || "Desconocido";
+}
+
+function insertDegreeRowsIntoModal(data) {
+    modalDegreeContainer.innerHTML = '';
+    data.forEach(degree => {
+        const { name, type_of_degree: typeOfDegree, institution, graduation_year: graduationYear } = degree;
+        const newDegreeRow = document.createElement('div');
+        newDegreeRow.classList.add('degree-item');
+        newDegreeRow.classList.add('modal-degree-item');
+
+        newDegreeRow.innerHTML = `
+            <div class="degree-content">
+                <h4>${name}</h4>
+                <p>${typeOfDegree} - ${institution} (${graduationYear}) </p>
+            </div>
+        `;
+
+        modalDegreeContainer.appendChild(newDegreeRow);
+    })
+}
+
+const logoColorPallete = ['#13F4CF, #D716FF', '#F3FB5E, #FE235F', '#15EED6, #9F16FF',
+    '#0CE6B6, #DADB14', '#DE0BF9, #2433FF', '#EE2B92, #17534B', '#F30E90, #950CB4',
+    '#13F0CC, #0D6052', '#F46534, #581398', '#36F0F5, #0F56BD', '#E2E585, #3641FD',
+    '#167938, #C0F475', '#F0BF61, #F21E50', '#2F9FEC, #F23E85', '#7E32F4, #34107D',
+    '#5FFABB, #3C38D6', '#D32167, #330879'];
+
+function adjustModalInterface(adjust) {
+    viewModalContainer.classList.toggle('adjust', adjust);
+    document.getElementById('modalAcademicInfo').classList.toggle('adjust', adjust);
+    document.getElementById('modalGuardianInfo').classList.toggle('adjust', adjust);
+    document.getElementById('modalDegreeInfo').classList.toggle('adjust', adjust);
+    document.getElementById('modalProfessionalInfo').classList.toggle('adjust', adjust);
+    document.getElementById('vmTitleContainer').classList.toggle('adjust', adjust);
+    // para cambiar el color del logo dinamicamente
+    document.getElementById('piLogo').style.background = `linear-gradient(45deg, ${getRandomGradientColor()})`;
+}
+
+function getRandomGradientColor() {
+    const randomIndex = Math.floor(Math.random() * logoColorPallete.length);
+    return logoColorPallete[randomIndex];
 }
 
 // completar esto para la obtencion de datos si docente o estuidante y hacer la ventana modal donde
 // se mostrara toda esta informacion
-function getAllDataFrom(data, type){
-    if(type === 'student'){
+function getAllDataFrom(data, type) {
+    if (type === 'student') {
         return {
             desiredMajor: data.desired_major,
             guardianContact: data.guardian_contact,
@@ -356,7 +429,7 @@ function getAllDataFrom(data, type){
             id: data.id,
             schoolName: data.school_name
         }
-    }else {
+    } else {
         return {
             contractType: data.contract_type,
             experienceYears: data.experience_years,

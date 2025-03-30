@@ -1625,7 +1625,7 @@ input:-webkit-autofill {
 }
 
 .view-modal-container.adjust {
-    grid-template-rows: 10% 50% 15% 25%;
+    grid-template-rows: 10% 45% 15% 30%;
 }
 
 .vm-title-container {
@@ -1635,9 +1635,13 @@ input:-webkit-autofill {
     align-items: center;
     color: #CC0E43;
     /* background-color: #CC0E43; */
-    background: linear-gradient(90deg, #12F5D5, #cc17fe);
+    background: linear-gradient(90deg, #EE1192, #3B68F5);
     color: #fff;
     /* border-bottom: dashed #650360 2px; */
+}
+
+.vm-title-container.adjust {
+    background: linear-gradient(90deg, #6608A3, #DD08A9);
 }
 
 .vm-icon-container {
@@ -1759,11 +1763,7 @@ input:-webkit-autofill {
 }
 
 .academic-info.adjust {
-    grid-template-rows: 20% 80%;
-}
-
-.academic-info.adjust h3 {
-    padding-top: 7px;
+    display: none;
 }
 
 .academic-info h3 {
@@ -1787,6 +1787,10 @@ input:-webkit-autofill {
     margin: auto;
 }
 
+.guardian-info.adjust {
+    display: none;
+}
+
 .guardian-info h3 {
     margin: auto 0;
     padding-top: 20px;
@@ -1799,7 +1803,72 @@ input:-webkit-autofill {
     grid-template-columns: 50% 50%;
 }
 
+.degree-info {
+    display: none;
+    height: 100%;
+    width: 90%;
+    margin: auto;
+    grid-template-rows: 20% 80%;
+    padding: 10px 0;
+}
 
+.degree-info.adjust {
+    display: grid;
+}
+
+.degree-info h3 {
+    color: #100986;
+    margin: auto 0;
+    font-size: 20px;
+}
+
+.degree-info-container {
+    overflow: auto;
+    border: solid 3px #3E0F67;
+    border-radius: 10px;
+}
+
+.modal-degree-item {
+    color: #fff;
+    border: solid #000;
+}
+
+.modal-degree-item:nth-child(1){
+    background: linear-gradient(90deg, #36F23E, #13D5CF);
+}
+
+.modal-degree-item:nth-child(2){
+    background: linear-gradient(90deg, #FF2CD9, #FDDC2A);
+}
+
+.modal-degree-item:nth-child(3){
+    background: linear-gradient(90deg, #F108DA, #2908DE);
+}
+
+.professional-info {
+    display: none;
+    height: 100%;
+    width: 90%;
+    margin: auto;
+}
+
+.professional-info h3 {
+    padding-top: 10px;
+}
+
+.professional-info.adjust {
+    display: grid;
+}
+
+
+/* .data-person-view-modal {
+    display: flex !important;
+}
+
+.view-modal-container {
+    transform: scale(1);
+    opacity: 1;
+} */
 
 
 
