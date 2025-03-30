@@ -240,7 +240,14 @@ app.get('/get-all-people', async (req, res) => {
 
         const { data, error } = await supabase
             .from('person')
-            .select(`*`)
+            .select(`
+                    *,
+                    student(*),
+                    professor(
+                        *,
+                        degrees: degree(*)
+                    )
+                `)
             .order('created_at', { ascending: isAscending });
 
         if (!data) console.log('Data is null: ' + data);
@@ -520,7 +527,6 @@ app.get('/get-subject', authMiddleware, async (req, res) => {
 // para obtener todos los estudiantes
 app.get('/get-all-students', authMiddleware, async (req, res) => {
     try {
-        
         const { data: studentData, error: studentError } = await  supabase
         .from('person')
         .select(`

@@ -116,6 +116,10 @@
                     Materia</button>
                 <button id="sideEnroll" class="side-bar-button"><i
                         class="fa-solid fa-pen-to-square"></i>Inscribir</button>
+
+
+
+                <button id="modalButton" class="side-bar-button">hola</button>
             </div>
 
         </div>
@@ -138,7 +142,7 @@
                             <i class="fa-solid fa-graduation-cap"></i>
                         </div>
                         <h3>Total de Estudiantes</h3>
-                        <p class="total-card-value" id="overviewTotalStudents"></p>
+                        <p class="total-students total-card-value" id="overviewTotalStudents"></p>
                     </div>
 
                     <div class="card">
@@ -363,9 +367,9 @@
                             <div class="register-input-group pr-register-input-group">
                                 <label for="prContractType">Tipo de Contrato:</label>
                                 <select id="prContractType" name="prContractType">
-                                    <option value="male" selected>Tiempo Completo</option>
-                                    <option value="female">Medio Tiempo</option>
-                                    <option value="female">Indefinido</option>
+                                    <option value="full-time" selected>Tiempo Completo</option>
+                                    <option value="part-time">Medio Tiempo</option>
+                                    <option value="permanent">Indefinido</option>
                                 </select>
                             </div>
                         </div>
@@ -678,6 +682,85 @@
                     <button form="professorModalForm">Guardar</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <div closedBy="any" class="data-person-view-modal" id="modalView">
+        <div class="view-modal-container">
+            <div class="vm-title-container">
+                <h2>Información de <span id="typeOfPerson">Estudiante</span></h2>
+                <!-- <div class="vm-icon-container">
+                    <i class="fa-solid fa-xmark"></i>
+                </div> -->
+            </div>
+
+            <div class="personal-info">
+                <div class="pi-header">
+                    <div class="pi-logo">
+                        <p>LG</p>
+                    </div>
+                    <div class="pi-name-container">
+                        <h3>Leandro Gado</h3>
+                        <div class="pi-state">
+                            <h4>Activo</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pi-body">
+                    <h3>Información Personal</h3>
+                    <div class="pi-body-container">
+                        <div class="info-item">
+                            <h4>CI:</h4>
+                            <p>26154858</p>
+                        </div>
+                        <div class="info-item">
+                            <h4>Edad:</h4>
+                            <p>18</p>
+                        </div>
+                        <div class="info-item">
+                            <h4>Género:</h4>
+                            <p>Masculino</p>
+                        </div>
+                        <div class="info-item">
+                            <h4>Teléfono:</h4>
+                            <p>62154859</p>
+                        </div>
+                        <div class="info-item">
+                            <h4>Correo:</h4>
+                            <p>leoAI@example.com</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="academic-info">
+                <h3>Información Académica</h3>
+                <div class="academic-info-container">
+                    <div class="info-item">
+                        <h4>Colegio:</h4>
+                        <p>Rosa San Salvador</p>
+                    </div>
+                    <div class="info-item">
+                        <h4>Carrera Deseada:</h4>
+                        <p>Ingenieria Industrial</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="guardian-info">
+                <h3>Información del Tutor</h3>
+                <div class="guardian-info-container">
+                    <div class="info-item">
+                        <h4>Nombre del Tutor:</h4>
+                        <p>Juana de Arco</p>
+                    </div>
+                    <div class="info-item">
+                        <h4>Contacto del Tutor:</h4>
+                        <p>75481926</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

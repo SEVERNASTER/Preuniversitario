@@ -56,6 +56,7 @@ const enrollSelectedSubject = document.getElementById('selectedSubject');
 let enrollSelectedStudentData = {};
 let enrollSelectedSubjectData = {};
 let selectedProfessorData = {};
+let overviewSelectedPerson = {};
 
 
 let degreeItemsArray = [];
@@ -163,9 +164,9 @@ async function loginUser(email, password) {
         loginPage.style.transform = 'translateY(-100%)';
         deployCustomizedAlert(checkIcon, `${result.message}`);
         reloadDataTable('desc');
-
-        reloadEnrollStudentDataTable()
-        reloadEnrollSubjectDataTable()
+        updateTotalCard('professors', 'total-professors', 'overviewTotalProfessors');
+        updateTotalCard('subjects', 'total-subjects', 'overviewTotalSubjects');
+        updateTotalCard('students', 'total-students', 'overviewTotalStudents');
 
     } else {
         console.log(result.message);
@@ -198,7 +199,14 @@ function hideAllIconsExcept(idIcon) {
 // para los botones de la barra lateral
 
 sideOverview.addEventListener('click', () => {
-    switchPanelViewTo(overviewPanel)
+    if(currentPanel != overviewPanel){
+        reloadDataTable('desc');
+        switchPanelViewTo(overviewPanel)
+        updateTotalCard('professors', 'total-professors', 'overviewTotalProfessors');
+        updateTotalCard('subjects', 'total-subjects', 'overviewTotalSubjects');
+        updateTotalCard('students', 'total-students', 'overviewTotalStudents');
+    }
+
 });
 
 sideStudent.addEventListener('click', () => {
@@ -280,12 +288,17 @@ async function reloadDataTable(orderBy) {
     overviewTable.classList.add('active-loading');
     const res = await fetch(`/get-all-people?orderBy=${orderBy}`);
     const data = await res.json();
+    console.log(data);
+    
 
     overviewTable.innerHTML = '';
     data.forEach(personData => {
         const newRow = document.createElement('tr');
         const createdAt = new Date(personData.created_at);
         const formattedDate = createdAt.toLocaleDateString("es-ES");
+
+        const { name, last_name: lastName, age, ci, email, gender, id, phone, state, type} = personData;
+        const extraData = getAllDataFrom(type === 'student' ? personData.student[0] : personData.professor[0], type);
 
         newRow.innerHTML = `
             <td>${personData.name} ${personData.last_name}</td>
@@ -294,9 +307,41 @@ async function reloadDataTable(orderBy) {
             <td>${formattedDate}</td>
             <td>${translateState(personData.state)}</td>
         `;
+
+        newRow.addEventListener('click', () => {
+            overviewSelectedPerson = {
+                name, lastName, age, ci, email, gender, id, phone, state, type, 
+                [type]: extraData
+            }
+            console.log(overviewSelectedPerson);
+            
+        })
+
+
         overviewTable.appendChild(newRow);
     });
     overviewTable.classList.remove('active-loading');
+}
+
+// completar esto para la obtencion de datos si docente o estuidante y hacer la ventana modal donde
+// se mostrara toda esta informacion
+function getAllDataFrom(data, type){
+    if(type === 'student'){
+        return {
+            desiredMajor: data.desired_major,
+            guardianContact: data.guardian_contact,
+            guardianName: data.guardian_name,
+            id: data.id,
+            schoolName: data.school_name
+        }
+    }else {
+        return {
+            contractType: data.contract_type,
+            experienceYears: data.experience_years,
+            id: data.id,
+            degrees: data.degrees
+        }
+    }
 }
 
 
@@ -665,7 +710,7 @@ function addStudentsToEnrollTable(data) {
             state, gender, created_at: createdAt
         } = personData;
 
-        const { id: studentId, desired_major: desiredMajor, school_name: schollName,
+        const { id: studentId, desired_major: desiredMajor, school_name: schoolName,
             guardian_name: guardianName, guardian_contact: guardianContact
         } = personData.student[0];
 
@@ -683,7 +728,7 @@ function addStudentsToEnrollTable(data) {
             unSelectAllRowsExcept(newRow, 'enrollStudentTableBody');
 
             enrollSelectedStudentData = {
-                id: studentId, createdAt, desiredMajor, schollName, guardianName, guardianContact,
+                id: studentId, createdAt, desiredMajor, schoolName, guardianName, guardianContact,
                 ci, personId, age, name, type, email, phone, state, gender, lastName
             }
         });
@@ -854,11 +899,11 @@ function deployEnrollSubjectNoDataFound(message) {
 }
 
 document.getElementById('enrollRegisterBtn').addEventListener('click', async (e) => {
-    if(isSelectionMissing()) return deployCustomizedAlert(alertIcon, 'Seleccione estudiante y materia');
+    if (isSelectionMissing()) return deployCustomizedAlert(alertIcon, 'Seleccione estudiante y materia');
     try {
         changeToLoadingButton(e.target)
         const { id: studentId, name, lastName } = enrollSelectedStudentData;
-        const { id: subjectId} = enrollSelectedSubjectData;
+        const { id: subjectId } = enrollSelectedSubjectData;
 
         const response = await fetch('/insert-enrollment', {
             method: 'POST',
@@ -872,7 +917,7 @@ document.getElementById('enrollRegisterBtn').addEventListener('click', async (e)
         });
         const result = await response.json();
 
-        if(!response.ok) throw new Error(result.message);
+        if (!response.ok) throw new Error(result.message);
 
         deployCustomizedAlert(checkIcon, 'Inscripcion exitosa');
 
@@ -882,18 +927,22 @@ document.getElementById('enrollRegisterBtn').addEventListener('click', async (e)
 
     } catch (error) {
         console.log(error);
-        
+
     }
     changeToRegisterButton(e.target)
-    
+
 })
 
-function isSelectionMissing(){
+function isSelectionMissing() {
     return enrollSelectedStudent.textContent.trim() === ''
-            || enrollSelectedSubject.textContent.trim() === ''
-            || Object.keys(enrollSelectedStudentData).length === 0
-            || Object.keys(enrollSelectedSubjectData).length === 0
+        || enrollSelectedSubject.textContent.trim() === ''
+        || Object.keys(enrollSelectedStudentData).length === 0
+        || Object.keys(enrollSelectedSubjectData).length === 0
 }
+
+document.getElementById('modalButton').addEventListener('click', () => {
+    document.getElementById('modalView').showModal();
+})
 
 
 
