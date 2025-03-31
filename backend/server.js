@@ -15,24 +15,6 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// para verificar el token y la sesion del usuario
-// async function authMiddleware(req, res, next) {
-//     const token = req.cookies.supabase_token;
-
-//     if (!token) {
-//         return res.status(401).json({ message: "No autenticado" });
-//     }
-
-//     const { data, error } = await supabase.auth.getUser(token);
-
-//     if (error || !data?.user) {
-//         return res.status(401).json({ message: "Token inválido o expirado" });
-//     }
-
-//     req.user = data.user;
-//     next();
-// }
-
 async function authMiddleware(req, res, next) {
     try {
         const token = req.cookies.supabase_token;
@@ -234,7 +216,6 @@ app.post('/register-student', authMiddleware, async (req, res) => {
 
 app.get('/get-all-people', async (req, res) => {
     const { orderBy } = req.query;
-    const isAscending = orderBy === 'asc' ? true : false;
 
     try {
 
@@ -248,7 +229,7 @@ app.get('/get-all-people', async (req, res) => {
                         degrees: degree(*)
                     )
                 `)
-            .order('created_at', { ascending: isAscending });
+            .order('created_at', { ascending: orderBy === 'asc' });
 
         if (!data) console.log('Data is null: ' + data);
         if (error) console.log(error);
@@ -356,10 +337,18 @@ app.post('/register-professor', authMiddleware, async (req, res) => {
 
 app.get('/get-all-professors', authMiddleware, async (req, res) => {
     try {
+        const { orderBy } = req.query;
         const { data, error } = await supabase
             .from('person')
-            .select('*')
-            .eq('type', 'professor');
+            .select(`
+                    *,
+                    professor(
+                        *,
+                        degrees:degree(*)
+                    )
+                `)
+            .eq('type', 'professor')
+            .order('created_at', { ascending: orderBy === 'asc' });
 
         if (!data) return res.status(404).json({ message: 'No se encontraron docentes' });
         if (error) throw error;//si esta asi falla pero si le ponemos console log da nomrmal
@@ -527,6 +516,7 @@ app.get('/get-subject', authMiddleware, async (req, res) => {
 // para obtener todos los estudiantes
 app.get('/get-all-students', authMiddleware, async (req, res) => {
     try {
+        const { orderBy } = req.query;
         const { data: studentData, error: studentError } = await  supabase
         .from('person')
         .select(`
@@ -534,6 +524,7 @@ app.get('/get-all-students', authMiddleware, async (req, res) => {
                 student (*)
             `)
         .eq('type', 'student')
+        .order('created_at', { ascending: orderBy === 'asc' })
         
         if(studentError) throw studentError;
 

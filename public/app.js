@@ -111,6 +111,10 @@ signUpBtn.addEventListener('click', () => {
     signUpForm.classList.add('active-transition');
     signInBtn.classList.add('active');
     signUpBtn.classList.add('active');
+    setTimeout(() => {
+        logEmailInput.value = '';
+        logPassInput.value = '';
+    }, 500);
 });
 
 // para el efecto de hacer click en los botones del side bar
@@ -162,10 +166,18 @@ async function registerUser(email, name, password) {
 
 // para el login
 
-loginBtn.addEventListener('click', async (e) => {
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    loginUser(logEmailInput.value, logPassInput.value);
+    if(loginInfoMissing()){
+        deployCustomizedAlert(alertIcon, 'Completa todos los campos');
+    }else{
+        loginUser(logEmailInput.value, logPassInput.value);
+    }
 });
+
+function formInfoMissing(input1, input2){
+    return input1.value.trim() === '' || input2.value.trim() === '';
+}
 
 async function loginUser(email, password) {
 
@@ -184,7 +196,7 @@ async function loginUser(email, password) {
     if (response.ok) {
         loginPage.style.transform = 'translateY(-100%)';
         deployCustomizedAlert(checkIcon, `${result.message}`);
-        reloadDataTable('desc');
+        reloadDataTable('desc', 'people');
         updateTotalCard('professors', 'total-professors', 'overviewTotalProfessors');
         updateTotalCard('subjects', 'total-subjects', 'overviewTotalSubjects');
         updateTotalCard('students', 'total-students', 'overviewTotalStudents');
@@ -221,7 +233,7 @@ function hideAllIconsExcept(idIcon) {
 
 sideOverview.addEventListener('click', () => {
     if (currentPanel != overviewPanel) {
-        reloadDataTable('desc');
+        reloadDataTable('desc', 'people');
         switchPanelViewTo(overviewPanel)
         updateTotalCard('professors', 'total-professors', 'overviewTotalProfessors');
         updateTotalCard('subjects', 'total-subjects', 'overviewTotalSubjects');
@@ -305,11 +317,11 @@ srForm.addEventListener('submit', async (e) => {
 // para la visualizacion de personas en el overview panel
 
 // ver en que orden por defecto le ponemos los datos de la tabla
-async function reloadDataTable(orderBy) {
+async function reloadDataTable(orderBy, route) {
     overviewTable.classList.add('active-loading');
-    const res = await fetch(`/get-all-people?orderBy=${orderBy}`);
+    const res = await fetch(`/get-all-${route}?orderBy=${orderBy}`);
     const data = await res.json();
-    console.log(data);
+    // console.log(data);
 
 
     overviewTable.innerHTML = '';
@@ -356,7 +368,7 @@ function addInfoToModalView(overviewSelectedPerson) {
 
         if (key === 'student') {
             const { id, ...student } = value;
-            console.log(student);
+            // console.log(student);
             document.querySelectorAll('.student-info').forEach(item => {
                 document.getElementById(item.id).textContent = student[item.id];
             })
@@ -448,7 +460,6 @@ function getAllDataFrom(data, type) {
     }
 }
 
-
 function translateTypeOfPerson(typeOfPerson) {
     return typeOfPerson === 'student' ? 'Estudiante' : 'Docente';
 }
@@ -457,8 +468,18 @@ function translateState(state) {
     return state === 'active' ? 'Activo' : 'Inactivo';
 }
 
+const overviewFiltering = document.getElementById('overviewFiltering');
+
 // para el select de ordenamineto del overview
-overviewOrdering.addEventListener('change', () => reloadDataTable(overviewOrdering.value));
+overviewOrdering.addEventListener('change', (e) => {
+    reloadDataTable(e.target.value, overviewFiltering.value);
+});
+
+// para el filtrado del overview
+
+overviewFiltering.addEventListener('change', (e) => {
+    reloadDataTable(overviewOrdering.value , e.target.value);
+})
 
 
 // para la ventana modal
@@ -652,8 +673,7 @@ function addProfessorsToSubjectTable(data) {
                 ci,
                 phone
             }
-            console.log(selectedProfessorData);
-
+            // console.log(selectedProfessorData);
         });
 
         subjectTableBody.appendChild(newRow);

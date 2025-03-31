@@ -34,7 +34,7 @@
                     <button class="signUp" id="signUp">Unirse</button>
                 </div>
 
-                <div class="login-switch-container">
+                <div class="login-switch-container" id="loginForm">
                     <form class="login-form">
                         <div class="form-title">
                             <h1>Iniciar Sesion</h1>
@@ -42,7 +42,7 @@
 
                         <div class="form-fields">
                             <div class="input-group">
-                                <input placeholder=" " required type="text" id="logEmail">
+                                <input required type="text" id="logEmail">
                                 <label for="logEmail">E-mail</label>
                             </div>
                             <!-- <div class="input-group">
@@ -50,7 +50,7 @@
                             <label for="username">Username</label>
                         </div> -->
                             <div class="input-group">
-                                <input placeholder=" " required type="password" id="logPassword">
+                                <input required type="password" id="logPassword">
                                 <label for="logPassword">Password</label>
                             </div>
                         </div>
@@ -163,10 +163,10 @@
                     <div class="filter-container">
                         <h3>Mostrar por:</h3>
                         <select name="options" id="overviewFiltering" class="overview-options">
-                            <option value="general">General</option>
-                            <option value="professor">Docentes</option>
-                            <option value="student">Estudiantes</option>
-                            <option value="subjects">Materias</option>
+                            <option value="people">General</option>
+                            <option value="professors">Docentes</option>
+                            <option value="students">Estudiantes</option>
+                            <!-- <option value="subjects">Materias</option> -->
                         </select>
                     </div>
                 </div>
