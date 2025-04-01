@@ -70,7 +70,8 @@ app.post('/register', async (req, res) => {
                 data: { userName: name }
             }
         });
-
+        console.log(error);
+        
         if (error) throw error;
 
         res.status(201).json({

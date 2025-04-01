@@ -267,7 +267,7 @@ input:-webkit-autofill {
     height: 40px;
     border-radius: 5px;
     cursor: pointer;
-    background-color: #E2453D;
+    background: #E2453D !important;
     color: #fff;
     font-size: 18px;
     border: none;

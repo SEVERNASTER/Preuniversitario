@@ -4,6 +4,7 @@
 
 const signUpBtn = document.getElementById('signUp');
 const signInBtn = document.getElementById('signIn');
+const createUserBtn = document.getElementById('signInBtn');
 const loginPage = document.getElementById('loginPage');
 const signInForm = document.querySelector('.login-form')
 const signUpForm = document.querySelector('.sign-form')
@@ -103,6 +104,11 @@ signInBtn.addEventListener('click', () => {
     signUpForm.classList.remove('active-transition');
     signInBtn.classList.remove('active');
     signUpBtn.classList.remove('active');
+    setTimeout(() => {
+        signNameInput.value = '';
+        signEmailInput.value = '';
+        signPassInput.value = '';
+    }, 1000);
 });
 
 // para el boton de unirse
@@ -135,10 +141,15 @@ sideBarButtons.forEach(currentButton => {
 
 signUpForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    registerUser(signEmailInput.value, signNameInput.value, signPassInput.value);
+    if (formInfoMissing(signEmailInput, signPassInput)) {
+        deployCustomizedAlert(alertIcon, 'Completa todos los campos');
+    } else {
+        registerUser(signEmailInput.value, signNameInput.value, signPassInput.value);
+    }
 });
 
 async function registerUser(email, name, password) {
+    changeToLoadingButton(createUserBtn);
     console.log(email, name, password);
 
     const response = await fetch('/register', {
@@ -154,6 +165,12 @@ async function registerUser(email, name, password) {
     });
     const data = await response.json();
 
+    if(response.status === 400){
+        deployCustomizedAlert(errorIcon, 'Algo salio mal');
+        changeToNormalButton(createUserBtn, 'Crear');
+        return;
+    }
+
     if (response.ok) {
         alert('usuario registrado');
         console.log(data.user);
@@ -162,25 +179,26 @@ async function registerUser(email, name, password) {
         console.log(data.message);
         alert('algo salio mal');
     }
+    changeToNormalButton(createUserBtn, 'Crear')
 }
 
 // para el login
 
-document.getElementById('loginForm').addEventListener('submit', async (e) => {
+signInForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    if(loginInfoMissing()){
+    if (formInfoMissing(logEmailInput, logPassInput)) {
         deployCustomizedAlert(alertIcon, 'Completa todos los campos');
-    }else{
+    } else {
         loginUser(logEmailInput.value, logPassInput.value);
     }
 });
 
-function formInfoMissing(input1, input2){
+function formInfoMissing(input1, input2) {
     return input1.value.trim() === '' || input2.value.trim() === '';
 }
 
 async function loginUser(email, password) {
-
+    changeToLoadingButton(loginBtn);
     const response = await fetch('/login', {
         method: 'POST',
         headers: {
@@ -193,6 +211,12 @@ async function loginUser(email, password) {
     });
     const result = await response.json();
 
+    if (response.status === 400) {
+        deployCustomizedAlert(alertIcon, 'Email o contraseña incorrectos.');
+        changeToNormalButton(loginBtn, 'Verificar');
+        return;
+    }
+
     if (response.ok) {
         loginPage.style.transform = 'translateY(-100%)';
         deployCustomizedAlert(checkIcon, `${result.message}`);
@@ -204,6 +228,7 @@ async function loginUser(email, password) {
     } else {
         console.log(result.message);
     }
+    changeToNormalButton(loginBtn, 'Verificar');
 }
 
 // para mostrar los mensajes de alerta
@@ -478,7 +503,7 @@ overviewOrdering.addEventListener('change', (e) => {
 // para el filtrado del overview
 
 overviewFiltering.addEventListener('change', (e) => {
-    reloadDataTable(overviewOrdering.value , e.target.value);
+    reloadDataTable(overviewOrdering.value, e.target.value);
 })
 
 
@@ -616,11 +641,19 @@ function clearPrForm() {
 function changeToLoadingButton(button) {
     button.textContent = '';
     button.classList.add('active-loading');
+    button.disabled = true;
 }
 
 function changeToRegisterButton(button) {
     button.textContent = 'Registrar';
     button.classList.remove('active-loading');
+    button.disabled = false;
+}
+
+function changeToNormalButton(button, text){
+    button.textContent = text;
+    button.classList.remove('active-loading');
+    button.disabled = false;
 }
 
 // para obtener los docentes en la tabla de registro materia
