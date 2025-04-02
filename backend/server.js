@@ -25,7 +25,7 @@ async function authMiddleware(req, res, next) {
         }
 
         let { data, error } = await supabase.auth.getUser(token);
-        
+
         if (error || !data?.user) {
             if (!refreshToken) return res.status(401).json({ message: "Sesión expirada, inicie sesión nuevamente." });
 
@@ -63,23 +63,58 @@ app.post('/register', async (req, res) => {
     console.log(email, name, password);
 
     try {
-        const { data, error } = await supabase.auth.signUp({
-            email,
-            password,
-            options: {
-                data: { userName: name }
+
+        const { data: existingUser, error: signInError } = await supabase
+            .auth.signInWithPassword(
+                {
+                    email,
+                    password
+                }
+            )
+
+        if (signInError) {
+            const { data, error } = await supabase.auth.signUp({
+                email,
+                password,
+                options: {
+                    data: { userName: name }
+                }
+            });
+            console.log(error);
+
+            if (error) {
+
+                // para minimo 6 caracteres en el password
+                if (error.message.includes('Password should be at least 6 characters.')) {
+                    return res.status(400).json({
+                        message: 'Mínimo 6 caracteres en la contraseña',
+                        type: 'supabase error'
+                    });
+                }
+
+                // para el correo invalido
+                if (error.message.includes('Unable to validate email address: invalid format')) {
+                    return res.status(400).json({
+                        message: 'Formato de correo electrónico invalido',
+                        type: 'supabase error'
+                    });
+                }
+                // Para otro tipo de errores de autenticación
+                return res.status(400).json({
+                    message: 'Error: ' + error,
+                    type: 'server error'
+                });
             }
-        });
-        console.log(error);
-        
-        if (error) throw error;
+        }else {
+            return res.status(400).json({ message: 'Este correo ya está registrado', type: 'supabase error'})
+        }
 
         res.status(201).json({
             message: 'Usuario registrado correctamente',
             user: data.user
         });
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(500).json({ message: error.message, type: 'server error' });
     }
 });
 
@@ -215,7 +250,7 @@ app.post('/register-student', authMiddleware, async (req, res) => {
 
 // para devolver todas las personas de la institucion
 
-app.get('/get-all-people', async (req, res) => {
+app.get('/get-all-people', authMiddleware, async (req, res) => {
     const { orderBy } = req.query;
 
     try {
@@ -366,15 +401,15 @@ app.get('/get-all-professors', authMiddleware, async (req, res) => {
 
 app.get('/get-professor', authMiddleware, async (req, res) => {
     try {
-        const { column , value } = req.query;
+        const { column, value } = req.query;
         const { data, error } = await supabase
-        .from('person')
-        .select('*')
-        .eq('type', 'professor')
-        .or(`${column}.ilike.%${value}%`)
+            .from('person')
+            .select('*')
+            .eq('type', 'professor')
+            .or(`${column}.ilike.%${value}%`)
 
-        if(data.length === 0) return res.status(404).json( { message: 'No se encontró ningún docente' })
-        if(error) throw error;
+        if (data.length === 0) return res.status(404).json({ message: 'No se encontró ningún docente' })
+        if (error) throw error;
 
         res.status(200).json(data);
     } catch (error) {
@@ -386,60 +421,60 @@ app.get('/get-professor', authMiddleware, async (req, res) => {
 
 app.post('/register-subject', authMiddleware, async (req, res) => {
     try {
-        const { subjectData, selectedProfessorData: professor} = req.body
-        
+        const { subjectData, selectedProfessorData: professor } = req.body
+
         const { sbName, sbShift, sbFaculty } = subjectData;
 
         // esto me devuelve un arreglo con todas las filas, si es que solo hay una sera un arreglo
         // con un solo elemento, por eso o hacemos .single() o hacemos .data[0] 
-        const { data: facultyData, error: facultyError} = await supabase
-        .from('faculty')
-        .select('id')
-        .eq('name', sbFaculty)
-        .single();
+        const { data: facultyData, error: facultyError } = await supabase
+            .from('faculty')
+            .select('id')
+            .eq('name', sbFaculty)
+            .single();
 
-        if(facultyError) throw facultyError;
+        if (facultyError) throw facultyError;
 
-        const { name, lastName, email, ci, phone} = professor;
+        const { name, lastName, email, ci, phone } = professor;
 
         const { data: personData, error: personError } = await supabase
-        .from('person')
-        .select('id')
-        .eq('type', 'professor')
-        .eq('name', name)
-        .eq('last_name', lastName)
-        .eq('ci', ci)
-        .eq('email', email)
-        .eq('phone', phone)
-        .single();
+            .from('person')
+            .select('id')
+            .eq('type', 'professor')
+            .eq('name', name)
+            .eq('last_name', lastName)
+            .eq('ci', ci)
+            .eq('email', email)
+            .eq('phone', phone)
+            .single();
 
-        if(personError) throw personError;
+        if (personError) throw personError;
 
-        const {data: professorData, error: professorError} = await supabase
-        .from('professor')
-        .select('id')
-        .eq('id_person', personData.id)
-        .single();
+        const { data: professorData, error: professorError } = await supabase
+            .from('professor')
+            .select('id')
+            .eq('id_person', personData.id)
+            .single();
 
-        if(professorError) throw professorError;
+        if (professorError) throw professorError;
 
         const { data: sbData, error: sbError } = await supabase
-        .from('subject')
-        .insert([{
-            name: sbName,
-            shift: sbShift,
-            id_professor: professorData.id,
-            id_faculty: facultyData.id
-        }]);
+            .from('subject')
+            .insert([{
+                name: sbName,
+                shift: sbShift,
+                id_professor: professorData.id,
+                id_faculty: facultyData.id
+            }]);
 
-        if(sbError) throw sbError;
-        
-        
-        res.status(201).json({ message: 'Se registró la materia'});
+        if (sbError) throw sbError;
+
+
+        res.status(201).json({ message: 'Se registró la materia' });
 
 
     } catch (error) {
-        res.status(500).json({error: error.message});
+        res.status(500).json({ error: error.message });
     }
 })
 
@@ -448,15 +483,15 @@ app.post('/register-subject', authMiddleware, async (req, res) => {
 app.get('/get-all-faculties', authMiddleware, async (req, res) => {
     try {
         const { data, error } = await supabase
-        .from('faculty')
-        .select('*')
+            .from('faculty')
+            .select('*')
 
-        if(error) throw error;
+        if (error) throw error;
 
         res.status(200).json(data);
 
     } catch (error) {
-        res.status(500).json({error: error.message});
+        res.status(500).json({ error: error.message });
     }
 })
 
@@ -465,8 +500,8 @@ app.get('/get-all-faculties', authMiddleware, async (req, res) => {
 app.get('/get-all-subjects', authMiddleware, async (req, res) => {
     try {
         const { data, error } = await supabase
-        .from('subject')
-        .select(`
+            .from('subject')
+            .select(`
                 *,
                 faculty: id_faculty (*),
                 professor: id_professor(
@@ -475,8 +510,8 @@ app.get('/get-all-subjects', authMiddleware, async (req, res) => {
                 ),
                 totalEnrolled: enrollment(count)
             `)
-        
-        if(error) throw error;
+
+        if (error) throw error;
 
         res.status(200).json(data);
     } catch (error) {
@@ -491,8 +526,8 @@ app.get('/get-subject', authMiddleware, async (req, res) => {
         const { column, value } = req.query;
 
         const { data, error } = await supabase
-        .from('subject')
-        .select(`
+            .from('subject')
+            .select(`
                 *,
                 faculty: id_faculty(*),
                 professor: id_professor(
@@ -501,10 +536,10 @@ app.get('/get-subject', authMiddleware, async (req, res) => {
                 ),
                 totalEnrolled: enrollment(count)
             `)
-        .or(`${column}.ilike.%${value}%`)
+            .or(`${column}.ilike.%${value}%`)
 
-        if(data.length === 0) return res.status(404).json({ message: `No se encontró ninguna materia con el ${column} '${value}'`});
-        if(error) throw error;
+        if (data.length === 0) return res.status(404).json({ message: `No se encontró ninguna materia con el ${column} '${value}'` });
+        if (error) throw error;
 
         res.status(200).json(data);
 
@@ -518,16 +553,16 @@ app.get('/get-subject', authMiddleware, async (req, res) => {
 app.get('/get-all-students', authMiddleware, async (req, res) => {
     try {
         const { orderBy } = req.query;
-        const { data: studentData, error: studentError } = await  supabase
-        .from('person')
-        .select(`
+        const { data: studentData, error: studentError } = await supabase
+            .from('person')
+            .select(`
                 *,
                 student (*)
             `)
-        .eq('type', 'student')
-        .order('created_at', { ascending: orderBy === 'asc' })
-        
-        if(studentError) throw studentError;
+            .eq('type', 'student')
+            .order('created_at', { ascending: orderBy === 'asc' })
+
+        if (studentError) throw studentError;
 
         res.status(200).json(studentData);
     } catch (error) {
@@ -540,16 +575,16 @@ app.get('/get-student', authMiddleware, async (req, res) => {
     try {
         const { column, value } = req.query;
         const { data, error } = await supabase
-        .from('person')
-        .select(`
+            .from('person')
+            .select(`
                 *, 
                 student (*)
             `)
-        .eq(`type`, 'student')
-        .or(`${column}.ilike.%${value}%`)
+            .eq(`type`, 'student')
+            .or(`${column}.ilike.%${value}%`)
 
-        if(error) throw error;
-        if(data.length === 0) return res.status(404).json({ message: `No se encontró ningún estudiante con el ${translateColumn(column)} '${value}'` })
+        if (error) throw error;
+        if (data.length === 0) return res.status(404).json({ message: `No se encontró ningún estudiante con el ${translateColumn(column)} '${value}'` })
 
         res.status(200).json(data);
 
@@ -583,18 +618,18 @@ app.post('/insert-enrollment', authMiddleware, async (req, res) => {
     try {
         const { studentId, subjectId } = req.body;
         const { data, error } = await supabase
-        .from('enrollment')
-        .insert([{
-            id_student: studentId,
-            id_subject: subjectId
-        }])
+            .from('enrollment')
+            .insert([{
+                id_student: studentId,
+                id_subject: subjectId
+            }])
 
-        if(error) throw error;
+        if (error) throw error;
 
-        res.status(201).json({ message: 'Se ha inscrito al estudiante'})
+        res.status(201).json({ message: 'Se ha inscrito al estudiante' })
     } catch (error) {
         console.log(error);
-        res.status(error.status || 500).json({ error: error.message});
+        res.status(error.status || 500).json({ error: error.message });
     }
 })
 

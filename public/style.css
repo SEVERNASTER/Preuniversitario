@@ -36,7 +36,7 @@ body {
 .message {
     position: absolute;
     color: #fff;
-    width: 30%;
+    width: 35%;
     height: 0px;
     display: flex;
     justify-content: center;
@@ -1860,7 +1860,16 @@ input:-webkit-autofill {
 
 
 
+.container {
+    display: grid;
+    column-gap: 10px;
+    row-gap: 15px;
+}
 
+.item-b {
+    grid-column-start: 1;
+    grid-column-end: span 4;
+}
 
 
 

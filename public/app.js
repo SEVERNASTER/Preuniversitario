@@ -141,7 +141,7 @@ sideBarButtons.forEach(currentButton => {
 
 signUpForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    if (formInfoMissing(signEmailInput, signPassInput)) {
+    if (formInfoMissing(signEmailInput, signPassInput) || signNameInput.value.trim() === '') {
         deployCustomizedAlert(alertIcon, 'Completa todos los campos');
     } else {
         registerUser(signEmailInput.value, signNameInput.value, signPassInput.value);
@@ -152,34 +152,46 @@ async function registerUser(email, name, password) {
     changeToLoadingButton(createUserBtn);
     console.log(email, name, password);
 
-    const response = await fetch('/register', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            email,
-            name,
-            password,
-        }),
-    });
-    const data = await response.json();
-
-    if(response.status === 400){
-        deployCustomizedAlert(errorIcon, 'Algo salio mal');
-        changeToNormalButton(createUserBtn, 'Crear');
-        return;
-    }
-
-    if (response.ok) {
-        alert('usuario registrado');
-        console.log(data.user);
-
-    } else {
+    try {
+        const response = await fetch('/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email,
+                name,
+                password,
+            }),
+        });
+        const data = await response.json();
         console.log(data.message);
-        alert('algo salio mal');
+    
+        if(!response.ok){
+            if(data.type === 'supabase error'){
+                deployCustomizedAlert(alertIcon, data.message)
+                changeToNormalButton(createUserBtn, 'Crear');
+                return;
+            }
+    
+            if(data.type === 'server error'){
+                throw new Error(data.message);
+            }
+        }
+    
+        if (response.ok) {
+            deployCustomizedAlert(checkIcon, data.message)
+            console.log(data.user);
+        }
+    
+        changeToNormalButton(createUserBtn, 'Crear')
+    } catch (error) {
+        deployCustomizedAlert(errorIcon, 'Algo salio mal, revise la consola')
+        console.log(error);
+        changeToNormalButton(createUserBtn, 'Crear');
     }
-    changeToNormalButton(createUserBtn, 'Crear')
+
+    
 }
 
 // para el login
@@ -212,7 +224,7 @@ async function loginUser(email, password) {
     const result = await response.json();
 
     if (response.status === 400) {
-        deployCustomizedAlert(alertIcon, 'Email o contraseña incorrectos.');
+        deployCustomizedAlert(errorIcon, 'Email o contraseña incorrectos.');
         changeToNormalButton(loginBtn, 'Verificar');
         return;
     }
