@@ -29,6 +29,7 @@ const studentRegisterPanel = document.getElementById('studentRegister');
 const srForm = document.getElementById('srForm');
 const srButton = document.getElementById('srButton');
 const overviewTable = document.getElementById('overviewTableBody');
+const overviewTableLoading = document.getElementById('overviewTable');
 let currentPanel = overviewPanel; //para saber el panel actual que se esta mostrando
 const addDegreeBtn = document.getElementById('addDegreeBtn');
 const professorModal = document.getElementById('professorRegisterModal');
@@ -356,7 +357,7 @@ srForm.addEventListener('submit', async (e) => {
 
 // ver en que orden por defecto le ponemos los datos de la tabla
 async function reloadDataTable(orderBy, route) {
-    overviewTable.classList.add('active-loading');
+    overviewTableLoading.classList.add('active-loading');
     const res = await fetch(`/get-all-${route}?orderBy=${orderBy}`);
     const data = await res.json();
     // console.log(data);
@@ -398,7 +399,7 @@ async function reloadDataTable(orderBy, route) {
 
         overviewTable.appendChild(newRow);
     });
-    overviewTable.classList.remove('active-loading');
+    overviewTableLoading.classList.remove('active-loading');
 }
 
 function addInfoToModalView(overviewSelectedPerson) {

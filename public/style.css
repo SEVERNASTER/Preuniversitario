@@ -698,7 +698,7 @@ input:-webkit-autofill {
     border: solid 2px #000;
 }
 
-.overview-table-body::before {
+.overview-table-container::before {
     display: none;
     content: '';
     position: absolute;
@@ -707,7 +707,7 @@ input:-webkit-autofill {
     width: 100%;
 }
 
-.overview-table-body::after {
+.overview-table-container::after {
     display: none;
     content: '';
     position: absolute;
@@ -723,9 +723,10 @@ input:-webkit-autofill {
     animation: loadingButton 1s ease-out infinite;
 }
 
-.overview-table-body.active-loading::before,
-.overview-table-body.active-loading::after {
+.overview-table-container.active-loading::before,
+.overview-table-container.active-loading::after {
     display: block;
+    z-index: 10;
 }
 
 .overview thead tr {
