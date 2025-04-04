@@ -36,7 +36,7 @@ body {
 .message {
     position: absolute;
     color: #fff;
-    width: 35%;
+    padding: 20px;
     height: 0px;
     display: flex;
     justify-content: center;

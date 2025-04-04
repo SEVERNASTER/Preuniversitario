@@ -625,7 +625,12 @@ app.post('/insert-enrollment', authMiddleware, async (req, res) => {
                 id_subject: subjectId
             }])
 
-        if (error) throw error;
+        if (error) {
+            if(error.code === '23505'){
+                return res.status(409).json({ message: 'Este estudiante ya está inscrito en esta materia'});
+            }
+            throw error;
+        }
 
         res.status(201).json({ message: 'Se ha inscrito al estudiante' })
     } catch (error) {

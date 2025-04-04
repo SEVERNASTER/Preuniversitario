@@ -1087,7 +1087,11 @@ document.getElementById('enrollRegisterBtn').addEventListener('click', async (e)
             })
         });
         const result = await response.json();
-
+        if(response.status === 409) {
+            deployCustomizedAlert(errorIcon, result.message);
+            changeToRegisterButton(e.target);
+            return;
+        }
         if (!response.ok) throw new Error(result.message);
 
         deployCustomizedAlert(checkIcon, 'Inscripcion exitosa');
