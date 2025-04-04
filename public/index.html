@@ -23,69 +23,92 @@
     </div>
     <section class="login-page" id="loginPage">
         <!-- <button id="logout" class="logout">Logout</button> -->
-        <div class="login-container">
-            <div class="login-img-container">
-                <img src="img/logo6.png" alt="logo">
-            </div>
+        <div class="login-flip-container">
+            <div class="inner-container" id="loginFlipContainer">
+                <div class="login-container">
+                    <div class="login-img-container">
+                        <img src="img/logo6.png" alt="logo">
+                    </div>
 
-            <div class="login-form-container">
-                <div class="sign-buttons-container">
-                    <button class="signIn" id="signIn">Entrar</button>
-                    <button class="signUp" id="signUp">Unirse</button>
-                </div>
-
-                <div class="login-switch-container" >
-                    <form class="login-form" id="loginForm">
-                        <div class="form-title">
-                            <h1>Iniciar Sesion</h1>
+                    <div class="login-form-container">
+                        <div class="sign-buttons-container">
+                            <button class="signIn" id="signIn">Entrar</button>
+                            <button class="signUp" id="signUp">Unirse</button>
                         </div>
 
-                        <div class="form-fields">
-                            <div class="input-group">
-                                <input required type="text" id="logEmail">
-                                <label for="logEmail">E-mail</label>
-                            </div>
-                            <!-- <div class="input-group">
+                        <div class="login-switch-container">
+                            <form class="login-form" id="loginForm">
+                                <div class="form-title">
+                                    <h1>Iniciar Sesion</h1>
+                                </div>
+
+                                <div class="form-fields">
+                                    <div class="input-group">
+                                        <input required type="text" id="logEmail">
+                                        <label for="logEmail">E-mail</label>
+                                    </div>
+                                    <!-- <div class="input-group">
                             <input placeholder=" " required type="text" id="username">
                             <label for="username">Username</label>
                         </div> -->
-                            <div class="input-group">
-                                <input required type="password" id="logPassword">
-                                <label for="logPassword">Password</label>
+                                    <div class="input-group">
+                                        <input required type="password" id="logPassword">
+                                        <label for="logPassword">Password</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-button">
+                                    <button class="register-button" id="logBtn">Verificar</button>
+                                </div>
+                            </form>
+
+                            <!-- para la pantalla de crear cuenta -->
+
+                            <form class="sign-form">
+                                <div class="form-title">
+                                    <h1>Crear cuenta</h1>
+                                </div>
+
+                                <div class="form-fields">
+                                    <div class="input-group">
+                                        <input placeholder=" " required type="text" id="signEmail">
+                                        <label for="signEmail">E-mail</label>
+                                    </div>
+                                    <div class="input-group">
+                                        <input placeholder=" " required type="text" id="signName">
+                                        <label for="signName">Nombre</label>
+                                    </div>
+                                    <div class="input-group">
+                                        <input placeholder=" " required type="password" id="signPassword">
+                                        <label for="signPassword">Contraseña</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-button">
+                                    <button id="signInBtn" class="register-button">Crear</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="email-sent-screen">
+                    <div class="email-sent-container">
+                        <div class="confirm-text">
+                            <div class="confirm-logo">
+                                <!-- <i class="fa-solid fa-check-to-slot"></i> -->
+                                <i class="fa-solid fa-check"></i>
                             </div>
+                            <h2>¡Registro Exitoso!<br><span style="font-weight: 500;font-size: 18px;">Pero un paso más</span></h2>
+                            <p>Se ha enviado un correo de confirmación a tu direccion de email:</p>
                         </div>
-
-                        <div class="form-button">
-                            <button class="register-button" id="logBtn">Verificar</button>
+                        <div class="cofirm-box-email">
+                            <h3 id="emailForConfirm"></h3>
                         </div>
-                    </form>
-
-                    <!-- para la pantalla de crear cuenta -->
-
-                    <form class="sign-form">
-                        <div class="form-title">
-                            <h1>Crear cuenta</h1>
+                        <div class="confirm-footer">
+                            <p>Revisa tu bandeja de entrada</p>
                         </div>
-
-                        <div class="form-fields">
-                            <div class="input-group">
-                                <input placeholder=" " required type="text" id="signEmail">
-                                <label for="signEmail">E-mail</label>
-                            </div>
-                            <div class="input-group">
-                                <input placeholder=" " required type="text" id="signName">
-                                <label for="signName">Nombre</label>
-                            </div>
-                            <div class="input-group">
-                                <input placeholder=" " required type="password" id="signPassword">
-                                <label for="signPassword">Contraseña</label>
-                            </div>
-                        </div>
-
-                        <div class="form-button">
-                            <button id="signInBtn" class="register-button">Crear</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -775,7 +798,7 @@
             <div class="degree-info" id="modalDegreeInfo">
                 <h3>Formación Académica</h3>
                 <div class="degree-info-container" id="degreeInfoContainer">
-                    
+
                 </div>
             </div>
         </div>

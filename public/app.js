@@ -57,6 +57,7 @@ const enrollSelectedSubject = document.getElementById('selectedSubject');
 const modalView = document.getElementById('modalView');
 const viewModalContainer = document.getElementById('viewModalContainer');
 const modalDegreeContainer = document.getElementById('degreeInfoContainer');
+const signUpEmail = '';
 let enrollSelectedStudentData = {};
 let enrollSelectedSubjectData = {};
 let selectedProfessorData = {};
@@ -147,7 +148,6 @@ signUpForm.addEventListener('submit', async (e) => {
         registerUser(signEmailInput.value, signNameInput.value, signPassInput.value);
     }
 });
-
 async function registerUser(email, name, password) {
     changeToLoadingButton(createUserBtn);
     console.log(email, name, password);
@@ -180,7 +180,8 @@ async function registerUser(email, name, password) {
         }
     
         if (response.ok) {
-            deployCustomizedAlert(checkIcon, data.message)
+            document.getElementById('loginFlipContainer').classList.add('flip');
+            document.getElementById('emailForConfirm').textContent = signEmailInput.value;
             console.log(data.user);
         }
     

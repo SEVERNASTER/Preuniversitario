@@ -104,15 +104,16 @@ app.post('/register', async (req, res) => {
                     message: 'Error: ' + error,
                     type: 'server error'
                 });
+            }else{
+                res.status(201).json({
+                    message: 'Usuario registrado correctamente',
+                    user: data.user
+                });
             }
         }else {
             return res.status(400).json({ message: 'Este correo ya está registrado', type: 'supabase error'})
         }
 
-        res.status(201).json({
-            message: 'Usuario registrado correctamente',
-            user: data.user
-        });
     } catch (error) {
         res.status(500).json({ message: error.message, type: 'server error' });
     }

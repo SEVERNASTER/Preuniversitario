@@ -72,9 +72,123 @@ body {
     transition: 1s ease-in;
 }
 
-.login-container {
+.login-flip-container {
+    position: relative;
     height: 70%;
     width: 60%;
+    perspective: 1500px;
+}
+
+.inner-container {
+    position: relative;
+    transform-style: preserve-3d;
+    transition: 2s;
+    height: 100%;
+    width: 100%;
+}
+
+.inner-container.flip {
+    transform: rotateY(180deg);
+}
+
+.login-container {
+    transition: 1s;
+}
+
+
+.login-container, .email-sent-screen {
+    position: absolute;
+    backface-visibility: hidden;
+}
+
+.email-sent-screen {
+    height: 100%;
+    width: 100%;
+    border-radius: 25px;
+    transform: rotateY(180deg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.email-sent-container {
+    height: 90%;
+    width: 50%;
+    background-color: #fff;
+    border-radius: 25px;
+    padding: 0 20px;
+    display: grid;
+    grid-template-rows: 60% 20% 20%;
+}
+
+.confirm-text {
+    /* border: solid #000; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    padding-top: 20px;
+    text-align: center;
+}
+
+.confirm-logo {
+    /* border: solid; */
+    height: 100%;
+    width: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #F89227;
+    border-radius: 50%;
+}
+
+.confirm-logo i {
+    font-size: 50px;
+    color: #fff;
+}
+
+.confirm-text h2 {
+    font-size: 30px;
+    color: #58016D;
+}
+
+.confirm-text p {
+    font-size: 18px;
+}
+
+.cofirm-box-email {
+    height: 80%;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    border-left: solid 5px #CD0146;
+    background-color: #f1f1f1;
+    margin: auto 0;
+}
+
+.cofirm-box-email h3{
+    font-weight: 500;
+}
+
+.confirm-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    color: #e12d24;
+}
+
+
+
+
+
+
+
+
+.login-container {
+    height: 100%;
+    width: 100%;
     border: solid #fff 2px;
     display: grid;
     grid-template-columns: 55% 45%;
@@ -82,6 +196,7 @@ body {
     background: rgba(0, 0, 0, .1);
     backdrop-filter: blur(10px);
     overflow: hidden;
+    transform: rotateY(0deg);
 }
 
 .login-img-container {
