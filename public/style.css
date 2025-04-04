@@ -36,6 +36,8 @@ body {
 .message {
     position: absolute;
     color: #fff;
+    display: inline-block;
+    white-space: nowrap;
     padding: 20px;
     height: 0px;
     display: flex;
