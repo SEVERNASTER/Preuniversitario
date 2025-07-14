@@ -32,7 +32,7 @@ Toda esta información se presenta en tarjetas informativas dentro de la interfa
 
 ## 🖼️ Capturas de pantalla
 
-### 🏠 Página de inicio
+### 🏠 Página de inicio de sesión
 ![Inicio](./public/img/login-screen.png)
 
 
